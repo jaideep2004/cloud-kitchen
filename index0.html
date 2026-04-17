@@ -1,0 +1,2320 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NOIR KITCHEN — Precision. Freshness. Elevation.</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Mona+Sans:ital,wdth,wght@0,75..125,200..900;1,75..125,200..900&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="index.css">
+    <style>
+        /* ═══════════════════════════════════════════════════════
+           MOTION SYSTEM — NOIR KITCHEN
+           Senior Motion Design: Stagger, Clip, Skew, Magnetic,
+           Parallax, Kinetic Type, Reveal, Morph, Scrub
+        ═══════════════════════════════════════════════════════ */
+
+        /* ── Base reset for animated elements ── */
+        * {
+            will-change: auto;
+        }
+
+        /* ══════════ HERO CINEMATIC ENTRANCE ══════════ */
+
+        /* Badge — slide + fade from left */
+        .hero-badge {
+            opacity: 0;
+            transform: translateX(-24px);
+            transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .hero-badge.anim-in {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Title lines — each line clips up individually */
+        .hero-title-line {
+            display: block;
+            overflow: hidden;
+            line-height: 0.95;
+            padding-bottom: 0.08em;
+        }
+
+        .hero-title-line-inner {
+            display: block;
+            transform: translateY(110%) skewY(4deg);
+            opacity: 0;
+            transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+                opacity 0.6s ease;
+        }
+
+        .hero-title-line-inner.anim-in {
+            transform: translateY(0) skewY(0deg);
+            opacity: 1;
+        }
+
+        .hero-title-line-inner:nth-child(1) {
+            transition-delay: 0.05s;
+        }
+
+        .hero-title-line-inner:nth-child(2) {
+            transition-delay: 0.15s;
+        }
+
+        .hero-title-line-inner:nth-child(3) {
+            transition-delay: 0.25s;
+        }
+
+        /* Sub — fade + blur */
+        .hero-sub {
+            opacity: 0;
+            filter: blur(8px);
+            transform: translateY(16px);
+            transition: opacity 0.8s ease 0.5s,
+                filter 0.8s ease 0.5s,
+                transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.5s;
+        }
+
+        .hero-sub.anim-in {
+            opacity: 1;
+            filter: blur(0);
+            transform: translateY(0);
+        }
+
+        /* Hero actions — stagger buttons */
+        .hero-actions {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.7s ease 0.65s, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.65s;
+        }
+
+        .hero-actions.anim-in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Stats — count-up visual + stagger */
+        .hero-stats {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.7s ease 0.8s, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.8s;
+        }
+
+        .hero-stats.anim-in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .stat-item {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-item::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--green);
+            transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1) 1s;
+        }
+
+        .hero-stats.anim-in .stat-item::after {
+            width: 100%;
+        }
+
+        /* Hero right — scale + fade */
+        .hero-right {
+            opacity: 0;
+            transform: scale(0.94) translateY(20px);
+            transition: opacity 1s ease 0.3s,
+                transform 1s cubic-bezier(0.16, 1, 0.3, 1) 0.3s;
+        }
+
+        .hero-right.anim-in {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+
+        /* Float badges — entrance */
+        .hero-float-badge {
+            opacity: 0;
+            transform: translateX(-20px) scale(0.9);
+            transition: opacity 0.6s ease 0.9s,
+                transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.9s;
+        }
+
+        .hero-right.anim-in .hero-float-badge {
+            opacity: 1;
+            transform: translateX(0) scale(1);
+        }
+
+        .hero-float-tag {
+            opacity: 0;
+            transform: translateX(20px) scale(0.9);
+            transition: opacity 0.6s ease 1.1s,
+                transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 1.1s;
+        }
+
+        .hero-right.anim-in .hero-float-tag {
+            opacity: 1;
+            transform: translateX(0) scale(1);
+        }
+
+        /* Glow ring spin entrance */
+        .glow-ring {
+            opacity: 0;
+            transition: opacity 1s ease 0.8s;
+        }
+
+        .hero-right.anim-in .glow-ring {
+            opacity: 1;
+        }
+
+        /* ══════════ MARQUEE ══════════ */
+        .marquee-strip {
+            clip-path: inset(0 100% 0 0);
+            transition: clip-path 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .marquee-strip.anim-in {
+            clip-path: inset(0 0% 0 0);
+        }
+
+        /* ══════════ PHILOSOPHY ══════════ */
+
+        /* Eyebrow — line grows then text fades */
+        .philosophy .section-eyebrow {
+            overflow: visible;
+        }
+
+        .philosophy .eyebrow-line {
+            width: 0;
+            transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .philosophy .section-eyebrow.anim-in .eyebrow-line {
+            width: 32px;
+        }
+
+        .philosophy .eyebrow-text {
+            opacity: 0;
+            transform: translateX(-8px);
+            transition: opacity 0.6s ease 0.3s, transform 0.6s ease 0.3s;
+        }
+
+        .philosophy .section-eyebrow.anim-in .eyebrow-text {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Title — word by word */
+        .philo-title-word {
+            display: inline-block;
+            overflow: hidden;
+            vertical-align: bottom;
+            margin-right: 0.15em;
+        }
+
+        .philo-title-word-inner {
+            display: inline-block;
+            transform: translateY(100%);
+            opacity: 0;
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                opacity 0.5s ease;
+        }
+
+        .philo-title-word-inner.anim-in {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* Section body — reveal with sliding underline */
+        .philosophy .section-body {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .philosophy .section-body.anim-in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Feature pills — cascade stagger */
+        .pill {
+            opacity: 0;
+            transform: translateY(16px) scale(0.95);
+            transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .pill.anim-in {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        /* Philosophy visual — parallax + clip */
+        .philo-img-1 {
+            clip-path: inset(0 0 100% 0);
+            transition: clip-path 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s;
+        }
+
+        .philo-img-1.anim-in {
+            clip-path: inset(0 0 0% 0);
+        }
+
+        .philo-img-2 {
+            clip-path: inset(100% 0 0 0);
+            transition: clip-path 1s cubic-bezier(0.16, 1, 0.3, 1) 0.5s;
+        }
+
+        .philo-img-2.anim-in {
+            clip-path: inset(0% 0 0 0);
+        }
+
+        .philo-label {
+            opacity: 0;
+            transform: scale(0.8) rotate(-4deg);
+            transition: opacity 0.6s ease 0.7s,
+                transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.7s;
+        }
+
+        .philo-label.anim-in {
+            opacity: 1;
+            transform: scale(1) rotate(0deg);
+        }
+
+        /* ══════════ MENU SECTION ══════════ */
+
+        /* Header split */
+        .menu-header>div>* {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .menu-header.anim-in>div>* {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .menu-header.anim-in>div>*:nth-child(2) {
+            transition-delay: 0.1s;
+        }
+
+        .menu-tabs {
+            opacity: 0;
+            transform: translateX(24px);
+            transition: opacity 0.7s ease 0.2s, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.2s;
+        }
+
+        .menu-header.anim-in .menu-tabs {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Card — skewed clip-path reveal */
+        .menu-card {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .menu-card.anim-in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Featured card clips from bottom */
+        .menu-card-featured {
+            clip-path: inset(0 0 100% 0 round 20px);
+            transform: none;
+            opacity: 1;
+            transition: clip-path 1s cubic-bezier(0.16, 1, 0.3, 1) 0.1s;
+        }
+
+        .menu-card-featured.anim-in {
+            clip-path: inset(0 0 0% 0 round 20px);
+        }
+
+        /* ══════════ PROCESS ══════════ */
+
+        /* Header */
+        .process-header .eyebrow-line {
+            width: 0;
+            transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .process-header.anim-in .eyebrow-line {
+            width: 32px;
+        }
+
+        .process-header .eyebrow-text {
+            opacity: 0;
+            transition: opacity 0.6s ease 0.3s;
+        }
+
+        .process-header.anim-in .eyebrow-text {
+            opacity: 1;
+        }
+
+        .process-header h2 {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease 0.2s, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s;
+        }
+
+        .process-header.anim-in h2 {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Connector line draws itself */
+        .process-connector {
+            width: 0 !important;
+            transition: width 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.4s;
+        }
+
+        .process-steps.anim-in .process-connector {
+            width: calc(75% - 40px) !important;
+        }
+
+        /* Steps — stagger + flip */
+        .step {
+            opacity: 0;
+            transform: translateY(50px) rotateX(20deg);
+            transform-origin: top center;
+            transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .step.anim-in {
+            opacity: 1;
+            transform: translateY(0) rotateX(0deg);
+        }
+
+        /* Step number orbiting dot on hover */
+        .step-num::before {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: var(--green);
+            border-radius: 50%;
+            top: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            box-shadow: 0 0 12px var(--green);
+        }
+
+        .step:hover .step-num::before {
+            opacity: 1;
+        }
+
+        /* ══════════ SHOWCASE ══════════ */
+
+        .showcase-frame {
+            clip-path: inset(0 0 100% 0 round 32px);
+            transition: clip-path 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .showcase-inner.anim-in .showcase-frame {
+            clip-path: inset(0 0 0% 0 round 32px);
+        }
+
+        .showcase-content .section-eyebrow {
+            opacity: 0;
+            transform: translateX(-20px);
+            transition: opacity 0.7s ease 0.5s, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.5s;
+        }
+
+        .showcase-inner.anim-in .showcase-content .section-eyebrow {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .showcase-title {
+            overflow: hidden;
+        }
+
+        .showcase-title-line {
+            display: block;
+            overflow: hidden;
+        }
+
+        .showcase-title-line-inner {
+            display: block;
+            transform: translateY(110%);
+            transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .showcase-inner.anim-in .showcase-title-line-inner {
+            transform: translateY(0);
+        }
+
+        .showcase-inner.anim-in .showcase-title-line:nth-child(1) .showcase-title-line-inner {
+            transition-delay: 0.6s;
+        }
+
+        .showcase-inner.anim-in .showcase-title-line:nth-child(2) .showcase-title-line-inner {
+            transition-delay: 0.72s;
+        }
+
+        .showcase-content p {
+            opacity: 0;
+            transform: translateY(16px);
+            transition: opacity 0.7s ease 0.85s, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.85s;
+        }
+
+        .showcase-inner.anim-in .showcase-content p {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .metric {
+            opacity: 0;
+            transform: translateY(20px) scale(0.95);
+            transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .metric.anim-in {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        .showcase-corner-tag {
+            opacity: 0;
+            transform: translateY(16px);
+            transition: opacity 0.6s ease 1.1s, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1) 1.1s;
+        }
+
+        .showcase-inner.anim-in .showcase-corner-tag {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ══════════ TESTIMONIALS ══════════ */
+
+        /* Header */
+        .testimonials-header>div>* {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .testimonials-header.anim-in>div>* {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .testimonials-header.anim-in>div>*:nth-child(2) {
+            transition-delay: 0.1s;
+        }
+
+        .review-count {
+            opacity: 0;
+            transform: translateX(20px);
+            transition: opacity 0.7s ease 0.3s, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.3s;
+        }
+
+        .testimonials-header.anim-in .review-count {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Cards — staggered with skew */
+        .tcard {
+            opacity: 0;
+            transform: translateY(40px) skewY(1deg);
+            transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .tcard.anim-in {
+            opacity: 1;
+            transform: translateY(0) skewY(0deg);
+        }
+
+        /* Stars animate in sequence */
+        .star {
+            opacity: 0;
+            transform: scale(0) rotate(-30deg);
+            transition: opacity 0.3s ease, transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .tcard.anim-in .star {
+            opacity: 1;
+            transform: scale(1) rotate(0deg);
+        }
+
+        .tcard.anim-in .star:nth-child(1) {
+            transition-delay: 0.05s;
+        }
+
+        .tcard.anim-in .star:nth-child(2) {
+            transition-delay: 0.12s;
+        }
+
+        .tcard.anim-in .star:nth-child(3) {
+            transition-delay: 0.19s;
+        }
+
+        .tcard.anim-in .star:nth-child(4) {
+            transition-delay: 0.26s;
+        }
+
+        .tcard.anim-in .star:nth-child(5) {
+            transition-delay: 0.33s;
+        }
+
+        /* Quote text — blur reveal */
+        .tcard-quote {
+            opacity: 0;
+            filter: blur(4px);
+            transition: opacity 0.8s ease 0.3s, filter 0.8s ease 0.3s;
+        }
+
+        .tcard.anim-in .tcard-quote {
+            opacity: 1;
+            filter: blur(0);
+        }
+
+        /* Author — slide up */
+        .tcard-author {
+            opacity: 0;
+            transform: translateY(12px);
+            transition: opacity 0.6s ease 0.5s, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.5s;
+        }
+
+        .tcard.anim-in .tcard-author {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ══════════ CTA BAND ══════════ */
+
+        .cta-frame {
+            opacity: 0;
+            transform: scale(0.97) translateY(30px);
+            transition: opacity 0.9s ease, transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .cta-frame.anim-in {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+
+        /* CTA title — split lines */
+        .cta-title-line {
+            display: block;
+            overflow: hidden;
+        }
+
+        .cta-title-line-inner {
+            display: block;
+            transform: translateY(110%) skewY(3deg);
+            transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .cta-frame.anim-in .cta-title-line-inner {
+            transform: translateY(0) skewY(0deg);
+        }
+
+        .cta-frame.anim-in .cta-title-line:nth-child(1) .cta-title-line-inner {
+            transition-delay: 0.2s;
+        }
+
+        .cta-frame.anim-in .cta-title-line:nth-child(2) .cta-title-line-inner {
+            transition-delay: 0.32s;
+        }
+
+        .cta-frame.anim-in .cta-title-line:nth-child(3) .cta-title-line-inner {
+            transition-delay: 0.44s;
+        }
+
+        .cta-sub {
+            opacity: 0;
+            transform: translateY(16px);
+            transition: opacity 0.7s ease 0.6s, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.6s;
+        }
+
+        .cta-frame.anim-in .cta-sub {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .cta-input-wrap {
+            opacity: 0;
+            transform: translateY(16px) scale(0.98);
+            transition: opacity 0.7s ease 0.75s, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.75s;
+        }
+
+        .cta-frame.anim-in .cta-input-wrap {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        /* ══════════ FOOTER ══════════ */
+
+        .footer-brand {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .footer-brand.anim-in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .footer-col {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .footer-col.anim-in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .footer-links a {
+            position: relative;
+            display: inline-block;
+            transform: translateX(0);
+            transition: color 0.3s, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .footer-links a:hover {
+            transform: translateX(6px);
+        }
+
+        .footer-bottom {
+            opacity: 0;
+            transition: opacity 0.8s ease;
+        }
+
+        .footer-bottom.anim-in {
+            opacity: 1;
+        }
+
+        /* ══════════ GLOBAL MICRO-INTERACTIONS ══════════ */
+
+        /* Magnetic button effect handled via JS */
+        .btn-large,
+        .btn-primary,
+        .btn-outline-large,
+        .btn-ghost {
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+                box-shadow 0.3s ease,
+                background 0.3s ease,
+                color 0.3s ease,
+                border-color 0.3s ease;
+        }
+
+        /* Menu add button — ripple */
+        .menu-add {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .menu-add::after {
+            content: '';
+            position: absolute;
+            inset: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            opacity: 0;
+            transition: transform 0.4s ease, opacity 0.4s ease;
+        }
+
+        .menu-add:active::after {
+            transform: translate(-50%, -50%) scale(2.5);
+            opacity: 0;
+            transition: transform 0.4s ease, opacity 0.6s ease;
+        }
+
+        /* Nav link — active underline morph */
+        .nav-links a {
+            position: relative;
+        }
+
+        /* Scroll progress indicator */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--green), rgba(57, 255, 20, 0.4));
+            z-index: 9999;
+            width: 0%;
+            transition: width 0.1s linear;
+            box-shadow: 0 0 8px var(--green);
+        }
+
+        /* Section number counter */
+        .section-counter {
+            position: fixed;
+            right: 32px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 500;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .counter-dot {
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: var(--gray-3);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: none;
+        }
+
+        .counter-dot.active {
+            background: var(--green);
+            height: 20px;
+            border-radius: 2px;
+            box-shadow: 0 0 8px var(--green);
+        }
+
+        /* ══════════ KINETIC HOVER — Cards ══════════ */
+        .menu-card,
+        .tcard {
+            transform-style: preserve-3d;
+            transform: perspective(1000px);
+        }
+
+        /* ══════════ NAV ENTRANCE ══════════ */
+        nav {
+            opacity: 0;
+            transform: translateY(-20px) translateX(-50%);
+            transition: opacity 0.8s ease 0.2s,
+                transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s,
+                background 0.4s ease,
+                border-color 0.4s ease,
+                top 0.4s ease;
+        }
+
+        nav.nav-loaded {
+            opacity: 1;
+            transform: translateY(0) translateX(-50%);
+        }
+
+        /* Override transform for scrolled state */
+        nav.scrolled {
+            transform: translateX(-50%) !important;
+        }
+
+        /* ══════════ GLOW LINE ANIMATION ══════════ */
+        .glow-line {
+            background-size: 200% 100%;
+            animation: glow-travel 3s ease-in-out infinite;
+        }
+
+        @keyframes glow-travel {
+
+            0%,
+            100% {
+                background-position: -100% 0;
+                opacity: 0.2;
+            }
+
+            50% {
+                background-position: 200% 0;
+                opacity: 0.5;
+            }
+        }
+
+        /* ══════════ AMBIENT BACKGROUND ANIMATION ══════════ */
+        .hero-ambient {
+            animation: ambient-shift 8s ease-in-out infinite alternate;
+        }
+
+        @keyframes ambient-shift {
+            0% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0.7;
+                transform: scale(1.05);
+            }
+        }
+
+        /* ══════════ PROCESS CONNECTOR SHIMMER ══════════ */
+        .process-connector::after {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, rgba(57, 255, 20, 0.8), transparent);
+            border-radius: 3px;
+            animation: connector-shimmer 2.5s ease-in-out infinite;
+        }
+
+        @keyframes connector-shimmer {
+            0% {
+                transform: translateX(-60px);
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 1;
+            }
+
+            80% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateX(calc(var(--connector-w, 800px)));
+                opacity: 0;
+            }
+        }
+
+        /* Hover lift for social buttons */
+        .social-btn {
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .social-btn:hover {
+            transform: translateY(-4px) scale(1.1);
+        }
+
+        /* ══════════ MENU CARD SHIMMER ══════════ */
+        .menu-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg,
+                    transparent 40%,
+                    rgba(57, 255, 20, 0.03) 50%,
+                    transparent 60%);
+            background-size: 200% 200%;
+            opacity: 0;
+            z-index: 10;
+            pointer-events: none;
+            transition: opacity 0.3s;
+            border-radius: inherit;
+        }
+
+        .menu-card:hover::before {
+            opacity: 1;
+            animation: card-shimmer 1.5s ease infinite;
+        }
+
+        @keyframes card-shimmer {
+            0% {
+                background-position: 200% 200%;
+            }
+
+            100% {
+                background-position: -200% -200%;
+            }
+        }
+
+        /* ══════════ TEXT SCRAMBLE placeholder ══════════ */
+        .scramble-text {
+            display: inline-block;
+        }
+
+        /* ══════════ HERO ACCENT IMAGE ══════════ */
+        .hero-img-accent {
+            opacity: 0;
+            transform: translateX(30px) scale(0.95);
+            transition: opacity 0.9s ease 0.8s, transform 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.8s;
+        }
+
+        .hero-right.anim-in .hero-img-accent {
+            opacity: 1;
+            transform: translateX(0) scale(1);
+        }
+
+        /* ══════════ PHILOSOPHY section body text highlight ══════════ */
+        .section-body {
+            position: relative;
+        }
+
+        /* ══════════ PAGE LOAD SCREEN ══════════ */
+        .page-loader {
+            position: fixed;
+            inset: 0;
+            background: var(--black);
+            z-index: 99999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 24px;
+            transition: opacity 0.6s ease, visibility 0.6s ease;
+        }
+
+        .page-loader.hide {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .loader-logo {
+            font-family: 'Mona Sans', sans-serif;
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--white);
+            letter-spacing: -1px;
+            overflow: hidden;
+        }
+
+        .loader-logo span {
+            color: var(--green);
+        }
+
+        .loader-bar-wrap {
+            width: 200px;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 1px;
+            overflow: hidden;
+        }
+
+        .loader-bar {
+            height: 100%;
+            background: var(--green);
+            width: 0%;
+            border-radius: 1px;
+            box-shadow: 0 0 8px var(--green);
+            animation: load-progress 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes load-progress {
+            0% {
+                width: 0%;
+            }
+
+            60% {
+                width: 80%;
+            }
+
+            100% {
+                width: 100%;
+            }
+        }
+
+        .loader-pct {
+            font-size: 11px;
+            letter-spacing: 3px;
+            color: var(--gray-2);
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- PAGE LOADER -->
+    <div class="page-loader" id="pageLoader">
+        <div class="loader-logo">NOIR<span>.</span>KTN</div>
+        <div class="loader-bar-wrap">
+            <div class="loader-bar"></div>
+        </div>
+        <div class="loader-pct" id="loaderPct">000</div>
+    </div>
+
+    <!-- Scroll Progress -->
+    <div class="scroll-progress" id="scrollProgress"></div>
+
+    <!-- Section Nav Dots -->
+    <div class="section-counter" id="sectionCounter">
+        <div class="counter-dot active" data-section="0"></div>
+        <div class="counter-dot" data-section="1"></div>
+        <div class="counter-dot" data-section="2"></div>
+        <div class="counter-dot" data-section="3"></div>
+        <div class="counter-dot" data-section="4"></div>
+        <div class="counter-dot" data-section="5"></div>
+        <div class="counter-dot" data-section="6"></div>
+    </div>
+
+    <!-- Cursor -->
+    <div class="cursor" id="cursor"></div>
+    <div class="cursor-ring" id="cursorRing"></div>
+
+    <!-- Particle Canvas -->
+    <canvas id="particle-canvas"></canvas>
+
+    <!-- ══════════ NAV ══════════ -->
+    <nav id="navbar">
+        <a href="#" class="nav-logo">
+            <div class="nav-dot"></div>
+            NOIR<span>.</span>KTN
+        </a>
+        <ul class="nav-links">
+            <li><a href="#">Menu</a></li>
+            <li><a href="#">Kitchens</a></li>
+            <li><a href="#">Story</a></li>
+            <li><a href="#">Catering</a></li>
+        </ul>
+        <div class="nav-cta">
+            <a href="#" class="btn-ghost">Track Order</a>
+            <a href="#" class="btn-primary">
+                Order Now
+                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+            </a>
+        </div>
+    </nav>
+
+    <!-- ══════════ HERO ══════════ -->
+    <section class="hero" data-section="0">
+        <div class="hero-ambient"></div>
+        <div class="hero-grid-lines"></div>
+        <div class="hero-inner">
+            <div class="hero-left">
+                <div class="hero-badge">
+                    <div class="hero-badge-dot"></div>
+                    Now Delivering · 6 Cities
+                </div>
+                <h1 class="hero-title">
+                    <span class="hero-title-line">
+                        <span class="hero-title-line-inner">Culinary</span>
+                    </span>
+                    <span class="hero-title-line">
+                        <span class="hero-title-line-inner line-accent">Precision</span>
+                    </span>
+                    <span class="hero-title-line">
+                        <span class="hero-title-line-inner line-outline">Elevated.</span>
+                    </span>
+                </h1>
+                <p class="hero-sub">
+                    Restaurant-grade meals engineered in our ghost kitchens. No frills. No waste. Just obsessive quality
+                    — delivered to your door in 30 minutes.
+                </p>
+                <div class="hero-actions">
+                    <a href="#" class="btn-large magnetic">
+                        Explore Menu
+                        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"
+                            viewBox="0 0 24 24">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
+                    </a>
+                    <a href="#" class="btn-outline-large magnetic">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"
+                            viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="10" />
+                            <path d="m10 8 6 4-6 4V8z" />
+                        </svg>
+                        Watch Film
+                    </a>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <div class="stat-num" data-target="12" data-suffix="K+">0<span>K+</span></div>
+                        <div class="stat-label">Orders Delivered</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-num" data-target="98" data-suffix="%">0<span>%</span></div>
+                        <div class="stat-label">Satisfaction Rate</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-num" data-target="28" data-suffix="min">0<span>min</span></div>
+                        <div class="stat-label">Avg Delivery</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hero-right">
+                <div class="hero-visual-frame">
+                    <div class="glow-ring"></div>
+                    <div class="hero-img-main">
+                        <img src="/images/h2.png" alt="">
+                    </div>
+                    <div class="hero-img-accent">
+                        <video src="/images/vd1.mp4" loop autoplay muted></video>
+                    </div>
+                    <div class="hero-float-badge">
+                        <div class="float-badge-label">Today's Pick</div>
+                        <div class="float-badge-val">Chef's Special</div>
+                    </div>
+                    <div class="hero-float-tag">✦ Fresh · 30min</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══════════ MARQUEE ══════════ -->
+    <div class="marquee-strip" data-section="1">
+        <div class="marquee-track" id="marqueeTrack">
+            <div class="marquee-item">Precision Cooking <div class="sep"></div>
+            </div>
+            <div class="marquee-item">Ghost Kitchen Excellence <div class="sep"></div>
+            </div>
+            <div class="marquee-item">Farm to Cloud <div class="sep"></div>
+            </div>
+            <div class="marquee-item">Zero Compromise Quality <div class="sep"></div>
+            </div>
+            <div class="marquee-item">Curated Ingredients <div class="sep"></div>
+            </div>
+            <div class="marquee-item">Delivered in 30 Minutes <div class="sep"></div>
+            </div>
+            <div class="marquee-item">Michelin-Inspired Menus <div class="sep"></div>
+            </div>
+            <div class="marquee-item">Precision Cooking <div class="sep"></div>
+            </div>
+            <div class="marquee-item">Ghost Kitchen Excellence <div class="sep"></div>
+            </div>
+            <div class="marquee-item">Farm to Cloud <div class="sep"></div>
+            </div>
+            <div class="marquee-item">Zero Compromise Quality <div class="sep"></div>
+            </div>
+            <div class="marquee-item">Curated Ingredients <div class="sep"></div>
+            </div>
+            <div class="marquee-item">Delivered in 30 Minutes <div class="sep"></div>
+            </div>
+            <div class="marquee-item">Michelin-Inspired Menus <div class="sep"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══════════ PHILOSOPHY ══════════ -->
+    <section class="philosophy" data-section="2">
+        <div class="philosophy-inner">
+            <div>
+                <div class="section-eyebrow">
+                    <div class="eyebrow-line"></div>
+                    <span class="eyebrow-text">Our Philosophy</span>
+                </div>
+                <h2 class="section-title-large philo-title">
+                    Not fast food.<br>
+                    <span class="dim">Fast fine</span><br>
+                    dining.
+                </h2>
+                <p class="section-body">
+                    Every dish in our cloud kitchen is engineered by seasoned chefs, executed under strict temperature
+                    protocols, and packaged to retain taste, texture, and temperature — from our oven to your table.
+                </p>
+                <div class="feature-pills">
+                    <div class="pill">
+                        <div class="pill-dot"></div>Hygienic Certified
+                    </div>
+                    <div class="pill">
+                        <div class="pill-dot"></div>No Preservatives
+                    </div>
+                    <div class="pill">
+                        <div class="pill-dot"></div>Calorie Tracked
+                    </div>
+                    <div class="pill">
+                        <div class="pill-dot"></div>Chef-Designed
+                    </div>
+                    <div class="pill">
+                        <div class="pill-dot"></div>Eco Packaging
+                    </div>
+                </div>
+            </div>
+            <div class="philosophy-visual">
+                <div class="philo-img-1">
+                    <div class="img-placeholder">
+                        <div class="img-placeholder-icon">
+                            <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                                <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+                                <rect x="8" y="2" width="8" height="4" rx="1" ry="1" />
+                            </svg>
+                        </div>
+                        <span>Kitchen Scene</span>
+                    </div>
+                </div>
+                <div class="philo-img-2">
+                    <div class="img-placeholder">
+                        <div class="img-placeholder-icon" style="width:40px;height:40px">
+                            <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" width="18"
+                                height="18">
+                                <path d="M18 8h1a4 4 0 0 1 0 8h-1" />
+                                <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z" />
+                                <line x1="6" y1="1" x2="6" y2="4" />
+                                <line x1="10" y1="1" x2="10" y2="4" />
+                                <line x1="14" y1="1" x2="14" y2="4" />
+                            </svg>
+                        </div>
+                        <span style="font-size:9px">Ingredients</span>
+                    </div>
+                </div>
+                <div class="philo-label">
+                    <div class="philo-label-num">4.9★</div>
+                    <div class="philo-label-text">Average Rating</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="glow-line"></div>
+
+    <!-- ══════════ MENU ══════════ -->
+    <section class="menu-section" data-section="3">
+        <div class="menu-inner">
+            <div class="menu-header">
+                <div>
+                    <div class="section-eyebrow" style="margin-bottom:16px">
+                        <div class="eyebrow-line"></div>
+                        <span class="eyebrow-text">The Menu</span>
+                    </div>
+                    <h2 class="section-title-large" style="margin-bottom:0">
+                        Crafted for<br><span class="dim">every craving.</span>
+                    </h2>
+                </div>
+                <div class="menu-tabs">
+                    <button class="menu-tab active" onclick="setTab(this)">All</button>
+                    <button class="menu-tab" onclick="setTab(this)">Mains</button>
+                    <button class="menu-tab" onclick="setTab(this)">Bowls</button>
+                    <button class="menu-tab" onclick="setTab(this)">Desserts</button>
+                </div>
+            </div>
+
+            <div class="menu-grid">
+                <div class="menu-card menu-card-featured">
+                    <div class="menu-card-img">
+                        <div class="img-placeholder">
+                            <div class="img-placeholder-icon" style="width:80px;height:80px">
+                                <svg fill="none" stroke="currentColor" stroke-width="1.2" viewBox="0 0 24 24" width="36"
+                                    height="36">
+                                    <path
+                                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z" />
+                                </svg>
+                            </div>
+                            <span>Signature Dish Photography</span>
+                        </div>
+                        <div class="menu-card-overlay"></div>
+                    </div>
+                    <div class="menu-card-info">
+                        <span class="menu-tag">Chef's Pick</span>
+                        <div class="menu-name">Truffle Wagyu Bowl</div>
+                        <div class="menu-desc">A4 Wagyu, black truffle oil, compressed jasmine rice, micro greens, and
+                            soy-sesame glaze.</div>
+                        <div class="menu-price-row">
+                            <div class="menu-price">$34</div>
+                            <button class="menu-add" aria-label="Add to cart">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-card">
+                    <div class="menu-card-img">
+                        <div class="img-placeholder">
+                            <div class="img-placeholder-icon" style="width:48px;height:48px">
+                                <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" width="22"
+                                    height="22">
+                                    <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z" />
+                                    <line x1="4" y1="22" x2="4" y2="15" />
+                                </svg>
+                            </div>
+                            <span style="font-size:9px">Dish Image</span>
+                        </div>
+                        <div class="menu-card-overlay"></div>
+                    </div>
+                    <div class="menu-card-info">
+                        <span class="menu-tag">Popular</span>
+                        <div class="menu-name">Miso Glazed Salmon</div>
+                        <div class="menu-desc">Wild-caught salmon, miso-sake glaze, pickled daikon, edamame.</div>
+                        <div class="menu-price-row">
+                            <div class="menu-price">$26</div>
+                            <button class="menu-add" aria-label="Add to cart">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-card">
+                    <div class="menu-card-img">
+                        <div class="img-placeholder">
+                            <div class="img-placeholder-icon" style="width:48px;height:48px">
+                                <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" width="22"
+                                    height="22">
+                                    <path d="M18 8h1a4 4 0 0 1 0 8h-1" />
+                                    <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z" />
+                                    <line x1="6" y1="1" x2="6" y2="4" />
+                                    <line x1="10" y1="1" x2="10" y2="4" />
+                                    <line x1="14" y1="1" x2="14" y2="4" />
+                                </svg>
+                            </div>
+                            <span style="font-size:9px">Dish Image</span>
+                        </div>
+                        <div class="menu-card-overlay"></div>
+                    </div>
+                    <div class="menu-card-info">
+                        <span class="menu-tag">New</span>
+                        <div class="menu-name">Seared Duck Confit</div>
+                        <div class="menu-desc">Slow-cooked duck leg, cherry reduction, roasted root vegetables.</div>
+                        <div class="menu-price-row">
+                            <div class="menu-price">$30</div>
+                            <button class="menu-add" aria-label="Add to cart">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-card">
+                    <div class="menu-card-img">
+                        <div class="img-placeholder">
+                            <div class="img-placeholder-icon" style="width:48px;height:48px">
+                                <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" width="22"
+                                    height="22">
+                                    <circle cx="12" cy="12" r="10" />
+                                    <path d="M12 8v4l3 3" />
+                                </svg>
+                            </div>
+                            <span style="font-size:9px">Dish Image</span>
+                        </div>
+                        <div class="menu-card-overlay"></div>
+                    </div>
+                    <div class="menu-card-info">
+                        <span class="menu-tag">Vegan</span>
+                        <div class="menu-name">Smoked Cauliflower</div>
+                        <div class="menu-desc">Smoked whole cauliflower, tahini drizzle, pomegranate, za'atar crisp.
+                        </div>
+                        <div class="menu-price-row">
+                            <div class="menu-price">$20</div>
+                            <button class="menu-add" aria-label="Add to cart">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-card">
+                    <div class="menu-card-img">
+                        <div class="img-placeholder">
+                            <div class="img-placeholder-icon" style="width:48px;height:48px">
+                                <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" width="22"
+                                    height="22">
+                                    <path
+                                        d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                                </svg>
+                            </div>
+                            <span style="font-size:9px">Dish Image</span>
+                        </div>
+                        <div class="menu-card-overlay"></div>
+                    </div>
+                    <div class="menu-card-info">
+                        <span class="menu-tag">Dessert</span>
+                        <div class="menu-name">Dark Cacao Tart</div>
+                        <div class="menu-desc">72% dark chocolate ganache, fleur de sel, gold leaf finish.</div>
+                        <div class="menu-price-row">
+                            <div class="menu-price">$14</div>
+                            <button class="menu-add" aria-label="Add to cart">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══════════ PROCESS ══════════ -->
+    <section class="process" data-section="4">
+        <div class="process-inner">
+            <div class="process-header">
+                <div class="section-eyebrow" style="justify-content:center;margin-bottom:20px">
+                    <div class="eyebrow-line"></div>
+                    <span class="eyebrow-text">The Process</span>
+                    <div class="eyebrow-line"></div>
+                </div>
+                <h2 class="section-title-large" style="text-align:center;max-width:600px;margin:0 auto">
+                    From our kitchen<br><span class="dim">to your hands.</span>
+                </h2>
+            </div>
+            <div class="process-steps">
+                <div class="process-connector"></div>
+                <div class="step">
+                    <div class="step-num">01</div>
+                    <div class="step-title">Browse & Order</div>
+                    <div class="step-desc">Select from our curated menu. Every dish detailed with macros and allergens.
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">02</div>
+                    <div class="step-title">Kitchen Prepares</div>
+                    <div class="step-desc">Your order enters our ISO-certified kitchen. Real-time preparation tracking.
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">03</div>
+                    <div class="step-title">Quality Control</div>
+                    <div class="step-desc">Every dish passes a 12-point quality check before it leaves our facility.
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">04</div>
+                    <div class="step-title">Swift Delivery</div>
+                    <div class="step-desc">Temperature-locked packaging ensures your meal arrives exactly as intended.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══════════ SHOWCASE ══════════ -->
+    <section class="showcase" data-section="5">
+        <div class="showcase-inner">
+            <div class="showcase-frame">
+                <div class="showcase-bg">
+                    <div class="img-placeholder"
+                        style="flex-direction:column;gap:16px;background:linear-gradient(135deg,#0d0d0d,#141414)">
+                        <div class="img-placeholder-icon" style="width:80px;height:80px">
+                            <svg fill="none" stroke="currentColor" stroke-width="1.2" viewBox="0 0 24 24" width="36"
+                                height="36">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                                <circle cx="9" cy="7" r="4" />
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                            </svg>
+                        </div>
+                        <span>Chef & Kitchen Photography</span>
+                    </div>
+                </div>
+                <div class="showcase-overlay"></div>
+                <div class="showcase-content">
+                    <div class="section-eyebrow">
+                        <div class="eyebrow-line"></div>
+                        <span class="eyebrow-text">Behind the Kitchen</span>
+                    </div>
+                    <h2 class="showcase-title">
+                        <span class="showcase-title-line"><span class="showcase-title-line-inner">Masters
+                                of</span></span>
+                        <span class="showcase-title-line"><span class="showcase-title-line-inner"
+                                style="color:var(--green)">the craft.</span></span>
+                    </h2>
+                    <p style="font-size:14px;color:var(--gray-1);line-height:1.7;font-weight:300">
+                        Our team of 12 professional chefs brings decades of fine dining experience into our cloud
+                        kitchen model. The same discipline. A more efficient format.
+                    </p>
+                    <div class="showcase-metrics">
+                        <div class="metric">
+                            <div class="metric-val" data-target="12" data-suffix="">0</div>
+                            <div class="metric-label">Pro Chefs</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-val" data-target="6" data-suffix="">0</div>
+                            <div class="metric-label">Cloud Kitchens</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-val" data-target="40" data-suffix="+">0+</div>
+                            <div class="metric-label">Menu Items</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="showcase-corner-tag">
+                    <div class="corner-tag-label">Kitchen Status</div>
+                    <div class="corner-tag-val">● Open Now · 8AM – 11PM</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══════════ TESTIMONIALS ══════════ -->
+    <section class="testimonials" data-section="6">
+        <div class="testimonials-inner">
+            <div class="testimonials-header">
+                <div>
+                    <div class="section-eyebrow" style="margin-bottom:16px">
+                        <div class="eyebrow-line"></div>
+                        <span class="eyebrow-text">Reviews</span>
+                    </div>
+                    <h2 class="section-title-large" style="margin-bottom:0">
+                        What they<br><span class="dim">taste to say.</span>
+                    </h2>
+                </div>
+                <div class="review-count">
+                    <strong>4.9/5</strong> from 2,400+ reviews
+                </div>
+            </div>
+            <div class="testimonial-grid">
+                <div class="tcard tcard-featured">
+                    <div class="tcard-stars">
+                        <svg class="star" fill="currentColor" viewBox="0 0 24 24">
+                            <path
+                                d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                        </svg>
+                        <svg class="star" fill="currentColor" viewBox="0 0 24 24">
+                            <path
+                                d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                        </svg>
+                        <svg class="star" fill="currentColor" viewBox="0 0 24 24">
+                            <path
+                                d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                        </svg>
+                        <svg class="star" fill="currentColor" viewBox="0 0 24 24">
+                            <path
+                                d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                        </svg>
+                        <svg class="star" fill="currentColor" viewBox="0 0 24 24">
+                            <path
+                                d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                        </svg>
+                    </div>
+                    <p class="tcard-quote">"I've eaten at three Michelin-star restaurants and this Truffle Wagyu Bowl
+                        genuinely challenged my expectations. The fact it arrived in 25 minutes is borderline surreal.
+                        NOIR Kitchen has changed how I think about delivery food entirely."</p>
+                    <div class="tcard-author">
+                        <div class="author-avatar">JM</div>
+                        <div>
+                            <div class="author-name">James Moreau</div>
+                            <div class="author-role">Food Critic · The Plate</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tcard">
+                    <div class="tcard-stars">
+                        <svg class="star" fill="currentColor" viewBox="0 0 24 24">
+                            <path
+                                d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                        </svg>
+                        <svg class="star" fill="currentColor" viewBox="0 0 24 24">
+                            <path
+                                d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                        </svg>
+                        <svg class="star" fill="currentColor" viewBox="0 0 24 24">
+                            <path
+                                d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                        </svg>
+                        <svg class="star" fill="currentColor" viewBox="0 0 24 24">
+                            <path
+                                d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                        </svg>
+                        <svg class="star" fill="currentColor" viewBox="0 0 24 24">
+                            <path
+                                d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                        </svg>
+                    </div>
+                    <p class="tcard-quote">"Order NOIR twice a week. The consistency is remarkable — tastes identical
+                        every single time. That's the hallmark of a real culinary operation."</p>
+                    <div class="tcard-author">
+                        <div class="author-avatar">SK</div>
+                        <div>
+                            <div class="author-name">Sara Kim</div>
+                            <div class="author-role">UX Director</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tcard">
+                    <div class="tcard-stars">
+                        <svg class="star" fill="currentColor" viewBox="0 0 24 24">
+                            <path
+                                d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                        </svg>
+                        <svg class="star" fill="currentColor" viewBox="0 0 24 24">
+                            <path
+                                d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                        </svg>
+                        <svg class="star" fill="currentColor" viewBox="0 0 24 24">
+                            <path
+                                d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                        </svg>
+                        <svg class="star" fill="currentColor" viewBox="0 0 24 24">
+                            <path
+                                d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                        </svg>
+                        <svg class="star" fill="currentColor" viewBox="0 0 24 24">
+                            <path
+                                d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                        </svg>
+                    </div>
+                    <p class="tcard-quote">"The packaging alone signals something different. Before I even opened it, I
+                        could tell this wasn't your typical delivery brand."</p>
+                    <div class="tcard-author">
+                        <div class="author-avatar">AL</div>
+                        <div>
+                            <div class="author-name">Alex Laurent</div>
+                            <div class="author-role">Creative Lead</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══════════ CTA ══════════ -->
+    <section class="cta-band">
+        <div class="cta-band-inner">
+            <div class="cta-frame">
+                <div class="cta-glow-1"></div>
+                <div class="cta-glow-2"></div>
+                <h2 class="cta-title">
+                    <span class="cta-title-line"><span class="cta-title-line-inner">Hungry for</span></span>
+                    <span class="cta-title-line"><span class="cta-title-line-inner"><span style="color:var(--green)">the
+                                future</span></span></span>
+                    <span class="cta-title-line"><span class="cta-title-line-inner">of food?</span></span>
+                </h2>
+                <p class="cta-sub">Enter your location and get restaurant-grade meals delivered to your door within 30
+                    minutes.</p>
+                <div class="cta-actions">
+                    <div class="cta-input-wrap">
+                        <svg width="16" height="16" fill="none" stroke="rgba(96,96,96,1)" stroke-width="2"
+                            viewBox="0 0 24 24">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                            <circle cx="12" cy="10" r="3" />
+                        </svg>
+                        <input class="cta-input" type="text" placeholder="Enter your delivery address...">
+                        <a href="#" class="btn-primary" style="white-space:nowrap">
+                            Check Coverage
+                            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"
+                                viewBox="0 0 24 24">
+                                <path d="M5 12h14M12 5l7 7-7 7" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <p style="font-size:12px;color:var(--gray-2);margin-top:20px;position:relative;z-index:1">Currently
+                    available in SF, NYC, LA, Chicago, Miami & Seattle</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══════════ FOOTER ══════════ -->
+    <footer>
+        <div class="footer-inner">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <div class="footer-logo">NOIR<span>.</span>KTN</div>
+                    <p class="footer-tagline">Precision-engineered cloud kitchen delivering restaurant-grade meals at
+                        delivery speed.</p>
+                    <div class="footer-social">
+                        <a href="#" class="social-btn" aria-label="Instagram">
+                            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5"
+                                viewBox="0 0 24 24">
+                                <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+                            </svg>
+                        </a>
+                        <a href="#" class="social-btn" aria-label="Twitter">
+                            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5"
+                                viewBox="0 0 24 24">
+                                <path
+                                    d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z" />
+                            </svg>
+                        </a>
+                        <a href="#" class="social-btn" aria-label="LinkedIn">
+                            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5"
+                                viewBox="0 0 24 24">
+                                <path
+                                    d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+                                <rect x="2" y="9" width="4" height="12" />
+                                <circle cx="4" cy="4" r="2" />
+                            </svg>
+                        </a>
+                        <a href="#" class="social-btn" aria-label="TikTok">
+                            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.17 8.17 0 0 0 4.78 1.52V6.76a4.85 4.85 0 0 1-1.01-.07z"
+                                    opacity="0.5" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <div class="footer-col-title">Menu</div>
+                    <ul class="footer-links">
+                        <li><a href="#">Mains</a></li>
+                        <li><a href="#">Bowls & Grains</a></li>
+                        <li><a href="#">Small Plates</a></li>
+                        <li><a href="#">Desserts</a></li>
+                        <li><a href="#">Drinks</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <div class="footer-col-title">Company</div>
+                    <ul class="footer-links">
+                        <li><a href="#">Our Story</a></li>
+                        <li><a href="#">Kitchens</a></li>
+                        <li><a href="#">Sustainability</a></li>
+                        <li><a href="#">Press</a></li>
+                        <li><a href="#">Careers</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <div class="footer-col-title">Support</div>
+                    <ul class="footer-links">
+                        <li><a href="#">Track Order</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Catering</a></li>
+                        <li><a href="#">Gifting</a></li>
+                        <li><a href="#">FAQ</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="footer-copy">© 2025 <span>NOIR Kitchen</span>. All rights reserved.</div>
+                <div class="footer-legal">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Cookie Settings</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        /* ═══════════════════════════════════════════════════════════
+           NOIR KITCHEN — MOTION SYSTEM
+           Senior-level animation choreography
+        ═══════════════════════════════════════════════════════════ */
+
+        /* ── PAGE LOADER ───────────────────────────────────────── */
+        const loader = document.getElementById('pageLoader');
+        const loaderPct = document.getElementById('loaderPct');
+        let pct = 0;
+        const pctInterval = setInterval(() => {
+            pct = Math.min(pct + Math.random() * 12, 99);
+            loaderPct.textContent = String(Math.floor(pct)).padStart(3, '0');
+        }, 80);
+
+        window.addEventListener('load', () => {
+            clearInterval(pctInterval);
+            loaderPct.textContent = '100';
+            setTimeout(() => {
+                loader.classList.add('hide');
+                initHeroAnimations();
+            }, 600);
+        });
+
+        /* Fallback if load fires too late */
+        setTimeout(() => {
+            if (!loader.classList.contains('hide')) {
+                loader.classList.add('hide');
+                initHeroAnimations();
+            }
+        }, 2000);
+
+        /* ── HERO ENTRANCE (on load) ───────────────────────────── */
+        function initHeroAnimations() {
+            /* Nav */
+            setTimeout(() => {
+                document.getElementById('navbar').classList.add('nav-loaded');
+            }, 100);
+
+            /* Badge */
+            setTimeout(() => {
+                document.querySelector('.hero-badge').classList.add('anim-in');
+            }, 300);
+
+            /* Title lines — stagger */
+            const titleLines = document.querySelectorAll('.hero-title-line-inner');
+            titleLines.forEach((line, i) => {
+                setTimeout(() => line.classList.add('anim-in'), 450 + i * 120);
+            });
+
+            /* Sub, actions, stats */
+            setTimeout(() => document.querySelector('.hero-sub').classList.add('anim-in'), 700);
+            setTimeout(() => document.querySelector('.hero-actions').classList.add('anim-in'), 820);
+            setTimeout(() => {
+                document.querySelector('.hero-stats').classList.add('anim-in');
+                animateCounters(document.querySelector('.hero-stats'));
+            }, 950);
+
+            /* Hero right */
+            setTimeout(() => {
+                document.querySelector('.hero-right').classList.add('anim-in');
+            }, 500);
+        }
+
+        /* ── CURSOR ────────────────────────────────────────────── */
+        const cursor = document.getElementById('cursor');
+        const ring = document.getElementById('cursorRing');
+        let cx = 0, cy = 0, rx = 0, ry = 0;
+
+        document.addEventListener('mousemove', e => {
+            cx = e.clientX; cy = e.clientY;
+            cursor.style.left = cx + 'px';
+            cursor.style.top = cy + 'px';
+        });
+
+        function animRing() {
+            rx += (cx - rx) * 0.1;
+            ry += (cy - ry) * 0.1;
+            ring.style.left = rx + 'px';
+            ring.style.top = ry + 'px';
+            requestAnimationFrame(animRing);
+        }
+        animRing();
+
+        /* Cursor hover states */
+        const hoverTargets = document.querySelectorAll('a, button, .menu-card, .tcard, .pill, .step, .social-btn');
+        hoverTargets.forEach(el => {
+            el.addEventListener('mouseenter', () => { cursor.classList.add('hover'); ring.classList.add('hover'); });
+            el.addEventListener('mouseleave', () => { cursor.classList.remove('hover'); ring.classList.remove('hover'); });
+        });
+
+        /* ── SCROLL PROGRESS ───────────────────────────────────── */
+        const progressBar = document.getElementById('scrollProgress');
+        function updateProgress() {
+            const total = document.documentElement.scrollHeight - window.innerHeight;
+            const pct = (window.scrollY / total) * 100;
+            progressBar.style.width = pct + '%';
+        }
+
+        /* ── NAVBAR ────────────────────────────────────────────── */
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            navbar.classList.toggle('scrolled', window.scrollY > 60);
+            updateProgress();
+            updateSectionDots();
+            handleParallax();
+        });
+
+        /* ── SECTION NAVIGATION DOTS ───────────────────────────── */
+        const sections = document.querySelectorAll('[data-section]');
+        const dots = document.querySelectorAll('.counter-dot');
+
+        function updateSectionDots() {
+            let current = 0;
+            sections.forEach((s, i) => {
+                const rect = s.getBoundingClientRect();
+                if (rect.top <= window.innerHeight * 0.5) current = i;
+            });
+            dots.forEach((d, i) => d.classList.toggle('active', i === current));
+        }
+
+        dots.forEach(dot => {
+            dot.addEventListener('click', () => {
+                const idx = +dot.dataset.section;
+                sections[idx]?.scrollIntoView({ behavior: 'smooth' });
+            });
+            dot.addEventListener('mouseenter', () => { cursor.classList.add('hover'); ring.classList.add('hover'); });
+            dot.addEventListener('mouseleave', () => { cursor.classList.remove('hover'); ring.classList.remove('hover'); });
+        });
+
+        /* ── INTERSECTION OBSERVER SYSTEM ─────────────────────── */
+        const animObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) return;
+                const el = entry.target;
+                const section = el.closest('[data-section]')?.dataset.section;
+
+                /* Section-specific orchestration */
+                switch (section) {
+                    case '1': animateMarquee(el); break;
+                    case '2': animatePhilosophy(el); break;
+                    case '3': animateMenu(el); break;
+                    case '4': animateProcess(el); break;
+                    case '5': animateShowcase(el); break;
+                    case '6': animateTestimonials(el); break;
+                }
+
+                /* CTA */
+                if (el.classList.contains('cta-frame')) animateCTA(el);
+                /* Footer */
+                if (el.classList.contains('footer-brand')) animateFooter();
+
+                animObserver.unobserve(el);
+            });
+        }, { threshold: 0.12, rootMargin: '0px 0px -80px 0px' });
+
+        /* Register observation targets */
+        document.querySelectorAll('.marquee-strip, .philosophy-inner, .menu-inner, .process-inner, .showcase-inner, .testimonials-inner, .cta-frame, .footer-brand').forEach(el => {
+            animObserver.observe(el);
+        });
+
+        /* ── MARQUEE ANIMATION ─────────────────────────────────── */
+        function animateMarquee(el) {
+            const strip = el.closest('.marquee-strip') || el;
+            strip.classList.add('anim-in');
+        }
+
+        /* ── PHILOSOPHY ANIMATION ──────────────────────────────── */
+        function animatePhilosophy(el) {
+            /* Eyebrow */
+            setTimeout(() => {
+                el.querySelector('.section-eyebrow')?.classList.add('anim-in');
+            }, 100);
+
+            /* Title — word wrap animation */
+            const title = el.querySelector('.philo-title');
+            if (title) {
+                const words = title.innerHTML.split(/(\s+|<br>)/);
+                // Use line-based animation instead
+                setTimeout(() => {
+                    title.style.opacity = '1';
+                    title.style.transform = 'translateY(0)';
+                    animPhiloTitle(title);
+                }, 200);
+            }
+
+            /* Body */
+            setTimeout(() => el.querySelector('.section-body')?.classList.add('anim-in'), 400);
+
+            /* Pills — cascade */
+            el.querySelectorAll('.pill').forEach((pill, i) => {
+                setTimeout(() => pill.classList.add('anim-in'), 500 + i * 80);
+            });
+
+            /* Visuals */
+            setTimeout(() => el.querySelector('.philo-img-1')?.classList.add('anim-in'), 200);
+            setTimeout(() => el.querySelector('.philo-img-2')?.classList.add('anim-in'), 450);
+            setTimeout(() => el.querySelector('.philo-label')?.classList.add('anim-in'), 650);
+        }
+
+        function animPhiloTitle(el) {
+            el.style.transition = 'opacity 0.01s, transform 0.01s';
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(0)';
+
+            // Re-use line clip approach
+            const html = el.innerHTML;
+            const lines = html.split('<br>');
+            el.innerHTML = lines.map(line =>
+                `<span class="philo-line-wrap" style="display:block;overflow:hidden;line-height:1.05;padding-bottom:0.05em">
+                <span class="philo-line-inner" style="display:block;transform:translateY(110%) skewY(3deg);transition:transform 0.9s cubic-bezier(0.16,1,0.3,1),opacity 0.7s ease;opacity:0">${line}</span>
+            </span>`
+            ).join('');
+
+            el.style.opacity = '1';
+
+            el.querySelectorAll('.philo-line-inner').forEach((line, i) => {
+                setTimeout(() => {
+                    line.style.transform = 'translateY(0) skewY(0deg)';
+                    line.style.opacity = '1';
+                }, 50 + i * 130);
+            });
+        }
+
+        /* ── MENU ANIMATION ────────────────────────────────────── */
+        function animateMenu(el) {
+            /* Header */
+            setTimeout(() => el.querySelector('.menu-header')?.classList.add('anim-in'), 0);
+
+            /* Featured card */
+            setTimeout(() => {
+                const featured = el.querySelector('.menu-card-featured');
+                if (featured) featured.classList.add('anim-in');
+            }, 200);
+
+            /* Other cards — cascade */
+            el.querySelectorAll('.menu-card:not(.menu-card-featured)').forEach((card, i) => {
+                setTimeout(() => card.classList.add('anim-in'), 350 + i * 100);
+            });
+        }
+
+        /* ── PROCESS ANIMATION ─────────────────────────────────── */
+        function animateProcess(el) {
+            /* Header */
+            setTimeout(() => el.querySelector('.process-header')?.classList.add('anim-in'), 0);
+
+            /* Steps container triggers connector */
+            const stepsEl = el.querySelector('.process-steps');
+            setTimeout(() => {
+                if (stepsEl) stepsEl.classList.add('anim-in');
+            }, 300);
+
+            /* Steps — cascade stagger */
+            el.querySelectorAll('.step').forEach((step, i) => {
+                setTimeout(() => step.classList.add('anim-in'), 500 + i * 150);
+            });
+        }
+
+        /* ── SHOWCASE ANIMATION ────────────────────────────────── */
+        function animateShowcase(el) {
+            el.classList.add('anim-in');
+
+            /* Metrics stagger after frame reveals */
+            el.querySelectorAll('.metric').forEach((m, i) => {
+                setTimeout(() => {
+                    m.classList.add('anim-in');
+                }, 900 + i * 120);
+            });
+
+            /* Trigger count-up on metric values */
+            setTimeout(() => animateCounters(el), 1000);
+        }
+
+        /* ── TESTIMONIALS ANIMATION ────────────────────────────── */
+        function animateTestimonials(el) {
+            setTimeout(() => el.querySelector('.testimonials-header')?.classList.add('anim-in'), 0);
+
+            el.querySelectorAll('.tcard').forEach((card, i) => {
+                setTimeout(() => card.classList.add('anim-in'), 250 + i * 150);
+            });
+        }
+
+        /* ── CTA ANIMATION ─────────────────────────────────────── */
+        function animateCTA(el) {
+            el.classList.add('anim-in');
+        }
+
+        /* ── FOOTER ANIMATION ──────────────────────────────────── */
+        function animateFooter() {
+            setTimeout(() => document.querySelector('.footer-brand')?.classList.add('anim-in'), 0);
+            document.querySelectorAll('.footer-col').forEach((col, i) => {
+                setTimeout(() => col.classList.add('anim-in'), 150 + i * 100);
+            });
+            setTimeout(() => document.querySelector('.footer-bottom')?.classList.add('anim-in'), 600);
+        }
+
+        /* ── COUNT-UP ANIMATION ────────────────────────────────── */
+        function animateCounters(container) {
+            container.querySelectorAll('[data-target]').forEach(el => {
+                const target = +el.dataset.target;
+                const suffix = el.dataset.suffix || '';
+                const duration = 1400;
+                const start = performance.now();
+
+                function update(now) {
+                    const elapsed = now - start;
+                    const progress = Math.min(elapsed / duration, 1);
+                    // Easing: ease out expo
+                    const eased = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+                    const current = Math.round(eased * target);
+                    el.innerHTML = current + `<span>${suffix}</span>`;
+                    if (progress < 1) requestAnimationFrame(update);
+                }
+                requestAnimationFrame(update);
+            });
+        }
+
+        /* ── PARALLAX ──────────────────────────────────────────── */
+        const heroRight = document.querySelector('.hero-right');
+        const heroTitle = document.querySelector('.hero-title');
+
+        function handleParallax() {
+            const sy = window.scrollY;
+
+            /* Hero parallax */
+            if (heroRight) heroRight.style.setProperty('--parallax-y', `${sy * 0.06}px`);
+            if (heroTitle) heroTitle.style.transform = `translateY(${sy * 0.03}px)`;
+
+            /* Floating badges parallax */
+            const floatBadge = document.querySelector('.hero-float-badge');
+            const floatTag = document.querySelector('.hero-float-tag');
+            if (floatBadge) floatBadge.style.transform = `translateY(calc(${sy * 0.05}px - 12px * ${Math.sin(Date.now() / 1000)}))`;
+            if (floatTag) floatTag.style.transform = `translateY(calc(${sy * -0.04}px))`;
+        }
+
+        /* ── 3D TILT ON CARDS ──────────────────────────────────── */
+        document.querySelectorAll('.menu-card, .tcard').forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                const x = (e.clientX - rect.left) / rect.width - 0.5;
+                const y = (e.clientY - rect.top) / rect.height - 0.5;
+
+                card.style.transform = `
+                perspective(800px)
+                rotateY(${x * 6}deg)
+                rotateX(${y * -6}deg)
+                translateY(-4px)
+                scale(1.01)
+            `;
+
+                /* Radial glow follow */
+                const px = e.clientX - rect.left;
+                const py = e.clientY - rect.top;
+                card.style.background = `radial-gradient(200px circle at ${px}px ${py}px, rgba(57,255,20,0.05), transparent 80%), var(--charcoal-3)`;
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = '';
+                card.style.background = '';
+                card.style.transition = 'transform 0.5s cubic-bezier(0.16,1,0.3,1), background 0.3s ease, border-color 0.4s ease, box-shadow 0.4s ease';
+                setTimeout(() => card.style.transition = '', 500);
+            });
+        });
+
+        /* ── MAGNETIC BUTTONS ──────────────────────────────────── */
+        document.querySelectorAll('.magnetic').forEach(btn => {
+            btn.addEventListener('mousemove', e => {
+                const rect = btn.getBoundingClientRect();
+                const x = (e.clientX - rect.left - rect.width / 2) * 0.3;
+                const y = (e.clientY - rect.top - rect.height / 2) * 0.3;
+                btn.style.transform = `translate(${x}px, ${y}px)`;
+            });
+            btn.addEventListener('mouseleave', () => {
+                btn.style.transform = '';
+                btn.style.transition = 'transform 0.5s cubic-bezier(0.34,1.56,0.64,1)';
+            });
+        });
+
+        /* ── CTA INPUT FOCUS ───────────────────────────────────── */
+        const ctaInput = document.querySelector('.cta-input');
+        const ctaWrap = document.querySelector('.cta-input-wrap');
+        if (ctaInput && ctaWrap) {
+            ctaInput.addEventListener('focus', () => {
+                ctaWrap.style.borderColor = 'rgba(57,255,20,0.4)';
+                ctaWrap.style.boxShadow = '0 0 30px rgba(57,255,20,0.12)';
+                ctaWrap.style.transform = 'scale(1.01)';
+            });
+            ctaInput.addEventListener('blur', () => {
+                ctaWrap.style.borderColor = 'rgba(255,255,255,0.1)';
+                ctaWrap.style.boxShadow = 'none';
+                ctaWrap.style.transform = '';
+            });
+        }
+
+        /* ── MENU TABS ─────────────────────────────────────────── */
+        function setTab(btn) {
+            document.querySelectorAll('.menu-tab').forEach(t => t.classList.remove('active'));
+            btn.classList.add('active');
+
+            /* Animate tab switch */
+            const cards = document.querySelectorAll('.menu-card');
+            cards.forEach((card, i) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(10px)';
+                card.style.transition = 'opacity 0.2s ease, transform 0.2s ease';
+                setTimeout(() => {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, 80 + i * 60);
+            });
+        }
+
+        /* ── MARQUEE CLONE + PAUSE ON HOVER ───────────────────── */
+        const track = document.getElementById('marqueeTrack');
+        if (track) {
+            track.innerHTML += track.innerHTML;
+            track.parentElement.addEventListener('mouseenter', () => {
+                track.style.animationPlayState = 'paused';
+            });
+            track.parentElement.addEventListener('mouseleave', () => {
+                track.style.animationPlayState = 'running';
+            });
+        }
+
+        /* ── PARTICLE CANVAS ───────────────────────────────────── */
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        let W, H;
+
+        function resize() {
+            W = canvas.width = window.innerWidth;
+            H = canvas.height = window.innerHeight;
+        }
+        resize();
+        window.addEventListener('resize', resize);
+
+        class Particle {
+            constructor() { this.reset(); }
+            reset() {
+                this.x = Math.random() * W;
+                this.y = Math.random() * H;
+                this.size = Math.random() * 1.5 + 0.3;
+                this.speedX = (Math.random() - 0.5) * 0.25;
+                this.speedY = (Math.random() - 0.5) * 0.25 - 0.08;
+                this.opacity = Math.random() * 0.5 + 0.1;
+                this.green = Math.random() > 0.75;
+                this.life = 1;
+                this.decay = Math.random() * 0.003 + 0.001;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                this.life -= this.decay;
+                if (this.life <= 0 || this.y < -5 || this.x < -5 || this.x > W + 5) this.reset();
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = this.green
+                    ? `rgba(57,255,20,${this.opacity * this.life})`
+                    : `rgba(255,255,255,${this.opacity * this.life * 0.35})`;
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < 90; i++) particles.push(new Particle());
+
+        /* Mouse-attracted particles */
+        let mouseX = W / 2, mouseY = H / 2;
+        document.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
+
+        function animParticles() {
+            ctx.clearRect(0, 0, W, H);
+            particles.forEach(p => {
+                /* Subtle mouse attraction */
+                const dx = mouseX - p.x;
+                const dy = mouseY - p.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < 200) {
+                    p.speedX += dx * 0.00008;
+                    p.speedY += dy * 0.00008;
+                }
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animParticles);
+        }
+        animParticles();
+
+        /* ── PROCESS CONNECTOR WIDTH ───────────────────────────── */
+        function setConnectorWidth() {
+            const steps = document.querySelector('.process-steps');
+            if (steps) {
+                const connector = steps.querySelector('.process-connector');
+                if (connector) {
+                    const w = steps.offsetWidth * 0.75 - 40;
+                    connector.style.setProperty('--connector-w', w + 'px');
+                }
+            }
+        }
+        setConnectorWidth();
+        window.addEventListener('resize', setConnectorWidth);
+
+        /* ── SHOWCASE PARALLAX SCRUB ───────────────────────────── */
+        const showcaseBg = document.querySelector('.showcase-bg');
+        if (showcaseBg) {
+            window.addEventListener('scroll', () => {
+                const rect = document.querySelector('.showcase-frame')?.getBoundingClientRect();
+                if (!rect) return;
+                const progress = 1 - (rect.bottom / (window.innerHeight + rect.height));
+                showcaseBg.style.transform = `scale(1.05) translateY(${progress * 20}px)`;
+            });
+        }
+
+        /* ── STAGGER NAV LINKS ON LOAD ─────────────────────────── */
+        document.querySelectorAll('.nav-links li').forEach((li, i) => {
+            li.style.opacity = '0';
+            li.style.transform = 'translateY(-10px)';
+            li.style.transition = `opacity 0.5s ease ${0.4 + i * 0.08}s, transform 0.5s cubic-bezier(0.16,1,0.3,1) ${0.4 + i * 0.08}s`;
+            setTimeout(() => {
+                li.style.opacity = '1';
+                li.style.transform = 'translateY(0)';
+            }, 100);
+        });
+
+        /* ── NAV CTA ENTRANCE ──────────────────────────────────── */
+        const navCta = document.querySelector('.nav-cta');
+        if (navCta) {
+            navCta.style.opacity = '0';
+            navCta.style.transition = 'opacity 0.6s ease 0.7s';
+            setTimeout(() => navCta.style.opacity = '1', 100);
+        }
+
+        /* ── GLOW LINE INTERACTION ─────────────────────────────── */
+        document.querySelector('.glow-line')?.addEventListener('mouseenter', function () {
+            this.style.opacity = '0.8';
+            this.style.height = '2px';
+            this.style.transition = 'opacity 0.3s, height 0.3s';
+        });
+        document.querySelector('.glow-line')?.addEventListener('mouseleave', function () {
+            this.style.opacity = '';
+            this.style.height = '';
+        });
+
+        /* ── HERO VISUAL FRAME MOUSE DEPTH ────────────────────── */
+        const heroVisualFrame = document.querySelector('.hero-visual-frame');
+        if (heroVisualFrame) {
+            document.addEventListener('mousemove', e => {
+                const x = (e.clientX / window.innerWidth - 0.5) * 12;
+                const y = (e.clientY / window.innerHeight - 0.5) * 8;
+                heroVisualFrame.style.transform = `perspective(1200px) rotateY(${x}deg) rotateX(${-y}deg)`;
+            });
+        }
+
+    </script>
+</body>
+
+</html>
