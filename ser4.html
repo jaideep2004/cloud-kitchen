@@ -1,0 +1,1477 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Culinary Consultancy — My Cloud Kitchen</title>
+
+    <!-- Google Fonts: Match brand's refined editorial feel -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Hubot+Sans:ital,wght@0,200..900;1,200..900&family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* ─── TOKENS ─── */
+        :root {
+            --green: #a8ff57;
+            --green-dim: #6bc930;
+            --green-glow: rgba(168, 255, 87, .18);
+            --green-glow-strong: rgba(168, 255, 87, .35);
+            --bg: #080808;
+            --bg-2: #0f0f0f;
+            --bg-3: #161616;
+            --surface: rgba(255, 255, 255, .04);
+            --surface-hover: rgba(255, 255, 255, .07);
+            --border: rgba(255, 255, 255, .08);
+            --border-bright: rgba(168, 255, 87, .25);
+            --text-primary: #f0f0f0;
+            --text-secondary: #c8c8c8;
+            --text-muted: #6a6a6a;
+            --card-bg: rgba(20, 20, 20, .85);
+            --shadow: 0 32px 80px rgba(0, 0, 0, .6);
+        }
+
+        [data-theme="light"] {
+            --bg: #f4f2ed;
+            --bg-2: #ede9e2;
+            --bg-3: #e5e0d8;
+            --surface: rgba(0, 0, 0, .04);
+            --surface-hover: rgba(0, 0, 0, .07);
+            --border: rgba(0, 0, 0, .08);
+            --border-bright: rgba(100, 180, 30, .3);
+            --text-primary: #111;
+            --text-secondary: #444;
+            --text-muted: #888;
+            --card-bg: rgba(240, 237, 230, .9);
+            --shadow: 0 32px 80px rgba(0, 0, 0, .12);
+            --green: #5a9e10;
+            --green-dim: #4a8a0c;
+            --green-glow: rgba(90, 158, 16, .12);
+            --green-glow-strong: rgba(90, 158, 16, .22);
+        }
+
+        /* ─── RESET ─────────────────────────────────────────────────── */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Hubot Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            cursor: none;
+            line-height: 1.6;
+            transition: background .5s, color .5s;
+        }
+
+        /* ── CURSOR ── */
+        #cursor {
+            width: 12px;
+            height: 12px;
+            background: var(--green);
+            border-radius: 50%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 9999;
+            mix-blend-mode: difference;
+            transform: translate(-50%, -50%);
+            transition: width .25s, height .25s
+        }
+
+        #cursor-ring {
+            width: 36px;
+            height: 36px;
+            border: 1px solid var(--green);
+            border-radius: 50%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            opacity: .5;
+            transition: width .3s, height .3s, opacity .3s
+        }
+
+        body.cursor-hover #cursor {
+            width: 20px;
+            height: 20px
+        }
+
+        body.cursor-hover #cursor-ring {
+            width: 60px;
+            height: 60px;
+            opacity: .2
+        }
+
+        /* ── THEME TOGGLE ── */
+        #theme-toggle {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            z-index: 1000;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: none;
+            backdrop-filter: blur(12px);
+            transition: background .3s, transform .4s
+        }
+
+        #theme-toggle:hover {
+            background: var(--surface-hover);
+            transform: rotate(30deg)
+        }
+
+        #theme-toggle svg {
+            width: 18px;
+            height: 18px
+        }
+
+        #sun-icon {
+            display: none
+        }
+
+        [data-theme="light"] #sun-icon {
+            display: block
+        }
+
+        [data-theme="light"] #moon-icon {
+            display: none
+        }
+
+        /* ─── GRAIN OVERLAY ──────────────────────────────────────────── */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+            opacity: 0.028;
+            pointer-events: none;
+            z-index: 9990;
+        }
+
+        /* ─── TYPOGRAPHY ─────────────────────────────────────────────── */
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: 'Hubot Sans', sans-serif;
+            color: var(--text-primary);
+            font-weight: 400;
+        }
+
+        em {
+            font-style: italic;
+            color: var(--green);
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .label {
+            font-family: 'Hubot Sans', sans-serif;
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: var(--green);
+        }
+
+        /* ─── HERO ───────────────────────────────────────────────────── */
+        .hero {
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero__left {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 80px 64px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero__badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            border: 1px solid var(--border);
+            padding: 6px 16px;
+            border-radius: 100px;
+            margin-bottom: 40px;
+            width: fit-content;
+        }
+
+        .hero__badge span.dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--green);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.3;
+            }
+        }
+
+        .hero__number {
+            font-family: 'Hubot Sans', sans-serif;
+            font-size: 13px;
+            color: var(--green);
+            letter-spacing: 0.1em;
+            margin-bottom: 20px;
+        }
+
+        .hero__title {
+            font-size: clamp(52px, 6vw, 81px);
+            line-height: 1.05;
+            font-weight: 500;
+            letter-spacing: -0.02em;
+            margin-bottom: 32px;
+        }
+
+        .hero__desc {
+            font-size: 15px;
+            color: var(--text-secondary);
+            max-width: 420px;
+            line-height: 1.8;
+            margin-bottom: 48px;
+        }
+
+        .hero__cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 14px;
+            background: var(--green);
+            color: #080808;
+            font-family: 'Hubot Sans', sans-serif;
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            padding: 16px 32px;
+            border: none;
+            cursor: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            width: fit-content;
+        }
+
+        .hero__cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(168, 255, 87, 0.3);
+        }
+
+        .hero__cta svg {
+            transition: transform 0.3s;
+        }
+
+        .hero__cta:hover svg {
+            transform: translateX(4px);
+        }
+
+        .hero__right {
+            position: relative;
+            overflow: hidden;
+            background-image: url(/images/c2.png);
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+
+        /* ── IMAGE PLACEHOLDER: Hero right side ──
+       Recommended: 900×1080px, food/kitchen atmosphere shot —
+       dark moody overhead of a chef plating a dish, or an ingredient flatlay */
+        .hero__img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.55) saturate(0.8);
+            transform: scale(1.02);
+            transition: transform 8s ease;
+        }
+
+        .hero__img-placeholder {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0f0f0f 0%, #080808 60%, #0f0f0f 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .hero__img-placeholder p {
+            font-family: 'Hubot Sans', sans-serif;
+            font-size: 11px;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: rgba(168, 255, 87, 0.4);
+        }
+
+        .hero__img-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, var(--bg) 0%, transparent 40%);
+            z-index: 1;
+        }
+
+        /* Vertical line accent */
+        .hero__line {
+            position: absolute;
+            left: 64px;
+            top: 80px;
+            bottom: 80px;
+            width: 1px;
+            background: linear-gradient(to bottom, transparent, var(--border) 30%, var(--border) 70%, transparent);
+        }
+
+        /* ─── STATS BAR ──────────────────────────────────────────────── */
+        .stats {
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        .stat-item {
+            padding: 36px 48px;
+            border-right: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-item:last-child {
+            border-right: none;
+        }
+
+        .stat-item::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--green);
+            transition: width 0.6s ease;
+        }
+
+        .stat-item:hover::before {
+            width: 100%;
+        }
+
+        .stat-item__num {
+            font-family: 'Hubot Sans', sans-serif;
+            font-size: 42px;
+            font-weight: 400;
+            color: var(--text-primary);
+            line-height: 1;
+            margin-bottom: 6px;
+        }
+
+        .stat-item__label {
+            font-size: 11px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+        }
+
+        /* ─── SECTION WRAPPER ────────────────────────────────────────── */
+        .section {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        .section-divider {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 100px 64px 60px;
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .section-divider .label {
+            white-space: nowrap;
+        }
+
+        .section-divider hr {
+            flex: 1;
+            border: none;
+            border-top: 1px solid var(--border);
+        }
+
+        /* ─── INTRO ──────────────────────────────────────────────────── */
+        .intro {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 100px;
+            padding-bottom: 100px;
+        }
+
+        .intro__heading {
+            font-size: clamp(38px, 4vw, 58px);
+            line-height: 1.1;
+            font-weight: 500;
+        }
+
+        .intro__body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .intro__body p {
+            color: var(--text-secondary);
+            font-size: 15px;
+            line-height: 1.9;
+        }
+
+        /* ─── SERVICES GRID ──────────────────────────────────────────── */
+        .services-header {
+            padding-bottom: 60px;
+        }
+
+        .services-header h2 {
+            font-size: clamp(36px, 4vw, 56px);
+            line-height: 1.1;
+            font-weight: 500;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            border-left: 1px solid var(--border);
+            border-top: 1px solid var(--border);
+            margin-bottom: 0;
+        }
+
+        .service-card {
+            border-right: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            padding: 44px 40px;
+            position: relative;
+            overflow: hidden;
+            cursor: none;
+            transition: background 0.4s ease;
+        }
+
+        .service-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--green-glow);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .service-card:hover {
+            background: #0f0f0f;
+        }
+
+        .service-card:hover .service-card__title {
+            color: white;
+        }
+
+        .service-card:hover .service-card__body {
+            color: white;
+        }
+
+        .service-card:hover .service-card__list li {
+            color: white;
+        }
+
+        .service-card:hover::after {
+            opacity: 1;
+        }
+
+        .service-card__num {
+            font-family: 'Hubot Sans', sans-serif;
+            font-size: 11px;
+            letter-spacing: 0.2em;
+            color: var(--green);
+            margin-bottom: 32px;
+            display: block;
+        }
+
+        /* ── IMAGE PLACEHOLDER: Service card icon area ──
+       Each card: 80×80px, icon or ingredient close-up, warm tone */
+        .service-card__icon {
+            width: 56px;
+            height: 56px;
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 28px;
+            font-size: 22px;
+            position: relative;
+            z-index: 1;
+            transition: border-color 0.3s, background 0.3s;
+        }
+
+        .service-card:hover .service-card__icon {
+            border-color: var(--green);
+            background: var(--green-glow);
+        }
+
+        .service-card__title {
+            font-family: 'Hubot Sans', sans-serif;
+            font-size: 22px;
+            font-weight: 400;
+            color: var(--text-primary);
+            line-height: 1.2;
+            margin-bottom: 14px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .service-card__body {
+            font-size: 14.5px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            position: relative;
+            z-index: 1;
+        }
+
+        .service-card__list {
+            list-style: none;
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .service-card__list li {
+            font-size: 13.5px;
+            color: var(--text-secondary);
+            padding-left: 16px;
+            position: relative;
+        }
+
+        .service-card__list li::before {
+            content: '—';
+            position: absolute;
+            left: 0;
+            color: var(--green);
+            font-size: 10px;
+            top: 3px;
+        }
+
+        /* ─── WIDE FEATURE CARD (SOPs span 2 cols) ──────────────────── */
+        .service-card--wide {
+            grid-column: span 2;
+        }
+
+        .service-card--wide .service-card__inner {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+        }
+
+        /* ─── SPOTLIGHT SECTION (Food Cost) ─────────────────────────── */
+        .spotlight {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            min-height: 480px;
+            margin-top: 1px;
+            /* flush with grid */
+        }
+
+        .spotlight__left {
+            padding: 64px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .spotlight__heading {
+            font-size: 44px;
+            font-weight: 300;
+            line-height: 1.1;
+            max-width: 400px;
+        }
+
+        .spotlight__formula {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 40px;
+        }
+
+        .formula-row {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 14px 20px;
+            border: 1px solid var(--border);
+            font-size: 13px;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+            transition: border-color 0.3s;
+        }
+
+        .formula-row:hover {
+            border-color: var(--green);
+        }
+
+        .formula-row .formula-label {
+            font-family: 'Hubot Sans', sans-serif;
+            font-size: 20px;
+            color: var(--green);
+            width: 28px;
+            flex-shrink: 0;
+        }
+
+        /* ── IMAGE PLACEHOLDER: Spotlight right ──
+       Recommended: 500×480px — overhead shot of recipe notes, ingredients scattered,
+       or a calculator/costing sheet on a dark wooden surface */
+        .spotlight__right {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, #0f0f0f 0%, #080808 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-image: url(/images/sa8.png);
+            background-position: center;
+            background-size: cover;
+        }
+
+        .spotlight__right-placeholder {
+            text-align: center;
+        }
+
+        .spotlight__right-placeholder p {
+            font-size: 10px;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: rgba(168, 255, 87, 0.35);
+            margin-top: 10px;
+        }
+
+        .spotlight__right-placeholder svg {
+            opacity: 0.2;
+        }
+
+        /* ─── WHY CHOOSE US ──────────────────────────────────────────── */
+        .why {
+            padding: 100px 0;
+        }
+
+        .why__grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1px;
+            background: var(--border);
+            border: 1px solid var(--border);
+        }
+
+        .why-item {
+            background: var(--bg);
+            padding: 52px 48px;
+            display: flex;
+            gap: 28px;
+            transition: background 0.3s;
+        }
+
+        .why-item:hover {
+            background: var(--surface);
+        }
+
+        .why-item__num {
+            font-family: 'Hubot Sans', sans-serif;
+            font-size: 48px;
+            color: var(--green-glow);
+            line-height: 1;
+            flex-shrink: 0;
+            width: 50px;
+            border-right: 1px solid var(--border);
+            padding-right: 20px;
+            transition: color 0.3s;
+        }
+
+        .why-item:hover .why-item__num {
+            color: rgba(168, 255, 87, 0.3);
+        }
+
+        .why-item__content h4 {
+            font-family: 'Hubot Sans', sans-serif;
+            font-size: 22px;
+            font-weight: 400;
+            color: var(--text-primary);
+            margin-bottom: 10px;
+        }
+
+        .why-item__content p {
+            font-size: 13.5px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        /* ─── CLOSING CTA ────────────────────────────────────────────── */
+        .closing {
+            border-top: 1px solid var(--border);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            min-height: 440px;
+        }
+
+        .closing__left {
+            padding: 80px 64px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            border-right: 1px solid var(--border);
+        }
+
+        .closing__heading {
+            font-size: clamp(42px, 5vw, 68px);
+            line-height: 1.05;
+            font-weight: 300;
+            margin-bottom: 32px;
+        }
+
+        .closing__body {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            max-width: 380px;
+            margin-bottom: 48px;
+        }
+
+        .cta-group {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--green);
+            color: #080808;
+            font-family: 'Hubot Sans', sans-serif;
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            padding: 16px 32px;
+            border: none;
+            cursor: none;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(168, 255, 87, 0.3);
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: transparent;
+            color: var(--text-primary);
+            font-family: 'Hubot Sans', sans-serif;
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            padding: 16px 32px;
+            border: 1px solid var(--border);
+            cursor: none;
+            transition: border-color 0.3s, color 0.3s;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--green);
+            color: var(--green);
+        }
+
+        /* ── IMAGE PLACEHOLDER: Closing right ──
+       Recommended: 640×440px — styled kitchen prep scene or chef at work,
+       warm amber lighting, overhead or 3/4 angle */
+        .closing__right {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, #0f0f0f, #080808);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-image: url(/images/aboutp1.png);
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+
+        .closing__right-placeholder {
+            text-align: center;
+        }
+
+        .closing__right-placeholder p {
+            font-size: 10px;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: rgba(168, 255, 87, 0.3);
+            margin-top: 8px;
+        }
+
+        /* ─── SCROLL REVEAL ──────────────────────────────────────────── */
+        .reveal {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal-delay-1 {
+            transition-delay: 0.1s;
+        }
+
+        .reveal-delay-2 {
+            transition-delay: 0.2s;
+        }
+
+        .reveal-delay-3 {
+            transition-delay: 0.3s;
+        }
+
+        .reveal-delay-4 {
+            transition-delay: 0.4s;
+        }
+
+        /* ─── RESPONSIVE ─────────────────────────────────────────────── */
+        @media (max-width: 1024px) {
+            .hero {
+                grid-template-columns: 1fr;
+                min-height: auto;
+            }
+
+            .hero__right {
+                height: 50vw;
+                min-height: 360px;
+            }
+
+            .hero__left {
+                padding: 64px 40px;
+            }
+
+            .hero__line {
+                left: 40px;
+            }
+
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .stat-item:nth-child(2) {
+                border-right: none;
+            }
+
+            .intro {
+                grid-template-columns: 1fr;
+                gap: 40px;
+                padding: 60px 0;
+            }
+
+            .services-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .service-card--wide {
+                grid-column: span 2;
+            }
+
+            .spotlight {
+                grid-template-columns: 1fr;
+            }
+
+            .spotlight__right {
+                height: 300px;
+            }
+
+            .why__grid {
+                grid-template-columns: 1fr;
+            }
+
+            .closing {
+                grid-template-columns: 1fr;
+            }
+
+            .closing__right {
+                height: 300px;
+            }
+
+            .closing__left {
+                padding: 60px 40px;
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+            }
+
+            .section {
+                padding: 0 40px;
+            }
+
+            .section-divider {
+                padding: 80px 40px 48px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            body {
+                cursor: auto;
+            }
+
+            #cursor-dot,
+            #cursor-ring {
+                display: none;
+            }
+
+            .hero__left {
+                padding: 48px 24px;
+            }
+
+            .hero__title {
+                font-size: 44px;
+            }
+
+            .section {
+                padding: 0 24px;
+            }
+
+            .section-divider {
+                padding: 60px 24px 40px;
+            }
+
+            .stats {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .stat-item {
+                padding: 24px;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+                border-left: none;
+            }
+
+            .service-card--wide {
+                grid-column: span 1;
+            }
+
+            .service-card--wide .service-card__inner {
+                grid-template-columns: 1fr;
+            }
+
+            .spotlight__left {
+                padding: 40px 24px;
+            }
+
+            .closing__left {
+                padding: 48px 24px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Custom Cursor -->
+    <div id="cursor"></div>
+    <div id="cursor-ring"></div>
+
+    <button id="theme-toggle" aria-label="Toggle theme">
+        <svg id="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+            color="var(--text-secondary)">
+            <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
+        </svg>
+        <svg id="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+            color="var(--text-secondary)">
+            <circle cx="12" cy="12" r="5" />
+            <path
+                d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+        </svg>
+    </button>
+
+    <!-- ══════════════════════════════════════════════════════════
+       HERO
+  ══════════════════════════════════════════════════════════ -->
+    <section class="hero">
+        <div class="hero__line"></div>
+        <div class="hero__left">
+            <div class="hero__badge reveal">
+                <span class="dot"></span>
+                <span class="label">Service / 05</span>
+            </div>
+
+            <p class="hero__number reveal reveal-delay-1">01 — Culinary Consultancy</p>
+
+            <h1 class="hero__title reveal reveal-delay-2">
+                Crafting the <em>Core</em><br>of Your Food<br>Business
+            </h1>
+
+            <p class="hero__desc reveal reveal-delay-3">
+                In the world of cloud kitchens, exceptional food is the key to success.
+                Our culinary consultancy ensures your food not only stands out but also
+                maximises profitability — from menu planning to recipe development.
+            </p>
+
+            <a href="#services" class="hero__cta reveal reveal-delay-4">
+                Explore the Service
+                <svg width="16" height="10" viewBox="0 0 16 10" fill="none">
+                    <path d="M1 5h14M10 1l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+            </a>
+        </div>
+
+        <div class="hero__right">
+            <!-- ══ IMAGE PLACEHOLDER ══════════════════════════════════════
+           Path:   /images/culinary-hero.jpg
+           Size:   900 × 1080 px (portrait)
+           Style:  Dark, moody overhead or 3/4 angle of a chef plating
+                   a dish. Deep warm amber tones. High contrast.
+           Alt:    "Chef plating a dish in a cloud kitchen"
+      ════════════════════════════════════════════════════════════ -->
+            <!-- <div class="hero__img-placeholder">
+                <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="4" y="12" width="40" height="28" rx="2" stroke="#a8ff57" stroke-width="1.2" fill="none"
+                        opacity="0.4" />
+                    <circle cx="17" cy="24" r="5" stroke="#a8ff57" stroke-width="1.2" fill="none" opacity="0.4" />
+                    <path d="M27 32l7-9 6 9" stroke="#a8ff57" stroke-width="1.2" opacity="0.4"
+                        stroke-linejoin="round" />
+                </svg>
+                <p>Hero Image — 900 × 1080px</p>
+                <p style="font-size:9px; opacity:0.5; margin-top:4px;">Chef plating · dark kitchen · amber light</p>
+            </div> -->
+            <!-- <img src="/images/c2.png" alt=""> -->
+            <div class="hero__img-overlay"></div>
+        </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════
+       STATS BAR
+  ══════════════════════════════════════════════════════════ -->
+    <div class="stats">
+        <div class="stat-item reveal">
+            <div class="stat-item__num">9+</div>
+            <div class="stat-item__label">Years of expertise</div>
+        </div>
+        <div class="stat-item reveal reveal-delay-1">
+            <div class="stat-item__num">200+</div>
+            <div class="stat-item__label">Recipes developed</div>
+        </div>
+        <div class="stat-item reveal reveal-delay-2">
+            <div class="stat-item__num">6</div>
+            <div class="stat-item__label">Pillars of consultancy</div>
+        </div>
+        <div class="stat-item reveal reveal-delay-3">
+            <div class="stat-item__num">100%</div>
+            <div class="stat-item__label">Custom to your brand</div>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════════
+       INTRO
+  ══════════════════════════════════════════════════════════ -->
+    <div class="section-divider reveal">
+        <span class="label">What we do</span>
+        <hr />
+    </div>
+
+    <div class="section">
+        <div class="intro">
+            <h2 class="intro__heading reveal">
+                Menu engineering,<br>recipes, and <em>vendor<br>strategy</em> — all in one.
+            </h2>
+            <div class="intro__body reveal reveal-delay-2">
+                <p>
+                    A well-engineered menu is the foundation of every successful cloud kitchen.
+                    We go beyond recipe cards — structuring your entire culinary operation so that
+                    quality is consistent, margins are healthy, and your brand leaves a lasting impression.
+                </p>
+                <p>
+                    Every detail is customised to your kitchen, your audience, and your growth ambitions.
+                    No templates. No shortcuts.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════════
+       SERVICES GRID
+  ══════════════════════════════════════════════════════════ -->
+    <div class="section-divider reveal" id="services">
+        <span class="label">What's included</span>
+        <hr />
+    </div>
+
+    <div class="section">
+        <div class="services-header reveal">
+            <h2>Six pillars of our<br><em>Culinary Consultancy</em></h2>
+        </div>
+
+        <div class="services-grid">
+
+            <!-- 01 — Menu Engineering -->
+            <div class="service-card reveal">
+                <span class="service-card__num">01</span>
+                <div class="service-card__icon">📋</div>
+                <!-- ══ IMAGE: Replace emoji with 56×56px icon or ingredient macro shot -->
+                <h3 class="service-card__title">Menu Engineering<br>& Pricing</h3>
+                <p class="service-card__body">A strategically designed menu that balances brand vision with
+                    profitability.</p>
+                <ul class="service-card__list">
+                    <li>Menu architecture aligned to your brand</li>
+                    <li>High-margin item optimisation</li>
+                    <li>Competitive pricing strategy</li>
+                </ul>
+            </div>
+
+            <!-- 02 — Raw Material Vendor -->
+            <div class="service-card reveal reveal-delay-1">
+                <span class="service-card__num">02</span>
+                <div class="service-card__icon">🌿</div>
+                <!-- ══ IMAGE: Replace with icon — fresh vegetables or spices overhead -->
+                <h3 class="service-card__title">Raw Material<br>Vendor Tie-Ups</h3>
+                <p class="service-card__body">Reliable, high-quality ingredient sourcing from vetted local vendors.</p>
+                <ul class="service-card__list">
+                    <li>Dairy, meat, vegetables, spices & sauces</li>
+                    <li>Consistent doorstep delivery</li>
+                    <li>Negotiated pricing for better margins</li>
+                </ul>
+            </div>
+
+            <!-- 03 — Staff Training -->
+            <div class="service-card reveal reveal-delay-2">
+                <span class="service-card__num">03</span>
+                <div class="service-card__icon">👨‍🍳</div>
+                <!-- ══ IMAGE: Replace with icon — chef training scene -->
+                <h3 class="service-card__title">Staff Training<br>& Standardisation</h3>
+                <p class="service-card__body">Hands-on training so every team member executes your menu with precision.
+                </p>
+                <ul class="service-card__list">
+                    <li>Hands-on preparation training</li>
+                    <li>Portion sizes & plating standards</li>
+                    <li>Brand-specific sessions per cloud brand</li>
+                </ul>
+            </div>
+
+            <!-- 04 — Unique Recipe Development -->
+            <div class="service-card reveal">
+                <span class="service-card__num">04</span>
+                <div class="service-card__icon">✦</div>
+                <!-- ══ IMAGE: Replace with icon — close-up of a beautifully plated dish -->
+                <h3 class="service-card__title">Unique Recipe<br>Development</h3>
+                <p class="service-card__body">Exclusive recipes crafted to set your cloud kitchen apart from the
+                    competition.</p>
+                <ul class="service-card__list">
+                    <li>Signature dishes for brand recall</li>
+                    <li>Trending cuisines with your unique twist</li>
+                    <li>Innovative flavour profiling</li>
+                </ul>
+            </div>
+
+            <!-- 05 — SOPs (wide card) -->
+            <div class="service-card service-card--wide reveal reveal-delay-1">
+                <span class="service-card__num">05</span>
+                <div class="service-card__inner">
+                    <div>
+                        <div class="service-card__icon">📄</div>
+                        <!-- ══ IMAGE: Replace with icon — printed SOP document on dark desk -->
+                        <h3 class="service-card__title">SOPs & Kitchen<br>Reference Notes</h3>
+                        <p class="service-card__body">
+                            Detailed, kitchen-ready documentation so your team maintains quality
+                            and efficiency even during peak hours.
+                        </p>
+                    </div>
+                    <div>
+                        <ul class="service-card__list" style="margin-top: 0;">
+                            <li>Standard Operating Procedures for every recipe</li>
+                            <li>Step-by-step kitchen notes displayed in-kitchen</li>
+                            <li>Ensures quality consistency across all shifts</li>
+                            <li>Designed for quick reference under pressure</li>
+                            <li>Updated as menu evolves</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div><!-- /services-grid -->
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════════
+       SPOTLIGHT — FOOD COST CALCULATION
+  ══════════════════════════════════════════════════════════ -->
+    <div class="section" style="padding-top: 1px;">
+        <div class="spotlight reveal">
+            <div class="spotlight__left">
+                <div>
+                    <p class="label" style="margin-bottom: 24px;">06 — Profitability Tool</p>
+                    <h3 class="spotlight__heading">
+                        Food Cost<br><em>Calculation</em><br>Formula
+                    </h3>
+                    <p
+                        style="color: var(--text-secondary); font-size:14px; line-height:1.8; margin-top: 20px; max-width: 380px;">
+                        Profitability starts with understanding costs. We provide a detailed formula
+                        covering ingredient usage, portion sizes, and preparation expenses —
+                        so every item on your menu is priced to protect your margin.
+                    </p>
+                </div>
+                <div class="spotlight__formula">
+                    <div class="formula-row">
+                        <span class="formula-label">A</span>
+                        Detailed per-item food cost formula
+                    </div>
+                    <div class="formula-row">
+                        <span class="formula-label">B</span>
+                        Ingredient usage & portion size insights
+                    </div>
+                    <div class="formula-row">
+                        <span class="formula-label">C</span>
+                        Preparation expense breakdown
+                    </div>
+                    <div class="formula-row">
+                        <span class="formula-label">D</span>
+                        Effective pricing & margin monitoring
+                    </div>
+                </div>
+            </div>
+
+            <div class="spotlight__right">
+
+            </div>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════════
+       WHY CHOOSE US
+  ══════════════════════════════════════════════════════════ -->
+    <div class="section-divider reveal">
+        <span class="label">Why choose us</span>
+        <hr />
+    </div>
+
+    <div class="section">
+        <div class="why">
+            <div class="why__grid">
+                <div class="why-item reveal">
+                    <div class="why-item__num">01</div>
+                    <div class="why-item__content">
+                        <h4>Expert Guidance</h4>
+                        <p>Benefit from our team's extensive culinary experience and deep market knowledge across cloud
+                            kitchen operations.</p>
+                    </div>
+                </div>
+                <div class="why-item reveal reveal-delay-1">
+                    <div class="why-item__num">02</div>
+                    <div class="why-item__content">
+                        <h4>Profit-Focused Solutions</h4>
+                        <p>Every menu we engineer and every recipe we develop is designed with one goal in mind — a
+                            profitable, efficient business.</p>
+                    </div>
+                </div>
+                <div class="why-item reveal reveal-delay-2">
+                    <div class="why-item__num">03</div>
+                    <div class="why-item__content">
+                        <h4>Tailored Approach</h4>
+                        <p>All recipes, vendor tie-ups, and processes are 100% customised for your brand. No copy-paste
+                            solutions.</p>
+                    </div>
+                </div>
+                <div class="why-item reveal reveal-delay-3">
+                    <div class="why-item__num">04</div>
+                    <div class="why-item__content">
+                        <h4>Operational Excellence</h4>
+                        <p>Our training programs and SOPs ensure your kitchen runs smoothly and consistently, even with
+                            a lean team during peak hours.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════════
+       CLOSING CTA
+  ══════════════════════════════════════════════════════════ -->
+    <section class="closing reveal">
+        <div class="closing__left">
+            <h2 class="closing__heading">
+                Ready to build your<br><em>culinary edge?</em>
+            </h2>
+            <p class="closing__body">
+                Let our culinary experts craft the recipes, systems, and vendor network
+                that your cloud kitchen needs to thrive from day one.
+            </p>
+            <div class="cta-group">
+                <a href="#" class="btn-primary">
+                    Get a Proposal
+                    <svg width="14" height="10" viewBox="0 0 14 10" fill="none">
+                        <path d="M1 5h12M8 1l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                </a>
+                <a href="#" class="btn-secondary">
+                    All Services
+                </a>
+            </div>
+        </div>
+
+        <div class="closing__right">
+
+
+        </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════
+       SCRIPTS
+  ══════════════════════════════════════════════════════════ -->
+    <script>
+        /* ── Custom cursor ──────────────────────────────────────── */
+        const cursor = document.getElementById('cursor'), ring = document.getElementById('cursor-ring');
+        let mx = 0, my = 0, rx = 0, ry = 0;
+        document.addEventListener('mousemove', e => {
+            mx = e.clientX; my = e.clientY;
+            cursor.style.left = mx + 'px';
+            cursor.style.top = my + 'px';
+        });
+        (function animateRing() {
+            rx += (mx - rx) * 0.15;
+            ry += (my - ry) * 0.15;
+            ring.style.left = rx + 'px';
+            ring.style.top = ry + 'px';
+            requestAnimationFrame(animateRing);
+        })();
+
+        /* Add cursor hover effect */
+        const interactive = document.querySelectorAll('a, button, .btn-primary, .btn-secondary');
+        interactive.forEach(el => {
+            el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+            el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+        });
+
+        /* ── Scroll reveal ──────────────────────────────────────── */
+        const reveals = document.querySelectorAll('.reveal');
+        const io = new IntersectionObserver(entries => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    e.target.classList.add('visible');
+                    io.unobserve(e.target);
+                }
+            });
+        }, { threshold: 0.12 });
+        reveals.forEach(el => io.observe(el));
+
+        /* ── Stat counter animation ─────────────────────────────── */
+        function animateCount(el, target, suffix) {
+            let start = 0;
+            const duration = 1400;
+            const step = timestamp => {
+                if (!start) start = timestamp;
+                const progress = Math.min((timestamp - start) / duration, 1);
+                const val = Math.floor(progress * target);
+                el.textContent = val + suffix;
+                if (progress < 1) requestAnimationFrame(step);
+            };
+            requestAnimationFrame(step);
+        }
+
+        const statNums = document.querySelectorAll('.stat-item__num');
+        const statData = [
+            { val: 9, suffix: '+' },
+            { val: 200, suffix: '+' },
+            { val: 6, suffix: '' },
+            { val: 100, suffix: '%' },
+        ];
+        const statIO = new IntersectionObserver(entries => {
+            entries.forEach((e, i) => {
+                if (e.isIntersecting) {
+                    animateCount(e.target, statData[i].val, statData[i].suffix);
+                    statIO.unobserve(e.target);
+                }
+            });
+        }, { threshold: 0.5 });
+        statNums.forEach(el => statIO.observe(el));
+
+        /* ── Magnetic CTA buttons ───────────────────────────────── */
+        document.querySelectorAll('.btn-primary, .btn-secondary, .hero__cta').forEach(btn => {
+            btn.addEventListener('mousemove', e => {
+                const rect = btn.getBoundingClientRect();
+                const cx = rect.left + rect.width / 2;
+                const cy = rect.top + rect.height / 2;
+                const dx = (e.clientX - cx) * 0.18;
+                const dy = (e.clientY - cy) * 0.18;
+                btn.style.transform = `translate(${dx}px, ${dy}px)`;
+            });
+            btn.addEventListener('mouseleave', () => {
+                btn.style.transform = '';
+            });
+        });
+
+        /* ── Service card tilt ──────────────────────────────────── */
+        document.querySelectorAll('.service-card').forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const r = card.getBoundingClientRect();
+                const x = (e.clientX - r.left) / r.width - 0.5;
+                const y = (e.clientY - r.top) / r.height - 0.5;
+                card.style.transform = `perspective(800px) rotateX(${-y * 4}deg) rotateY(${x * 4}deg)`;
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = '';
+            });
+        });
+
+        /* ── THEME TOGGLE ──────────────────────────────────────── */
+        document.getElementById('theme-toggle').addEventListener('click', () => {
+            const h = document.documentElement;
+            h.setAttribute('data-theme', h.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+        });
+    </script>
+
+</body>
+
+</html>
