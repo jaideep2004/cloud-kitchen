@@ -1,0 +1,2449 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Careers — My Cloud Kitchen</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Hubot+Sans:ital,wght@0,200..900;1,200..900&family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* ============ CSS VARIABLES ============ */
+        :root {
+            --green: #a8ff57;
+            --green-dim: #6bc930;
+            --green-glow: rgba(168, 255, 87, 0.18);
+            --green-glow-strong: rgba(168, 255, 87, 0.35);
+            --bg: #080808;
+            --bg-2: #0f0f0f;
+            --bg-3: #161616;
+            --surface: rgba(255, 255, 255, 0.04);
+            --surface-hover: rgba(255, 255, 255, 0.07);
+            --border: rgba(255, 255, 255, 0.08);
+            --border-bright: rgba(168, 255, 87, 0.25);
+            --text-primary: #f0f0f0;
+            --text-secondary: #c8c0c0;
+            --text-muted: #9a9a9a;
+            --card-bg: rgba(20, 20, 20, 0.85);
+            --shadow: 0 32px 80px rgba(0, 0, 0, 0.6);
+        }
+
+        [data-theme="light"] {
+            --bg: #f4f2ed;
+            --bg-2: #ede9e2;
+            --bg-3: #e5e0d8;
+            --surface: rgba(0, 0, 0, 0.04);
+            --surface-hover: rgba(0, 0, 0, 0.07);
+            --border: rgba(0, 0, 0, 0.08);
+            --border-bright: rgba(100, 180, 30, 0.3);
+            --text-primary: #111;
+            --text-secondary: #444;
+            --text-muted: #7d7a7a;
+            --card-bg: rgba(240, 237, 230, 0.9);
+            --shadow: 0 32px 80px rgba(0, 0, 0, 0.12);
+            --green: #5a9e10;
+            --green-dim: #4a8a0c;
+            --green-glow: rgba(90, 158, 16, 0.12);
+            --green-glow-strong: rgba(90, 158, 16, 0.22);
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            font-family: 'Hubot Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            cursor: none;
+            line-height: 1.6;
+            transition: background 0.5s, color 0.5s;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            background-size: 256px;
+        }
+
+        /* CURSOR */
+        #cursor {
+            width: 12px;
+            height: 12px;
+            background: var(--green);
+            border-radius: 50%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 9999;
+            mix-blend-mode: difference;
+            transform: translate(-50%, -50%);
+            transition: width .25s, height .25s;
+        }
+
+        #cursor-ring {
+            width: 36px;
+            height: 36px;
+            border: 1px solid var(--green);
+            border-radius: 50%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            opacity: 0.5;
+        }
+
+        body.cursor-hover #cursor {
+            width: 20px;
+            height: 20px;
+        }
+
+        body.cursor-hover #cursor-ring {
+            width: 60px;
+            height: 60px;
+            opacity: 0.2;
+        }
+
+        /* THEME TOGGLE */
+        #theme-toggle {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            z-index: 1000;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: none;
+            backdrop-filter: blur(12px);
+            transition: background .3s, transform .4s;
+        }
+
+        #theme-toggle:hover {
+            background: var(--surface-hover);
+            transform: rotate(30deg);
+        }
+
+        #theme-toggle svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        #sun-icon {
+            display: none;
+        }
+
+        [data-theme="light"] #sun-icon {
+            display: block;
+        }
+
+        [data-theme="light"] #moon-icon {
+            display: none;
+        }
+
+        /* PARTICLES */
+        canvas#particles {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.4;
+        }
+
+        /* REVEAL ANIMATIONS */
+        .reveal,
+        .reveal-left,
+        .reveal-right,
+        .reveal-scale {
+            opacity: 0;
+            transition: opacity .9s cubic-bezier(.16, 1, .3, 1), transform .9s cubic-bezier(.16, 1, .3, 1);
+        }
+
+        .reveal {
+            transform: translateY(50px);
+        }
+
+        .reveal-left {
+            transform: translateX(-60px);
+        }
+
+        .reveal-right {
+            transform: translateX(60px);
+        }
+
+        .reveal-scale {
+            transform: scale(.88);
+        }
+
+        .reveal.visible,
+        .reveal-left.visible,
+        .reveal-right.visible,
+        .reveal-scale.visible {
+            opacity: 1;
+            transform: none;
+        }
+
+        .d1 {
+            transition-delay: .1s;
+        }
+
+        .d2 {
+            transition-delay: .2s;
+        }
+
+        .d3 {
+            transition-delay: .3s;
+        }
+
+        .d4 {
+            transition-delay: .4s;
+        }
+
+        .d5 {
+            transition-delay: .5s;
+        }
+
+        .d6 {
+            transition-delay: .6s;
+        }
+
+        /* SECTION TAG */
+        .section-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            letter-spacing: .14em;
+            color: var(--green);
+            text-transform: uppercase;
+            margin-bottom: 28px;
+        }
+
+        .section-tag::before {
+            content: "";
+            width: 20px;
+            height: 1px;
+            background: currentColor;
+        }
+
+        /* ============ HERO ============ */
+        #careers-hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 0 60px 100px;
+            position: relative;
+            overflow: hidden;
+            background: var(--bg);
+        }
+
+        /* ===== IMAGE PLACEHOLDER: HERO BACKGROUND ===== */
+        /* Replace the .hero-image-placeholder with an <img> or background-image */
+        /* Recommended: A high-res cloud kitchen / food prep photo, right-aligned */
+        /* Size: ~700px wide, full height. Place at: /images/careers-hero.jpg */
+        .hero-image-placeholder {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 52%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(168, 255, 87, 0.04) 0%, rgba(168, 255, 87, 0.01) 100%);
+            /* border-left: 1px solid var(--border); */
+            overflow: hidden;
+            z-index: 1;
+            background-image: url(/images/career.png);
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .hero-image-placeholder::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            letter-spacing: .1em;
+            color: var(--green);
+            opacity: 0.3;
+            text-transform: uppercase;
+        }
+
+        /* Fade gradient over hero image */
+        .hero-image-placeholder::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to right, var(--bg) 0%, transparent 40%);
+        }
+
+        .hero-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            pointer-events: none;
+            z-index: 0;
+            background: rgba(168, 255, 87, 0.07);
+            width: 700px;
+            height: 700px;
+            bottom: -200px;
+            left: -100px;
+            animation: orbFloat 14s ease-in-out infinite alternate;
+        }
+
+        [data-theme="light"] .hero-orb {
+            background: rgba(90, 158, 16, 0.06);
+        }
+
+        @keyframes orbFloat {
+            from {
+                transform: translate(0, 0) scale(1);
+            }
+
+            to {
+                transform: translate(30px, -40px) scale(1.08);
+            }
+        }
+
+        .hero-bg-word {
+            position: absolute;
+            bottom: 60px;
+            right: 40px;
+            font-weight: 900;
+            font-size: clamp(100px, 16vw, 200px);
+            letter-spacing: -.04em;
+            line-height: 1;
+            color: transparent;
+            -webkit-text-stroke: 1px var(--border);
+            user-select: none;
+            pointer-events: none;
+            z-index: 2;
+            opacity: .25;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 4;
+            max-width: 700px;
+        }
+
+        .hero-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            letter-spacing: .14em;
+            color: var(--green);
+            text-transform: uppercase;
+            margin-bottom: 32px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp .8s .3s forwards;
+        }
+
+        .hero-label::before {
+            content: "";
+            width: 24px;
+            height: 1px;
+            background: var(--green);
+        }
+
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-title {
+            font-weight: 800;
+            font-size: clamp(52px, 7vw, 88px);
+            line-height: .92;
+            letter-spacing: -.03em;
+            margin-bottom: 32px;
+        }
+
+        .hero-title .word {
+            display: inline-block;
+            overflow: hidden;
+        }
+
+        .hero-title .word span {
+            display: inline-block;
+            transform: translateY(110%);
+            animation: wordReveal .9s cubic-bezier(.16, 1, .3, 1) forwards;
+        }
+
+        .hero-title em {
+            font-style: italic;
+            font-weight: 400;
+            color: var(--green);
+        }
+
+        .hero-title .word:nth-child(1) span {
+            animation-delay: .4s;
+        }
+
+        .hero-title .word:nth-child(2) span {
+            animation-delay: .55s;
+        }
+
+        .hero-title .word:nth-child(3) span {
+            animation-delay: .7s;
+        }
+
+        .hero-title .word:nth-child(4) span {
+            animation-delay: .85s;
+        }
+
+        .hero-title .word:nth-child(5) span {
+            animation-delay: 1s;
+        }
+
+        @keyframes wordReveal {
+            to {
+                transform: translateY(0);
+            }
+        }
+
+        .hero-body {
+            max-width: 480px;
+            font-size: 17px;
+            line-height: 1.75;
+            color: var(--text-secondary);
+            margin-bottom: 44px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp .8s 1.1s forwards;
+        }
+
+        .hero-pills {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp .8s 1.3s forwards;
+        }
+
+        .hero-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 16px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: .04em;
+            color: var(--text-secondary);
+        }
+
+        .hero-pill .dot {
+            width: 6px;
+            height: 6px;
+            background: var(--green);
+            border-radius: 50%;
+        }
+
+        /* Floating badge */
+        .hero-badge {
+            position: absolute;
+            top: 120px;
+            right: 80px;
+            z-index: 12;
+            background: var(--green);
+            padding: 14px 22px;
+            border-radius: 16px;
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            font-weight: 700;
+            color: #080808;
+            letter-spacing: .06em;
+            opacity: 0;
+            animation: badgeEntry .7s 1.6s cubic-bezier(.34, 1.56, .64, 1) forwards, badgeFloat 8s 2.4s ease-in-out infinite;
+        }
+
+        @keyframes badgeEntry {
+            from {
+                opacity: 0;
+                transform: translateY(-15px) rotate(-6deg);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) rotate(-2deg);
+            }
+        }
+
+        @keyframes badgeFloat {
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(-2deg);
+            }
+
+            50% {
+                transform: translateY(-10px) rotate(2deg);
+            }
+        }
+
+        .hero-badge-2 {
+            position: absolute;
+            bottom: 130px;
+            right: 90px;
+            z-index: 12;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-bright);
+            border-radius: 16px;
+            padding: 16px 22px;
+            opacity: 0;
+            animation: badgeEntry .7s 1.9s cubic-bezier(.34, 1.56, .64, 1) forwards, badgeFloat2 6s 2.6s ease-in-out infinite;
+        }
+
+        @keyframes badgeFloat2 {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-8px);
+            }
+        }
+
+        .hb2-num {
+            font-weight: 800;
+            font-size: 28px;
+            color: var(--green);
+            line-height: 1;
+        }
+
+        .hb2-label {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        /* Scroll hint */
+        .scroll-hint {
+            position: absolute;
+            bottom: 40px;
+            left: 60px;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            opacity: 0;
+            animation: fadeIn 1s 2s forwards;
+        }
+
+        .scroll-line {
+            width: 1px;
+            height: 60px;
+            background: linear-gradient(to bottom, var(--green), transparent);
+            animation: scrollLine 2s ease-in-out infinite;
+        }
+
+        @keyframes scrollLine {
+
+            0%,
+            100% {
+                opacity: .3;
+                transform: scaleY(1);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scaleY(1.3);
+            }
+        }
+
+        .scroll-hint span {
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            letter-spacing: .12em;
+            color: var(--text-muted);
+            writing-mode: vertical-rl;
+            text-transform: uppercase;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* ============ MARQUEE ============ */
+        .marquee-section {
+            overflow: hidden;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            background: var(--bg-2);
+        }
+
+        .marquee-track {
+            display: flex;
+            width: max-content;
+            animation: marqueeScroll 30s linear infinite;
+            padding: 16px 0;
+        }
+
+        .marquee-item {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            padding: 0 32px;
+            white-space: nowrap;
+            font-weight: 600;
+            font-size: 12px;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+
+        .marquee-item .dot {
+            width: 5px;
+            height: 5px;
+            background: var(--green);
+            border-radius: 50%;
+        }
+
+        .marquee-item.accent {
+            color: var(--text-secondary);
+        }
+
+        @keyframes marqueeScroll {
+            from {
+                transform: translateX(0);
+            }
+
+            to {
+                transform: translateX(-50%);
+            }
+        }
+
+        /* ============ WHY WORK WITH US ============ */
+        #why-work {
+            padding: 120px 60px;
+            background: var(--bg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .why-work-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(140px);
+            pointer-events: none;
+            z-index: 0;
+            background: rgba(168, 255, 87, 0.05);
+            width: 600px;
+            height: 600px;
+            top: -100px;
+            right: -200px;
+        }
+
+        [data-theme="light"] .why-work-orb {
+            background: rgba(90, 158, 16, 0.05);
+        }
+
+        .why-work-inner {
+            max-width: 1300px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .why-work-left {}
+
+        .why-work-headline {
+            font-weight: 800;
+            font-size: clamp(36px, 4.5vw, 60px);
+            line-height: 1.0;
+            letter-spacing: -.025em;
+            margin-bottom: 28px;
+        }
+
+        .why-work-headline em {
+            font-style: italic;
+            font-weight: 400;
+            color: var(--green);
+            display: block;
+        }
+
+        .why-work-body {
+            font-size: 15px;
+            line-height: 1.85;
+            color: var(--text-secondary);
+            max-width: 460px;
+            margin-bottom: 36px;
+        }
+
+        .why-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        .why-card {
+            padding: 26px 24px;
+            background: var(--bg-3);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            cursor: none;
+            transition: transform .45s cubic-bezier(.34, 1.56, .64, 1), border-color .3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .why-card:hover {
+            transform: translateY(-6px);
+            border-color: var(--border-bright);
+        }
+
+        .why-card::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(to right, var(--green), transparent);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform .4s;
+        }
+
+        .why-card:hover::after {
+            transform: scaleX(1);
+        }
+
+        .why-card-icon {
+            width: 44px;
+            height: 44px;
+            background: var(--green-glow);
+            border: 1px solid var(--border-bright);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+            transition: transform .35s cubic-bezier(.34, 1.56, .64, 1);
+        }
+
+        .why-card:hover .why-card-icon {
+            transform: scale(1.12) rotate(6deg);
+        }
+
+        .why-card-icon svg {
+            width: 20px;
+            height: 20px;
+            color: var(--green);
+        }
+
+        .why-card-title {
+            font-weight: 700;
+            font-size: 14px;
+            margin-bottom: 6px;
+        }
+
+        .why-card-body {
+            font-size: 12px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Right side: office image placeholder */
+        .why-work-right {
+            position: relative;
+        }
+
+        /* ===== IMAGE PLACEHOLDER: WHY WORK WITH US ===== */
+        /* Replace with a team/office/kitchen photo */
+        /* Recommended: Founder + team in a modern cloud kitchen setup */
+        /* Size: ~600x500px. Place at: /images/careers-team.jpg */
+        .office-image-placeholder {
+            width: 100%;
+            aspect-ratio: 4/3;
+            background: var(--bg-3);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .office-image-placeholder::before {
+            content: "[ TEAM / OFFICE IMAGE ]";
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            letter-spacing: .1em;
+            color: var(--green);
+            opacity: 0.35;
+            text-transform: uppercase;
+        }
+
+        .office-image-placeholder::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, var(--green-glow) 0%, transparent 60%);
+        }
+
+        .office-img-badge {
+            position: absolute;
+            bottom: -16px;
+            left: 28px;
+            z-index: 10;
+            background: var(--green);
+            color: #080808;
+            padding: 14px 22px;
+            border-radius: 14px;
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: .06em;
+        }
+
+        /* ============ JOBS GRID ============ */
+        #open-roles {
+            padding: 120px 60px;
+            background: var(--bg-2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .roles-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(140px);
+            pointer-events: none;
+            z-index: 0;
+            background: rgba(168, 255, 87, 0.05);
+            width: 700px;
+            height: 700px;
+            bottom: -200px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        [data-theme="light"] .roles-orb {
+            background: rgba(90, 158, 16, 0.04);
+        }
+
+        .roles-header {
+            max-width: 1300px;
+            margin: 0 auto 70px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 40px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .roles-headline {
+            font-weight: 800;
+            font-size: clamp(40px, 5vw, 66px);
+            line-height: 1;
+            letter-spacing: -.03em;
+        }
+
+        .roles-headline em {
+            font-style: italic;
+            font-weight: 400;
+            color: var(--green);
+        }
+
+        .roles-count {
+            font-family: 'Space Mono', monospace;
+            font-size: 12px;
+            letter-spacing: .08em;
+            color: var(--text-muted);
+            padding-bottom: 8px;
+        }
+
+        .roles-count span {
+            color: var(--green);
+            font-weight: 700;
+        }
+
+        /* Filter tabs */
+        .role-filters {
+            max-width: 1300px;
+            margin: 0 auto 40px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 1;
+        }
+
+        .filter-btn {
+            padding: 9px 18px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 50px;
+            cursor: none;
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            transition: all .25s;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: var(--green-glow);
+            border-color: var(--border-bright);
+            color: var(--green);
+        }
+
+        /* Jobs list */
+        .jobs-list {
+            max-width: 1300px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .job-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 0;
+            cursor: none;
+            overflow: hidden;
+            transition: border-color .3s;
+        }
+
+        .job-card:hover {
+            border-color: var(--border-bright);
+        }
+
+        .job-card-main {
+            display: grid;
+            grid-template-columns: 60px 1fr auto;
+            gap: 24px;
+            padding: 28px 32px;
+            align-items: center;
+        }
+
+        .job-num {
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--green);
+            letter-spacing: .1em;
+            display: flex;
+            align-items: center;
+        }
+
+        .job-info {}
+
+        .job-title-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 6px;
+            flex-wrap: wrap;
+        }
+
+        .job-title {
+            font-weight: 700;
+            font-size: 18px;
+            letter-spacing: -.01em;
+            color: var(--text-primary);
+        }
+
+        .job-badge {
+            padding: 3px 10px;
+            background: var(--green-glow);
+            border: 1px solid var(--border-bright);
+            border-radius: 50px;
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--green);
+            letter-spacing: .06em;
+            font-family: 'Space Mono', monospace;
+            text-transform: uppercase;
+        }
+
+        .job-badge.urgent {
+            background: rgba(255, 80, 60, 0.12);
+            border-color: rgba(255, 80, 60, 0.3);
+            color: #ff7066;
+        }
+
+        .job-badge.intern {
+            background: rgba(90, 160, 255, 0.12);
+            border-color: rgba(90, 160, 255, 0.3);
+            color: #7ab5ff;
+        }
+
+        .job-badge.freelance {
+            background: rgba(200, 140, 255, 0.12);
+            border-color: rgba(200, 140, 255, 0.3);
+            color: #c98aff;
+        }
+
+        .job-meta {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .job-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: var(--text-muted);
+            font-family: 'Space Mono', monospace;
+            letter-spacing: .04em;
+        }
+
+        .job-meta-item svg {
+            width: 12px;
+            height: 12px;
+            color: var(--green);
+            flex-shrink: 0;
+        }
+
+        .job-right {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 10px;
+        }
+
+        .job-salary {
+            font-weight: 700;
+            font-size: 14px;
+            color: var(--text-primary);
+            text-align: right;
+        }
+
+        .job-salary span {
+            color: var(--green);
+        }
+
+        .job-apply-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: var(--green);
+            color: #080808;
+            font-weight: 700;
+            font-size: 11px;
+            letter-spacing: .06em;
+            border-radius: 50px;
+            text-decoration: none;
+            cursor: none;
+            transition: transform .2s, box-shadow .25s;
+            white-space: nowrap;
+            border: none;
+            font-family: 'Space Mono', monospace;
+        }
+
+        .job-apply-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px var(--green-glow-strong);
+        }
+
+        .job-apply-btn svg {
+            width: 11px;
+            height: 11px;
+        }
+
+        /* Expandable job details */
+        .job-expand-btn {
+            width: 100%;
+            background: none;
+            border: none;
+            cursor: none;
+            padding: 0 32px 0 116px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            letter-spacing: .1em;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            padding-bottom: 20px;
+            transition: color .2s;
+        }
+
+        .job-expand-btn:hover {
+            color: var(--green);
+        }
+
+        .job-expand-btn svg {
+            width: 14px;
+            height: 14px;
+            transition: transform .35s cubic-bezier(.34, 1.56, .64, 1);
+        }
+
+        .job-card.expanded .job-expand-btn svg {
+            transform: rotate(180deg);
+        }
+
+        .job-details {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height .5s cubic-bezier(.16, 1, .3, 1);
+        }
+
+        .job-card.expanded .job-details {
+            max-height: 600px;
+        }
+
+        .job-details-inner {
+            padding: 0 32px 28px 116px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+            border-top: 1px solid var(--border);
+            padding-top: 24px;
+        }
+
+        .job-detail-col {}
+
+        .job-detail-heading {
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+            color: var(--green);
+            margin-bottom: 12px;
+        }
+
+        .job-detail-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .job-detail-list li {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            display: flex;
+            gap: 10px;
+        }
+
+        .job-detail-list li::before {
+            content: "→";
+            color: var(--green);
+            font-size: 11px;
+            margin-top: 2px;
+            flex-shrink: 0;
+        }
+
+        /* ============ FREELANCE SECTION ============ */
+        #freelance-roles {
+            padding: 100px 60px;
+            background: var(--bg);
+        }
+
+        .freelance-inner {
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .freelance-header {
+            margin-bottom: 56px;
+        }
+
+        .freelance-headline {
+            font-weight: 800;
+            font-size: clamp(36px, 4vw, 58px);
+            line-height: 1.0;
+            letter-spacing: -.025em;
+            margin-top: 16px;
+        }
+
+        .freelance-headline em {
+            font-style: italic;
+            font-weight: 400;
+            color: var(--green);
+        }
+
+        .freelance-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .freelance-card {
+            padding: 36px 32px;
+            background: var(--bg-3);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            cursor: none;
+            transition: transform .45s cubic-bezier(.34, 1.56, .64, 1), border-color .3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .freelance-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--border-bright);
+        }
+
+        .freelance-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(to right, var(--green), transparent);
+        }
+
+        .fc-num {
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: .12em;
+            color: var(--green);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .fc-num::before {
+            content: "";
+            width: 16px;
+            height: 1px;
+            background: var(--green);
+        }
+
+        .fc-icon {
+            width: 52px;
+            height: 52px;
+            background: var(--green-glow);
+            border: 1px solid var(--border-bright);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            transition: transform .35s cubic-bezier(.34, 1.56, .64, 1);
+        }
+
+        .freelance-card:hover .fc-icon {
+            transform: scale(1.1) rotate(8deg);
+        }
+
+        .fc-icon svg {
+            width: 22px;
+            height: 22px;
+            color: var(--green);
+        }
+
+        .fc-title {
+            font-weight: 700;
+            font-size: 17px;
+            letter-spacing: -.01em;
+            margin-bottom: 8px;
+        }
+
+        .fc-location {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            letter-spacing: .08em;
+            color: var(--green);
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .fc-location svg {
+            width: 10px;
+            height: 10px;
+        }
+
+        .fc-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.65;
+        }
+
+        /* ===== IMAGE PLACEHOLDER: FREELANCE SECTION ===== */
+        /* Replace with a pan-India/globe photo or illustrated map */
+        /* Recommended: India map with pin markers on cities, or drone shot of a city */
+        /* Size: ~1200x300px. Place at: /images/careers-map.jpg */
+        .freelance-map-placeholder {
+            width: 100%;
+            height: 200px;
+            background: var(--bg-3);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 24px;
+        }
+
+        .freelance-map-placeholder::before {
+            content: "[ MAP / LOCATIONS IMAGE — Mumbai · Pune · Delhi · Hyderabad · Bangalore · Dubai ]";
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            letter-spacing: .08em;
+            color: var(--green);
+            opacity: 0.35;
+            text-transform: uppercase;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .freelance-map-placeholder::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, transparent, var(--green-glow) 100%);
+        }
+
+        /* ============ APPLY STRIP (CTA) ============ */
+        #apply-strip {
+            padding: 100px 60px;
+            background: var(--bg-2);
+        }
+
+        .apply-inner {
+            max-width: 1300px;
+            margin: 0 auto;
+            background: var(--green);
+            border-radius: 32px;
+            padding: 72px 80px;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 60px;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .apply-inner::before {
+            content: "";
+            position: absolute;
+            top: -100px;
+            right: -100px;
+            width: 400px;
+            height: 400px;
+            background: rgba(0, 0, 0, 0.07);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .apply-inner::after {
+            content: "";
+            position: absolute;
+            bottom: -60px;
+            left: 300px;
+            width: 250px;
+            height: 250px;
+            background: rgba(0, 0, 0, 0.04);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .apply-text {
+            position: relative;
+            z-index: 1;
+        }
+
+        .apply-eyebrow {
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: .16em;
+            text-transform: uppercase;
+            color: rgba(8, 8, 8, 0.5);
+            margin-bottom: 14px;
+        }
+
+        .apply-headline {
+            font-weight: 800;
+            font-size: clamp(32px, 4vw, 54px);
+            line-height: 1.0;
+            letter-spacing: -.025em;
+            color: #080808;
+            margin-bottom: 16px;
+        }
+
+        .apply-headline em {
+            font-style: italic;
+            font-weight: 400;
+        }
+
+        .apply-body {
+            font-size: 15px;
+            color: rgba(8, 8, 8, 0.6);
+            line-height: 1.7;
+            max-width: 480px;
+        }
+
+        .apply-email {
+            font-family: 'Space Mono', monospace;
+            font-size: 13px;
+            font-weight: 700;
+            color: #080808;
+            margin-top: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .apply-email svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        .apply-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            align-items: flex-end;
+            position: relative;
+            z-index: 1;
+            flex-shrink: 0;
+        }
+
+        .btn-dark {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: #080808;
+            color: var(--green);
+            font-weight: 700;
+            font-size: 13px;
+            letter-spacing: .06em;
+            padding: 16px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            border: none;
+            cursor: none;
+            transition: transform .2s, box-shadow .3s;
+            white-space: nowrap;
+            position: relative;
+            overflow: hidden;
+            font-family: 'Hubot Sans', sans-serif;
+        }
+
+        .btn-dark::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(168, 255, 87, 0.1), transparent);
+            transform: translateX(-100%);
+            transition: transform .5s;
+        }
+
+        .btn-dark:hover::after {
+            transform: translateX(100%);
+        }
+
+        .btn-dark:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .btn-dark svg {
+            width: 13px;
+            height: 13px;
+        }
+
+        .btn-dark-outline {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: transparent;
+            color: rgba(8, 8, 8, 0.6);
+            font-size: 13px;
+            font-weight: 600;
+            padding: 14px 24px;
+            border-radius: 50px;
+            text-decoration: none;
+            border: 1px solid rgba(8, 8, 8, 0.2);
+            cursor: none;
+            transition: all .2s;
+            white-space: nowrap;
+            font-family: 'Hubot Sans', sans-serif;
+        }
+
+        .btn-dark-outline:hover {
+            color: #080808;
+            border-color: rgba(8, 8, 8, 0.5);
+            transform: translateY(-2px);
+        }
+
+        /* ============ RESPONSIVE ============ */
+        @media (max-width: 1100px) {
+            .why-work-inner {
+                grid-template-columns: 1fr;
+            }
+
+            .freelance-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .apply-inner {
+                grid-template-columns: 1fr;
+            }
+
+            .apply-actions {
+                align-items: flex-start;
+            }
+        }
+
+        @media (max-width: 800px) {
+            #careers-hero {
+                padding: 20px 24px 80px;
+            }
+
+            #why-work,
+            #open-roles,
+            #freelance-roles,
+            #apply-strip {
+                padding: 80px 24px;
+            }
+
+            .hero-badge,
+            .hero-badge-2 {
+                display: none;
+            }
+
+            .hero-image-placeholder {
+                display: none;
+            }
+
+            .roles-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .job-card-main {
+                grid-template-columns: 48px 1fr;
+            }
+
+            .job-right {
+                display: none;
+            }
+
+            .job-details-inner {
+                grid-template-columns: 1fr;
+                padding-left: 24px;
+            }
+
+            .job-expand-btn {
+                padding-left: 72px;
+            }
+
+            .freelance-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .why-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .apply-inner {
+                padding: 48px 32px;
+            }
+
+            .scroll-hint {
+                left: 24px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="cursor"></div>
+    <div id="cursor-ring"></div>
+    <canvas id="particles"></canvas>
+
+    <button id="theme-toggle" aria-label="Toggle theme">
+        <svg id="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+            color="var(--text-secondary)">
+            <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
+        </svg>
+        <svg id="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+            color="var(--text-secondary)">
+            <circle cx="12" cy="12" r="5" />
+            <path
+                d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+        </svg>
+    </button>
+
+    <!-- ===================================================
+         HERO SECTION
+         IMAGE: /images/careers-hero.jpg — Right panel full-height
+         Recommended: Energetic kitchen or founder's office photo
+    =================================================== -->
+    <section id="careers-hero">
+        <div class="hero-orb"></div>
+        <div class="hero-bg-word">CAREERS</div>
+
+        <!-- RIGHT PANEL IMAGE AREA -->
+        <div class="hero-image-placeholder">
+            <!-- REPLACE THIS DIV with:
+            <img src="/images/careers-hero.jpg" alt="My Cloud Kitchen team" style="width:100%;height:100%;object-fit:cover;" />
+            -->
+        </div>
+
+        <div class="hero-badge">Andheri, Mumbai · HQ</div>
+        <div class="hero-badge-2">
+            <div class="hb2-num">7</div>
+            <div class="hb2-label">Open Roles</div>
+        </div>
+
+        <div class="hero-content">
+            <div class="hero-label">Careers at MyCloudKitchen</div>
+            <h1 class="hero-title">
+                <span class="word"><span>Build</span></span>
+                <span class="word"><span>the</span></span>
+                <br>
+                <span class="word"><span><em>Future</em></span></span>
+                <span class="word"><span>of</span></span>
+                <br>
+                <span class="word"><span>Cloud Kitchens.</span></span>
+            </h1>
+            <p class="hero-body">Transforming how food brands scale — through multi-brand models, franchising systems,
+                and plug-and-play restaurant growth. Work directly with industry experts and founders.</p>
+            <div class="hero-pills">
+                <div class="hero-pill">
+                    <div class="dot"></div>Full-Time Roles
+                </div>
+                <div class="hero-pill">
+                    <div class="dot"></div>Paid Internships
+                </div>
+                <div class="hero-pill">
+                    <div class="dot"></div>Freelance Projects
+                </div>
+                <div class="hero-pill">
+                    <div class="dot"></div>Pan-India + Dubai
+                </div>
+            </div>
+        </div>
+
+        <div class="scroll-hint">
+            <div class="scroll-line"></div>
+            <span>Scroll</span>
+        </div>
+    </section>
+
+    <!-- MARQUEE -->
+    <div class="marquee-section">
+        <div class="marquee-track">
+            <div class="marquee-item">
+                <div class="dot"></div>Cloud Kitchen Operations
+            </div>
+            <div class="marquee-item accent">
+                <div class="dot"></div>Head Chef Roles
+            </div>
+            <div class="marquee-item">
+                <div class="dot"></div>F&amp;B Branding
+            </div>
+            <div class="marquee-item accent">
+                <div class="dot"></div>Kitchen Design
+            </div>
+            <div class="marquee-item">
+                <div class="dot"></div>Food Photography
+            </div>
+            <div class="marquee-item accent">
+                <div class="dot"></div>Account Management
+            </div>
+            <div class="marquee-item">
+                <div class="dot"></div>Hospitality Consulting
+            </div>
+            <div class="marquee-item accent">
+                <div class="dot"></div>Zomato · Swiggy
+            </div>
+            <div class="marquee-item">
+                <div class="dot"></div>Cloud Kitchen Operations
+            </div>
+            <div class="marquee-item accent">
+                <div class="dot"></div>Head Chef Roles
+            </div>
+            <div class="marquee-item">
+                <div class="dot"></div>F&amp;B Branding
+            </div>
+            <div class="marquee-item accent">
+                <div class="dot"></div>Kitchen Design
+            </div>
+            <div class="marquee-item">
+                <div class="dot"></div>Food Photography
+            </div>
+            <div class="marquee-item accent">
+                <div class="dot"></div>Account Management
+            </div>
+            <div class="marquee-item">
+                <div class="dot"></div>Hospitality Consulting
+            </div>
+            <div class="marquee-item accent">
+                <div class="dot"></div>Zomato · Swiggy
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================================================
+         WHY WORK WITH US
+         IMAGE: /images/careers-team.jpg — Right side team photo
+         Recommended: Founder + team in modern kitchen/office setting
+    =================================================== -->
+    <section id="why-work">
+        <div class="why-work-orb"></div>
+        <div class="why-work-inner">
+            <div class="why-work-left reveal-left">
+                <div class="section-tag">Why Work With Us</div>
+                <h2 class="why-work-headline">High-learning.<br>High-growth.<br><em>High-impact.</em></h2>
+                <p class="why-work-body">Work directly with founders and high-growth food brands. Gain exposure to
+                    multi-brand cloud kitchen ecosystems and build national & international F&B brands in a fast-paced,
+                    startup environment.</p>
+                <div class="why-cards">
+                    <div class="why-card reveal d1">
+                        <div class="why-card-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
+                                <circle cx="9" cy="7" r="4" />
+                                <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" />
+                            </svg>
+                        </div>
+                        <div class="why-card-title">Work With Founders</div>
+                        <div class="why-card-body">Direct access to decision-makers and industry veterans from day one.
+                        </div>
+                    </div>
+                    <div class="why-card reveal d2">
+                        <div class="why-card-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M13 10V3L4 14h7v7l9-11h-7z" />
+                            </svg>
+                        </div>
+                        <div class="why-card-title">Fast-Paced Growth</div>
+                        <div class="why-card-body">Startup culture where your contributions directly shape outcomes.
+                        </div>
+                    </div>
+                    <div class="why-card reveal d3">
+                        <div class="why-card-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <circle cx="12" cy="12" r="10" />
+                                <path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20" />
+                            </svg>
+                        </div>
+                        <div class="why-card-title">National & Global</div>
+                        <div class="why-card-body">Build brands that scale across India and international markets.</div>
+                    </div>
+                    <div class="why-card reveal d4">
+                        <div class="why-card-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path
+                                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                            </svg>
+                        </div>
+                        <div class="why-card-title">Multi-Brand Ecosystem</div>
+                        <div class="why-card-body">Exposure to diverse cuisines, kitchen models and brand strategies.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="why-work-right reveal-right">
+                <!-- ===== IMAGE PLACEHOLDER =====
+                     Replace .office-image-placeholder with:
+                     <img src="/images/careers-team.jpg" alt="MyCloudKitchen team at work"
+                          style="width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:24px;border:1px solid var(--border);" />
+                -->
+                <div class="office-image-placeholder"></div>
+                <div class="office-img-badge">Est. 2012 · 500+ Kitchens Launched</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================================================
+         OPEN ROLES — FULL-TIME & INTERNSHIP
+    =================================================== -->
+    <section id="open-roles">
+        <div class="roles-orb"></div>
+        <div class="roles-header reveal">
+            <div>
+                <div class="section-tag">Open Positions</div>
+                <h2 class="roles-headline">Find your<br><em>role.</em></h2>
+            </div>
+            <div class="roles-count">Showing <span>5</span> full-time & internship roles · Mumbai HQ</div>
+        </div>
+
+        <div class="role-filters reveal d1">
+            <button class="filter-btn active">All Roles</button>
+            <button class="filter-btn">Full-Time</button>
+            <button class="filter-btn">Internship</button>
+            <button class="filter-btn">Culinary</button>
+            <button class="filter-btn">Creative</button>
+            <button class="filter-btn">Operations</button>
+        </div>
+
+        <div class="jobs-list">
+
+            <!-- JOB 1: Hospitality Intern -->
+            <div class="job-card reveal d1">
+                <div class="job-card-main">
+                    <div class="job-num">01</div>
+                    <div class="job-info">
+                        <div class="job-title-row">
+                            <span class="job-title">Hospitality Management Intern</span>
+                            <span class="job-badge intern">Internship</span>
+                            <span class="job-badge">Paid</span>
+                        </div>
+                        <div class="job-meta">
+                            <span class="job-meta-item">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
+                                    <circle cx="12" cy="10" r="3" />
+                                </svg>
+                                Andheri, Mumbai
+                            </span>
+                            <span class="job-meta-item">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10" />
+                                    <path d="M12 6v6l4 2" />
+                                </svg>
+                                Min. 6 Months
+                            </span>
+                            <span class="job-meta-item">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="2" y="7" width="20" height="14" rx="2" />
+                                    <path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16" />
+                                </svg>
+                                Cloud Kitchen Ops
+                            </span>
+                        </div>
+                    </div>
+                    <div class="job-right">
+                        <div class="job-salary">Paid<span> Internship</span></div>
+                        <a href="mailto:Hello@mycloudkitchen.in?subject=Application – Hospitality Management Intern"
+                            class="job-apply-btn">
+                            Apply Now
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <button class="job-expand-btn" onclick="toggleJob(this)">
+                    View Details
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M6 9l6 6 6-6" />
+                    </svg>
+                </button>
+                <div class="job-details">
+                    <div class="job-details-inner">
+                        <div class="job-detail-col">
+                            <div class="job-detail-heading">What You'll Learn</div>
+                            <ul class="job-detail-list">
+                                <li>Cloud kitchen business models & multi-brand operations</li>
+                                <li>Kitchen setup, vendor sourcing & operations management</li>
+                                <li>Zomato/Swiggy backend handling & order flow optimization</li>
+                                <li>Menu engineering & pricing strategies</li>
+                            </ul>
+                        </div>
+                        <div class="job-detail-col">
+                            <div class="job-detail-heading">Who Should Apply</div>
+                            <ul class="job-detail-list">
+                                <li>Hospitality students or fresh graduates</li>
+                                <li>Strong interest in F&B startups & restaurant consulting</li>
+                                <li>Willingness to learn hands-on in a founder's office</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- JOB 2: Head Chef -->
+            <div class="job-card reveal d2">
+                <div class="job-card-main">
+                    <div class="job-num">02</div>
+                    <div class="job-info">
+                        <div class="job-title-row">
+                            <span class="job-title">Head Chef / Culinary Consultant</span>
+                            <span class="job-badge">Full-Time</span>
+                        </div>
+                        <div class="job-meta">
+                            <span class="job-meta-item">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
+                                    <circle cx="12" cy="10" r="3" />
+                                </svg>
+                                Andheri, Mumbai
+                            </span>
+                            <span class="job-meta-item">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10" />
+                                    <path d="M12 6v6l4 2" />
+                                </svg>
+                                5+ Years Exp.
+                            </span>
+                            <span class="job-meta-item">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="2" y="7" width="20" height="14" rx="2" />
+                                    <path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16" />
+                                </svg>
+                                Culinary
+                            </span>
+                        </div>
+                    </div>
+                    <div class="job-right">
+                        <div class="job-salary"><span>₹50K–₹1.5L</span>/month</div>
+                        <a href="mailto:Hello@mycloudkitchen.in?subject=Application – Head Chef Culinary Consultant"
+                            class="job-apply-btn">
+                            Apply Now
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <button class="job-expand-btn" onclick="toggleJob(this)">
+                    View Details
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M6 9l6 6 6-6" />
+                    </svg>
+                </button>
+                <div class="job-details">
+                    <div class="job-details-inner">
+                        <div class="job-detail-col">
+                            <div class="job-detail-heading">Key Responsibilities</div>
+                            <ul class="job-detail-list">
+                                <li>SOP creation for cloud kitchens & restaurant chains</li>
+                                <li>Menu planning & concept development</li>
+                                <li>Food costing & profitability optimization</li>
+                                <li>Training kitchen staff across client locations</li>
+                            </ul>
+                        </div>
+                        <div class="job-detail-col">
+                            <div class="job-detail-heading">Ideal Candidate</div>
+                            <ul class="job-detail-list">
+                                <li>Multi-cuisine experience preferred</li>
+                                <li>Strong understanding of cloud kitchen scalability</li>
+                                <li>Experience in brand standardization</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- JOB 3: Branding & Design -->
+            <div class="job-card reveal d3">
+                <div class="job-card-main">
+                    <div class="job-num">03</div>
+                    <div class="job-info">
+                        <div class="job-title-row">
+                            <span class="job-title">Branding & Design Specialist</span>
+                            <span class="job-badge">Full-Time</span>
+                        </div>
+                        <div class="job-meta">
+                            <span class="job-meta-item">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
+                                    <circle cx="12" cy="10" r="3" />
+                                </svg>
+                                Andheri, Mumbai
+                            </span>
+                            <span class="job-meta-item">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10" />
+                                    <path d="M12 6v6l4 2" />
+                                </svg>
+                                3+ Years Exp.
+                            </span>
+                            <span class="job-meta-item">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="2" y="7" width="20" height="14" rx="2" />
+                                    <path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16" />
+                                </svg>
+                                Creative / F&B Brands
+                            </span>
+                        </div>
+                    </div>
+                    <div class="job-right">
+                        <div class="job-salary"><span>₹50K+</span>/month</div>
+                        <a href="mailto:Hello@mycloudkitchen.in?subject=Application – Branding Design Specialist"
+                            class="job-apply-btn">
+                            Apply Now
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <button class="job-expand-btn" onclick="toggleJob(this)">
+                    View Details
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M6 9l6 6 6-6" />
+                    </svg>
+                </button>
+                <div class="job-details">
+                    <div class="job-details-inner">
+                        <div class="job-detail-col">
+                            <div class="job-detail-heading">Responsibilities</div>
+                            <ul class="job-detail-list">
+                                <li>Brand name ideation & identity creation</li>
+                                <li>Logo, packaging & menu design</li>
+                                <li>Social media creatives & website design</li>
+                                <li>UI/UX for food delivery brands</li>
+                            </ul>
+                        </div>
+                        <div class="job-detail-col">
+                            <div class="job-detail-heading">Preferred Skills</div>
+                            <ul class="job-detail-list">
+                                <li>Experience in F&B or D2C branding</li>
+                                <li>Strong portfolio in restaurant or food startups</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- JOB 4: Kitchen Planning -->
+            <div class="job-card reveal d4">
+                <div class="job-card-main">
+                    <div class="job-num">04</div>
+                    <div class="job-info">
+                        <div class="job-title-row">
+                            <span class="job-title">Kitchen Planning & Design Consultant</span>
+                            <span class="job-badge">Full-Time</span>
+                        </div>
+                        <div class="job-meta">
+                            <span class="job-meta-item">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
+                                    <circle cx="12" cy="10" r="3" />
+                                </svg>
+                                Andheri, Mumbai
+                            </span>
+                            <span class="job-meta-item">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10" />
+                                    <path d="M12 6v6l4 2" />
+                                </svg>
+                                3+ Years Exp.
+                            </span>
+                            <span class="job-meta-item">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="2" y="7" width="20" height="14" rx="2" />
+                                    <path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16" />
+                                </svg>
+                                AutoCAD · Kitchen Design
+                            </span>
+                        </div>
+                    </div>
+                    <div class="job-right">
+                        <div class="job-salary"><span>₹50K+</span>/month</div>
+                        <a href="mailto:Hello@mycloudkitchen.in?subject=Application – Kitchen Planning Design Consultant"
+                            class="job-apply-btn">
+                            Apply Now
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <button class="job-expand-btn" onclick="toggleJob(this)">
+                    View Details
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M6 9l6 6 6-6" />
+                    </svg>
+                </button>
+                <div class="job-details">
+                    <div class="job-details-inner">
+                        <div class="job-detail-col">
+                            <div class="job-detail-heading">Responsibilities</div>
+                            <ul class="job-detail-list">
+                                <li>AutoCAD kitchen layouts & workflow optimization</li>
+                                <li>Equipment planning & space utilization</li>
+                                <li>Cloud kitchen setup consultancy</li>
+                            </ul>
+                        </div>
+                        <div class="job-detail-col">
+                            <div class="job-detail-heading">Requirements</div>
+                            <ul class="job-detail-list">
+                                <li>Proficiency in AutoCAD</li>
+                                <li>Experience in commercial kitchen planning</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- JOB 5: Account Manager -->
+            <div class="job-card reveal d5">
+                <div class="job-card-main">
+                    <div class="job-num">05</div>
+                    <div class="job-info">
+                        <div class="job-title-row">
+                            <span class="job-title">Account Manager – Food Delivery Platforms</span>
+                            <span class="job-badge urgent">Urgent</span>
+                            <span class="job-badge">Full-Time</span>
+                        </div>
+                        <div class="job-meta">
+                            <span class="job-meta-item">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
+                                    <circle cx="12" cy="10" r="3" />
+                                </svg>
+                                Andheri, Mumbai
+                            </span>
+                            <span class="job-meta-item">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10" />
+                                    <path d="M12 6v6l4 2" />
+                                </svg>
+                                6+ Months Exp.
+                            </span>
+                            <span class="job-meta-item">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="2" y="7" width="20" height="14" rx="2" />
+                                    <path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16" />
+                                </svg>
+                                Zomato · Swiggy · Petpooja
+                            </span>
+                        </div>
+                    </div>
+                    <div class="job-right">
+                        <div class="job-salary"><span>₹30K+</span>/month</div>
+                        <a href="mailto:Hello@mycloudkitchen.in?subject=Application – Account Manager Food Delivery Platforms"
+                            class="job-apply-btn">
+                            Apply Now
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <button class="job-expand-btn" onclick="toggleJob(this)">
+                    View Details
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M6 9l6 6 6-6" />
+                    </svg>
+                </button>
+                <div class="job-details">
+                    <div class="job-details-inner">
+                        <div class="job-detail-col">
+                            <div class="job-detail-heading">Responsibilities</div>
+                            <ul class="job-detail-list">
+                                <li>Managing aggregator dashboards & performance metrics</li>
+                                <li>Improving ratings, conversions & visibility</li>
+                                <li>Campaign planning & discount strategy</li>
+                            </ul>
+                        </div>
+                        <div class="job-detail-col">
+                            <div class="job-detail-heading">Platforms You'll Work On</div>
+                            <ul class="job-detail-list">
+                                <li>Zomato, Swiggy, Uber Eats, Foodpanda</li>
+                                <li>Petpooja & other aggregator backends</li>
+                                <li>Hands-on platform experience required</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div><!-- /jobs-list -->
+    </section>
+
+    <!-- ===================================================
+         FREELANCE / PROJECT-BASED ROLES
+         IMAGE: /images/careers-map.jpg — Below the 3 cards
+         Recommended: India map with cities highlighted, or aerial city shot
+    =================================================== -->
+    <section id="freelance-roles">
+        <div class="freelance-inner">
+            <div class="freelance-header reveal">
+                <div class="section-tag">Freelance & Project-Based</div>
+                <h2 class="freelance-headline">Work on your<br><em>own terms.</em></h2>
+            </div>
+
+            <div class="freelance-grid">
+
+                <!-- Freelance: Food Photographers -->
+                <div class="freelance-card reveal d1">
+                    <div class="fc-num">01</div>
+                    <div class="fc-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z" />
+                            <circle cx="12" cy="13" r="4" />
+                        </svg>
+                    </div>
+                    <div class="fc-title">Part-Time Food Photographers</div>
+                    <div class="fc-location">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
+                            <circle cx="12" cy="10" r="3" />
+                        </svg>
+                        Pan India · Freelance
+                    </div>
+                    <div class="fc-desc">Hiring photographers across India who specialise in food photography for cloud
+                        kitchens and restaurant brands. Experience in food/product shoots required. Portfolio mandatory.
+                        Project-based engagement.</div>
+                </div>
+
+                <!-- Freelance: Hospitality Consultants -->
+                <div class="freelance-card reveal d2">
+                    <div class="fc-num">02</div>
+                    <div class="fc-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
+                            <circle cx="9" cy="7" r="4" />
+                            <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" />
+                        </svg>
+                    </div>
+                    <div class="fc-title">Part-Time Hospitality Consultants</div>
+                    <div class="fc-location">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
+                            <circle cx="12" cy="10" r="3" />
+                        </svg>
+                        Mumbai · Pune · Delhi · Hyd · Blr · Dubai
+                    </div>
+                    <div class="fc-desc">Building a network of independent hospitality consultants for projects across
+                        India & international markets. Scope includes setup consulting and local client support per
+                        agency SOPs. Project-based payouts with high earning potential.</div>
+                </div>
+
+                <!-- Network card -->
+                <div class="freelance-card reveal d3" style="background: var(--green); border-color: transparent;">
+                    <div class="fc-num" style="color: rgba(8,8,8,0.5);">Network</div>
+                    <div class="fc-icon" style="background: rgba(8,8,8,0.08); border-color: rgba(8,8,8,0.12);">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#080808" stroke-width="1.5">
+                            <circle cx="12" cy="12" r="10" />
+                            <path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20" />
+                        </svg>
+                    </div>
+                    <div class="fc-title" style="color: #080808; font-size: 20px;">Join Our<br>Consulting Network</div>
+                    <div class="fc-desc" style="color: rgba(8,8,8,0.65); margin-top: 12px;">No fixed salary —
+                        project-based payouts with high earning potential. Work from your city, on your schedule.</div>
+                    <a href="mailto:Hello@mycloudkitchen.in?subject=Application – Part-Time Hospitality Consultant"
+                        style="display:inline-flex;align-items:center;gap:8px;margin-top:20px;background:#080808;color:var(--green);padding:12px 22px;border-radius:50px;font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.08em;text-decoration:none;transition:transform .2s,box-shadow .25s;cursor:none;">
+                        Express Interest
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            style="width:11px;height:11px;">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
+                    </a>
+                </div>
+
+            </div>
+
+            <!-- ===== MAP IMAGE PLACEHOLDER =====
+                 Replace .freelance-map-placeholder with:
+                 <img src="/images/careers-map.jpg" alt="Pan India presence"
+                      style="width:100%;height:200px;object-fit:cover;border-radius:20px;margin-top:24px;border:1px solid var(--border);" />
+            -->
+            <div class="freelance-map-placeholder reveal"></div>
+        </div>
+    </section>
+
+    <!-- ===================================================
+         APPLY CTA SECTION
+    =================================================== -->
+    <section id="apply-strip">
+        <div class="apply-inner reveal">
+            <div class="apply-text">
+                <div class="apply-eyebrow">Ready to Apply?</div>
+                <h2 class="apply-headline">Send us your<br><em>best work.</em></h2>
+                <p class="apply-body">Attach your resume, portfolio (if applicable), and a short introduction. Use the
+                    subject line format: Application – [Position Name] – [Your Name]</p>
+                <div class="apply-email">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                        <polyline points="22,6 12,13 2,6" />
+                    </svg>
+                    Hello@mycloudkitchen.in
+                </div>
+            </div>
+            <div class="apply-actions">
+                <a href="mailto:Hello@mycloudkitchen.in?subject=Application – [Position Name] – [Your Name]"
+                    class="btn-dark">
+                    Send Application
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7" />
+                    </svg>
+                </a>
+                <a href="tel:+919022453555" class="btn-dark-outline">Call +91-9022453555</a>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        /* CURSOR */
+        const cursor = document.getElementById('cursor');
+        const cursorRing = document.getElementById('cursor-ring');
+        let mx = 0, my = 0, rx = 0, ry = 0;
+        document.addEventListener('mousemove', e => {
+            mx = e.clientX; my = e.clientY;
+            cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+        });
+        (function animateRing() {
+            rx += (mx - rx) * .12; ry += (my - ry) * .12;
+            cursorRing.style.left = rx + 'px'; cursorRing.style.top = ry + 'px';
+            requestAnimationFrame(animateRing);
+        })();
+        document.querySelectorAll('a,button,.job-card,.freelance-card,.why-card,.filter-btn').forEach(el => {
+            el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+            el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+        });
+
+        /* THEME TOGGLE */
+        document.getElementById('theme-toggle').addEventListener('click', () => {
+            const html = document.documentElement;
+            html.setAttribute('data-theme', html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+        });
+
+        /* PARTICLES */
+        const canvas = document.getElementById('particles');
+        const ctx = canvas.getContext('2d');
+        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        resizeCanvas(); window.addEventListener('resize', resizeCanvas);
+        const particles = [];
+        class Particle {
+            constructor() { this.reset(); }
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 1.5 + .3;
+                this.speedX = (Math.random() - .5) * .3;
+                this.speedY = (Math.random() - .5) * .3;
+                this.opacity = Math.random() * .4 + .05;
+                this.green = Math.random() > .7;
+            }
+            update() {
+                this.x += this.speedX; this.y += this.speedY;
+                if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) this.reset();
+            }
+            draw() {
+                const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = this.green
+                    ? (isDark ? `rgba(168,255,87,${this.opacity})` : `rgba(90,158,16,${this.opacity * .6})`)
+                    : (isDark ? `rgba(255,255,255,${this.opacity * .3})` : `rgba(0,0,0,${this.opacity * .15})`);
+                ctx.fill();
+            }
+        }
+        for (let i = 0; i < 55; i++) particles.push(new Particle());
+        (function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animateParticles);
+        })();
+
+        /* REVEAL */
+        const revealObserver = new IntersectionObserver(entries => {
+            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+        }, { threshold: .08, rootMargin: '0px 0px -60px 0px' });
+        document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale').forEach(el => revealObserver.observe(el));
+
+        /* JOB EXPAND TOGGLE */
+        function toggleJob(btn) {
+            const card = btn.closest('.job-card');
+            card.classList.toggle('expanded');
+            btn.querySelector('span') && (btn.querySelector('span').textContent = card.classList.contains('expanded') ? 'Hide Details' : 'View Details');
+            // update text node
+            const nodes = btn.childNodes;
+            nodes.forEach(n => { if (n.nodeType === 3) n.textContent = card.classList.contains('expanded') ? 'Hide Details' : 'View Details'; });
+        }
+
+        /* FILTER TABS (visual only) */
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            });
+        });
+
+        /* CARD GLOW */
+        document.querySelectorAll('.why-card,.freelance-card,.job-card').forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                const x = ((e.clientX - rect.left) / rect.width) * 100;
+                const y = ((e.clientY - rect.top) / rect.height) * 100;
+                const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+                const glowColor = isDark ? 'rgba(168,255,87,0.04)' : 'rgba(90,158,16,0.04)';
+                if (!card.classList.contains('freelance-card') || !card.style.background.includes('green')) {
+                    card.style.background = `radial-gradient(circle at ${x}% ${y}%, ${glowColor}, var(--card-bg) 60%)`;
+                }
+            });
+            card.addEventListener('mouseleave', () => { card.style.background = ''; });
+        });
+
+        /* MAGNETIC CTA BUTTON */
+        document.querySelectorAll('.btn-dark').forEach(btn => {
+            btn.addEventListener('mousemove', e => {
+                const rect = btn.getBoundingClientRect();
+                const dx = (e.clientX - rect.left - rect.width / 2) * .3;
+                const dy = (e.clientY - rect.top - rect.height / 2) * .3;
+                btn.style.transform = `translate(${dx}px,${dy}px)`;
+            });
+            btn.addEventListener('mouseleave', () => { btn.style.transform = ''; });
+        });
+    </script>
+</body>
+
+</html>

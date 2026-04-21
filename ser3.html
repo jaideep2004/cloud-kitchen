@@ -673,10 +673,18 @@
             gap: 100px;
             align-items: center;
             position: relative;
-            z-index: 1
+            z-index: 1;
+            background-image: url(/images/technician.png);
+            background-size: 47%;
+            background-repeat: no-repeat;
+            background-position: left;
         }
 
-        .intro-left {}
+
+        .intro-left {
+
+            order: 2;
+        }
 
         .intro-eyebrow {
             font-family: 'Space Mono', monospace;
@@ -1096,7 +1104,7 @@
             font-size: 14px;
             font-weight: 600;
             margin-top: 6px;
-             color: var(--text-primary);
+            color: var(--text-primary);
         }
 
         .bc-stat-sub {
@@ -1410,6 +1418,12 @@
             gap: 60px;
             position: relative;
             overflow: hidden;
+
+            background-image: url(/images/sa1.png);
+            background-size: cover;
+            background-repeat: no-repeat;
+            /* background-position: 61% 0%; */
+            background-blend-mode: overlay;
         }
 
         .cta-inner::before {
@@ -1617,6 +1631,267 @@
 
             .hero-stats {
                 display: none
+            }
+        }
+
+        /* ============================================================
+       FAQ SECTION
+    ============================================================ */
+        /* FAQ — tabs + two-col */
+        #faq {
+            padding: 60px 60px 100px;
+            background: var(--bg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        #faq .faq-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(140px);
+            pointer-events: none;
+            z-index: 0;
+            background: rgba(168, 255, 87, 0.05);
+            width: 600px;
+            height: 600px;
+            top: 50%;
+            right: -200px;
+            transform: translateY(-50%);
+        }
+
+        [data-theme="light"] #faq .faq-orb {
+            background: rgba(90, 158, 16, 0.05);
+        }
+
+        .faq-top {
+            max-width: 1300px;
+            margin: 0 auto 56px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 40px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .faq-headline {
+            font-weight: 800;
+            font-size: clamp(36px, 4vw, 56px);
+            line-height: 1.05;
+            letter-spacing: -0.02em;
+            margin-top: 16px;
+        }
+
+        .faq-headline em {
+            font-style: italic;
+            font-weight: 400;
+            color: var(--green);
+        }
+
+        .faq-tabs {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .faq-tab {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 0.04em;
+            padding: 10px 18px;
+            border-radius: 50px;
+            cursor: none;
+            transition: all 0.25s;
+        }
+
+        .faq-tab.active,
+        .faq-tab:hover {
+            background: var(--green);
+            border-color: var(--green);
+            color: #080808;
+            font-weight: 700;
+        }
+
+        .faq-columns {
+            max-width: 1300px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .faq-col {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .faq-item {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            overflow: hidden;
+            transition: border-color 0.3s;
+        }
+
+        .faq-item.open {
+            border-color: var(--border-bright);
+            background: var(--surface-hover);
+        }
+
+        .faq-question {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            padding: 20px 22px;
+            cursor: none;
+            user-select: none;
+        }
+
+        .faq-question-text {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            line-height: 1.4;
+        }
+
+        .faq-item.open .faq-question-text {
+            color: var(--green);
+        }
+
+        .faq-toggle {
+            flex-shrink: 0;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition:
+                transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+                background 0.25s,
+                border-color 0.25s;
+        }
+
+        .faq-item.open .faq-toggle {
+            transform: rotate(45deg);
+            background: var(--green);
+            border-color: var(--green);
+        }
+
+        .faq-item.open .faq-toggle svg {
+            color: #080808;
+        }
+
+        .faq-toggle svg {
+            width: 13px;
+            height: 13px;
+            color: var(--text-secondary);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition:
+                max-height 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                padding 0.3s;
+            padding: 0 22px;
+        }
+
+        .faq-item.open .faq-answer {
+            max-height: 300px;
+            padding-bottom: 20px;
+        }
+
+        .faq-answer p {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        .faq-category-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 8px;
+            font-family: "Space Mono", monospace;
+            font-size: 9px;
+            letter-spacing: 0.1em;
+            color: var(--green);
+            text-transform: uppercase;
+            background: var(--green-glow);
+            border: 1px solid var(--border-bright);
+            padding: 3px 9px;
+            border-radius: 50px;
+        }
+
+        .faq-bottom {
+            max-width: 1300px;
+            margin: 48px auto 0;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .faq-body {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .faq-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: "Space Mono", monospace;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--green);
+            text-decoration: none;
+            cursor: none;
+            transition: gap 0.2s;
+        }
+
+        .faq-cta:hover {
+            gap: 14px;
+        }
+
+        .faq-cta svg {
+            width: 12px;
+            height: 12px;
+        }
+
+        @media (max-width: 900px) {
+            .faq-columns {
+                grid-template-columns: 1fr;
+            }
+
+            .faq-top {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .faq-tabs {
+                justify-content: flex-start;
+            }
+        }
+
+        @media (max-width: 800px) {
+            #faq {
+                padding: 80px 24px;
             }
         }
     </style>
@@ -2039,6 +2314,42 @@
         </div>
     </section>
 
+    <!-- FAQ SECTION -->
+    <!-- FAQ SECTION -->
+    <section id="faq">
+        <div class="faq-orb"></div>
+        <div class="faq-top reveal">
+            <div>
+                <div class="section-tag">Knowledge Base</div>
+                <h2 class="faq-headline">Got <em>questions?</em></h2>
+            </div>
+            <div class="faq-tabs" id="faq-tabs">
+                <button class="faq-tab active" data-cat="all">All</button>
+                <button class="faq-tab" data-cat="The Basics">Basics</button>
+                <button class="faq-tab" data-cat="Services">Services</button>
+                <button class="faq-tab" data-cat="Setup & Location">Setup</button>
+
+            </div>
+        </div>
+
+        <div class="faq-columns" id="faq-columns">
+            <!-- Left Column -->
+            <div class="faq-col" id="faq-col-left"></div>
+            <!-- Right Column -->
+            <div class="faq-col" id="faq-col-right"></div>
+        </div>
+
+        <div class="faq-bottom reveal">
+            <p class="faq-body">Can't find what you're looking for?</p>
+            <a href="#" class="faq-cta" id="open-contact-faq">
+                Ask us directly
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+            </a>
+        </div>
+    </section>
+
     <!-- ══ CTA ══ -->
     <section id="cta">
         <div class="cta-inner reveal">
@@ -2110,6 +2421,57 @@
         document.querySelectorAll('.btn-primary').forEach(btn => {
             btn.addEventListener('mousemove', e => { const r = btn.getBoundingClientRect(), dx = (e.clientX - r.left - r.width / 2) * .3, dy = (e.clientY - r.top - r.height / 2) * .3; btn.style.transform = `translate(${dx}px,${dy}px)` });
             btn.addEventListener('mouseleave', () => btn.style.transform = '');
+        });
+
+        /* FAQ ACCORDION */
+        /* FAQ DATA */
+        const faqData = [
+            { cat: 'The Basics', q: 'What is a Cloud Kitchen?' },
+            { cat: 'The Basics', q: 'Why choose a Cloud Kitchen over a traditional restaurant?' },
+            { cat: 'Services', q: 'What does your Branding Service include?' },
+            { cat: 'Services', q: 'What Consulting Services do you offer?' },
+            { cat: 'Setup & Location', q: 'How do I find the right location for my Cloud Kitchen?' },
+            { cat: 'Setup & Location', q: 'What Kitchen Equipment do I need to get started?' },
+
+        ];
+
+        function buildFaq(filter = 'all') {
+            const items = filter === 'all' ? faqData : faqData.filter(f => f.cat === filter);
+            const left = document.getElementById('faq-col-left');
+            const right = document.getElementById('faq-col-right');
+            left.innerHTML = ''; right.innerHTML = '';
+            items.forEach((f, i) => {
+                const el = document.createElement('div');
+                el.className = 'faq-item';
+                el.setAttribute('data-faq', '');
+                el.innerHTML = `
+            <div class="faq-question">
+                <div>
+                    <div class="faq-category-tag">${f.cat}</div>
+                    <div class="faq-question-text">${f.q}</div>
+                </div>
+                <div class="faq-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></div>
+            </div>
+            <div class="faq-answer"><p>Add your answer here.</p></div>`;
+                el.querySelector('.faq-question').addEventListener('click', () => {
+                    const isOpen = el.classList.contains('open');
+                    document.querySelectorAll('[data-faq].open').forEach(o => o.classList.remove('open'));
+                    if (!isOpen) el.classList.add('open');
+                });
+                (i % 2 === 0 ? left : right).appendChild(el);
+            });
+            // re-observe new elements
+            document.querySelectorAll('.faq-item').forEach(el => revealObserver.observe(el));
+        }
+
+        buildFaq();
+
+        document.querySelectorAll('.faq-tab').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.faq-tab').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                buildFaq(btn.dataset.cat);
+            });
         });
     </script>
 </body>

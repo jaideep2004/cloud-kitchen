@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>License Support — My Cloud Kitchen</title>
 
-    <!-- Google Fonts: Match brand's refined editorial feel -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -14,43 +13,47 @@
         rel="stylesheet" />
 
     <style>
-        /* ─── TOKENS ─── */
+        /* =============================================
+       DESIGN TOKENS — matches ser6 system
+       ============================================= */
         :root {
             --green: #a8ff57;
             --green-dim: #6bc930;
-            --green-glow: rgba(168, 255, 87, .18);
-            --green-glow-strong: rgba(168, 255, 87, .35);
+            --green-glow: rgba(168, 255, 87, 0.18);
+            --green-glow-strong: rgba(168, 255, 87, 0.35);
             --bg: #080808;
             --bg-2: #0f0f0f;
             --bg-3: #161616;
-            --surface: rgba(255, 255, 255, .04);
-            --surface-hover: rgba(255, 255, 255, .07);
-            --border: rgba(255, 255, 255, .08);
-            --border-bright: rgba(168, 255, 87, .25);
+            --surface: rgba(255, 255, 255, 0.04);
+            --surface-hover: rgba(255, 255, 255, 0.07);
+            --border: rgba(255, 255, 255, 0.08);
+            --border-bright: rgba(168, 255, 87, 0.25);
             --text-primary: #f0f0f0;
-            --text-secondary: #c8c8c8;
-            --text-muted: #6a6a6a;
-            --card-bg: rgba(20, 20, 20, .85);
-            --shadow: 0 32px 80px rgba(0, 0, 0, .6);
+            --text-secondary: #e2d6d6;
+            --text-muted: #9a9a9a;
+            --card-bg: rgba(20, 20, 20, 0.85);
+            --shadow: 0 32px 80px rgba(0, 0, 0, 0.6);
+            --red: #c0392b;
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         [data-theme="light"] {
             --bg: #f4f2ed;
             --bg-2: #ede9e2;
             --bg-3: #e5e0d8;
-            --surface: rgba(0, 0, 0, .04);
-            --surface-hover: rgba(0, 0, 0, .07);
-            --border: rgba(0, 0, 0, .08);
-            --border-bright: rgba(100, 180, 30, .3);
+            --surface: rgba(0, 0, 0, 0.04);
+            --surface-hover: rgba(0, 0, 0, 0.07);
+            --border: rgba(0, 0, 0, 0.08);
+            --border-bright: rgba(100, 180, 30, 0.3);
             --text-primary: #111;
-            --text-secondary: #444;
-            --text-muted: #888;
-            --card-bg: rgba(240, 237, 230, .9);
-            --shadow: 0 32px 80px rgba(0, 0, 0, .12);
+            --text-secondary: #555;
+            --text-muted: #aaa;
+            --card-bg: rgba(240, 237, 230, 0.9);
+            --shadow: 0 32px 80px rgba(0, 0, 0, 0.12);
             --green: #5a9e10;
             --green-dim: #4a8a0c;
-            --green-glow: rgba(90, 158, 16, .12);
-            --green-glow-strong: rgba(90, 158, 16, .22);
+            --green-glow: rgba(90, 158, 16, 0.12);
+            --green-glow-strong: rgba(90, 158, 16, 0.22);
         }
 
         /* =============================================
@@ -66,19 +69,37 @@
 
         html {
             scroll-behavior: smooth;
+            overflow-x: hidden;
         }
 
         body {
-            font-family: 'Hubot Sans', sans-serif;
             background: var(--bg);
             color: var(--text-primary);
+            font-family: 'Hubot Sans', sans-serif;
+            font-size: 16px;
+            line-height: 1.6;
             overflow-x: hidden;
             cursor: none;
-            line-height: 1.6;
             transition: background .5s, color .5s;
         }
 
-        /* ── CURSOR ── */
+        /* =============================================
+       NOISE TEXTURE OVERLAY
+       ============================================= */
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            background-size: 256px;
+        }
+
+        /* =============================================
+       CUSTOM CURSOR
+       ============================================= */
         #cursor {
             width: 12px;
             height: 12px;
@@ -91,7 +112,7 @@
             z-index: 9999;
             mix-blend-mode: difference;
             transform: translate(-50%, -50%);
-            transition: width .25s, height .25s
+            transition: width .25s, height .25s;
         }
 
         #cursor-ring {
@@ -105,22 +126,31 @@
             pointer-events: none;
             z-index: 9998;
             transform: translate(-50%, -50%);
-            opacity: .5;
-            transition: width .3s, height .3s, opacity .3s
+            opacity: 0.5;
         }
 
         body.cursor-hover #cursor {
             width: 20px;
-            height: 20px
+            height: 20px;
         }
 
         body.cursor-hover #cursor-ring {
             width: 60px;
             height: 60px;
-            opacity: .2
+            opacity: 0.2;
         }
 
-        /* ── THEME TOGGLE ── */
+        canvas#particles {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.4;
+        }
+
+        /* =============================================
+       THEME TOGGLE
+       ============================================= */
         #theme-toggle {
             position: fixed;
             top: 24px;
@@ -136,52 +166,98 @@
             justify-content: center;
             cursor: none;
             backdrop-filter: blur(12px);
-            transition: background .3s, transform .4s
+            transition: background .3s, transform .4s;
         }
 
         #theme-toggle:hover {
             background: var(--surface-hover);
-            transform: rotate(30deg)
+            transform: rotate(30deg);
         }
 
         #theme-toggle svg {
             width: 18px;
-            height: 18px
+            height: 18px;
         }
 
         #sun-icon {
-            display: none
+            display: none;
         }
 
         [data-theme="light"] #sun-icon {
-            display: block
+            display: block;
         }
 
         [data-theme="light"] #moon-icon {
-            display: none
+            display: none;
         }
 
         /* =============================================
-       NOISE TEXTURE OVERLAY
+       REVEAL ANIMATIONS
        ============================================= */
-        body::before {
-            content: '';
-            position: fixed;
-            inset: 0;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
-            pointer-events: none;
-            z-index: 9000;
-            opacity: .55;
+        .reveal,
+        .reveal-left,
+        .reveal-right,
+        .reveal-scale {
+            opacity: 0;
+            transition: opacity .9s cubic-bezier(.16, 1, .3, 1), transform .9s cubic-bezier(.16, 1, .3, 1);
+        }
+
+        .reveal {
+            transform: translateY(50px);
+        }
+
+        .reveal-left {
+            transform: translateX(-60px);
+        }
+
+        .reveal-right {
+            transform: translateX(60px);
+        }
+
+        .reveal-scale {
+            transform: scale(.88);
+        }
+
+        .reveal.visible,
+        .reveal-left.visible,
+        .reveal-right.visible,
+        .reveal-scale.visible {
+            opacity: 1;
+            transform: none;
+        }
+
+        .d1 {
+            transition-delay: .1s
+        }
+
+        .d2 {
+            transition-delay: .2s
+        }
+
+        .d3 {
+            transition-delay: .3s
+        }
+
+        .d4 {
+            transition-delay: .4s
+        }
+
+        .d5 {
+            transition-delay: .5s
+        }
+
+        .d6 {
+            transition-delay: .6s
         }
 
         /* =============================================
        UTILITIES
        ============================================= */
         .section-label {
-            font-family: 'Hubot Sans', sans-serif;
-            font-size: 11px;
-            font-weight: 600;
-            letter-spacing: .22em;
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: .14em;
             text-transform: uppercase;
             color: var(--green);
             display: flex;
@@ -192,9 +268,9 @@
         .section-label::before {
             content: '';
             display: block;
-            width: 32px;
+            width: 20px;
             height: 1px;
-            background: var(--green);
+            background: currentColor;
         }
 
         h1,
@@ -202,29 +278,20 @@
         h3,
         h4 {
             font-family: 'Hubot Sans', sans-serif;
-            line-height: 1.12;
-            font-weight: 400;
+            line-height: 1.0;
+            font-weight: 800;
+            letter-spacing: -.03em;
         }
 
         em {
             font-style: italic;
+            font-weight: 400;
             color: var(--green);
         }
 
         a {
             color: inherit;
             text-decoration: none;
-        }
-
-        .reveal {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity .75s var(--ease-out-expo), transform .75s var(--ease-out-expo);
-        }
-
-        .reveal.visible {
-            opacity: 1;
-            transform: none;
         }
 
         /* =============================================
@@ -235,12 +302,12 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             align-items: center;
-            padding: 0 6vw 80px;
-            gap: 40px;
+            padding: 0 60px 80px;
+            gap: 60px;
             position: relative;
             overflow: hidden;
-            background-image: url(/images/h3.png);
-            background-size: 57%;
+            background-image: url(/images/d3-nobg.png);
+            background-size: contain;
             background-repeat: no-repeat;
             background-position: right;
         }
@@ -251,13 +318,74 @@
             position: absolute;
             top: -0.1em;
             right: -0.05em;
-            font-family: var(--font-display);
+            font-family: 'Hubot Sans', sans-serif;
             font-size: clamp(280px, 40vw, 520px);
-            font-weight: 800;
-            color: rgba(200, 169, 110, 0.045);
+            font-weight: 900;
+            color: rgba(168, 255, 87, 0.03);
             line-height: 1;
             pointer-events: none;
             user-select: none;
+        }
+
+        [data-theme="light"] .hero::before {
+            color: rgba(90, 158, 16, 0.025);
+        }
+
+        /* Hero orbs */
+        .hero-orb-1 {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(130px);
+            pointer-events: none;
+            z-index: 0;
+            background: rgba(168, 255, 87, 0.07);
+            width: 700px;
+            height: 700px;
+            top: -200px;
+            right: -100px;
+            animation: orbFloat 12s ease-in-out infinite alternate;
+        }
+
+        .hero-orb-2 {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            pointer-events: none;
+            z-index: 0;
+            background: rgba(168, 255, 87, 0.04);
+            width: 400px;
+            height: 400px;
+            bottom: 0;
+            left: -100px;
+            animation: orbFloat2 15s ease-in-out infinite alternate;
+        }
+
+        [data-theme="light"] .hero-orb-1 {
+            background: rgba(90, 158, 16, 0.06);
+        }
+
+        [data-theme="light"] .hero-orb-2 {
+            background: rgba(90, 158, 16, 0.04);
+        }
+
+        @keyframes orbFloat {
+            from {
+                transform: translate(0, 0) scale(1)
+            }
+
+            to {
+                transform: translate(-40px, 30px) scale(1.1)
+            }
+        }
+
+        @keyframes orbFloat2 {
+            from {
+                transform: translate(0, 0)
+            }
+
+            to {
+                transform: translate(30px, -40px)
+            }
         }
 
         .hero-left {
@@ -271,24 +399,26 @@
         }
 
         .hero-left h1 {
-            font-size: clamp(48px, 6.5vw, 90px);
-            font-weight: 600;
-            line-height: 1.04;
-            margin-bottom: 24px;
-            color: var(--white);
+            font-size: clamp(48px, 7vw, 88px);
+            font-weight: 800;
+            line-height: .9;
+            letter-spacing: -.04em;
+            margin-bottom: 32px;
+            color: var(--text-primary);
         }
 
         .hero-left h1 span.line-accent {
             display: block;
             color: var(--green);
             font-style: italic;
+            font-weight: 400;
         }
 
         .hero-desc {
-            font-size: 17px;
+            font-size: 16px;
             color: var(--text-secondary);
             max-width: 480px;
-            line-height: 1.7;
+            line-height: 1.8;
             margin-bottom: 44px;
         }
 
@@ -302,18 +432,19 @@
             display: inline-flex;
             align-items: center;
             gap: 10px;
-            padding: 16px 36px;
             background: var(--green);
             color: #080808;
             font-family: 'Hubot Sans', sans-serif;
-            font-size: 14px;
-            font-weight: 500;
+            font-size: 13px;
+            font-weight: 700;
             letter-spacing: .06em;
             text-transform: uppercase;
+            padding: 14px 28px;
+            border-radius: 50px;
             border: none;
-            border-radius: 2px;
             cursor: none;
-            transition: background .25s, transform .2s, box-shadow .25s;
+            transition: transform .2s, box-shadow .3s;
+            white-space: nowrap;
             position: relative;
             overflow: hidden;
         }
@@ -322,41 +453,42 @@
             content: '';
             position: absolute;
             inset: 0;
-            background: rgba(255, 255, 255, .15);
-            transform: translateX(-110%);
-            transition: transform .35s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .btn-primary:hover {
-            background: #9de849;
-            transform: translateY(-2px);
-            box-shadow: 0 12px 32px rgba(168, 255, 87, .25);
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .2), transparent);
+            transform: translateX(-100%);
+            transition: transform .5s;
         }
 
         .btn-primary:hover::after {
-            transform: translateX(0);
+            transform: translateX(100%);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px var(--green-glow-strong);
         }
 
         .btn-ghost {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            padding: 16px 32px;
-            border: 1px solid var(--border);
-            color: var(--text-primary);
+            gap: 10px;
+            background: transparent;
+            color: var(--text-secondary);
             font-family: 'Hubot Sans', sans-serif;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 500;
             letter-spacing: .06em;
             text-transform: uppercase;
-            border-radius: 2px;
+            padding: 14px 22px;
+            border-radius: 50px;
+            border: 1px solid var(--border);
             cursor: none;
-            transition: border-color .25s, color .25s;
+            transition: color .2s, border-color .2s, transform .2s;
         }
 
         .btn-ghost:hover {
-            border-color: var(--green);
-            color: var(--green);
+            color: var(--text-primary);
+            border-color: var(--text-muted);
+            transform: translateY(-2px);
         }
 
         /* Hero right — image + stat cards */
@@ -374,16 +506,12 @@
             width: 100%;
             max-width: 480px;
             aspect-ratio: 4/3;
-            border-radius: 4px;
+            border-radius: 22px;
             overflow: hidden;
             position: relative;
             border: 1px solid var(--border);
         }
 
-        /* IMAGE PLACEHOLDER — hero right column
-       Recommended image: professional interior shot of cloud kitchen setup / license document
-       or a team member handling paperwork in a modern kitchen environment.
-       Dimensions: 960 × 720px (2x), landscape, warm lighting */
         .hero-img-wrap img {
             width: 100%;
             height: 100%;
@@ -399,16 +527,16 @@
         .hero-img-placeholder {
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, #0f0f0f 0%, #080808 60%, #0f0f0f 100%);
+            background: linear-gradient(135deg, var(--bg-2) 0%, var(--bg-3) 60%, var(--bg) 100%);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             gap: 12px;
             color: var(--green);
-            font-family: 'Hubot Sans', sans-serif;
-            font-size: 13px;
-            letter-spacing: .06em;
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            letter-spacing: .1em;
             text-transform: uppercase;
         }
 
@@ -420,23 +548,30 @@
             display: flex;
             gap: 12px;
             flex-wrap: wrap;
-            justify-content: flex-end;
+            justify-content: end;
             width: 100%;
+            /* max-width: 480px; */
+            align-items: end;
             position: absolute;
-            bottom: -295px;
+            bottom: -325px;
         }
 
         .stat-pill {
             padding: 10px 20px;
             border: 1px solid var(--border);
             border-radius: 100px;
-            background: rgba(168, 255, 87, .06);
+            background: var(--surface);
             backdrop-filter: blur(8px);
             display: flex;
             align-items: center;
             gap: 8px;
             font-size: 13px;
             color: var(--text-secondary);
+            transition: border-color .3s;
+        }
+
+        .stat-pill:hover {
+            border-color: var(--border-bright);
         }
 
         .stat-pill strong {
@@ -449,8 +584,12 @@
        ============================================= */
         .intro-band {
             background: var(--green);
-            padding: 22px 6vw;
+            padding: 22px 60px;
             overflow: hidden;
+        }
+
+        [data-theme="light"] .intro-band {
+            background: var(--green);
         }
 
         .ticker {
@@ -478,8 +617,8 @@
 
         .ticker-item {
             font-family: 'Hubot Sans', sans-serif;
-            font-size: 18px;
-            font-weight: 400;
+            font-size: 16px;
+            font-weight: 700;
             color: #080808;
             padding: 0 40px;
             display: flex;
@@ -490,14 +629,35 @@
         .ticker-item::after {
             content: '◆';
             font-size: 9px;
-            opacity: .5;
+            opacity: .4;
         }
 
         /* =============================================
        WHAT'S INCLUDED — ACCORDION GRID
        ============================================= */
         .section-licenses {
-            padding: 120px 6vw;
+            padding: 120px 60px;
+            background: var(--bg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .licenses-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(160px);
+            pointer-events: none;
+            z-index: 0;
+            background: rgba(168, 255, 87, 0.05);
+            width: 600px;
+            height: 600px;
+            top: 50%;
+            left: -150px;
+            transform: translateY(-50%);
+        }
+
+        [data-theme="light"] .licenses-orb {
+            background: rgba(90, 158, 16, 0.04);
         }
 
         .licenses-header {
@@ -506,17 +666,20 @@
             gap: 40px;
             align-items: end;
             margin-bottom: 80px;
+            position: relative;
+            z-index: 1;
         }
 
         .licenses-header h2 {
             font-size: clamp(38px, 4.5vw, 62px);
-            color: var(--white);
+            color: var(--text-primary);
+            margin-top: 16px;
         }
 
         .licenses-header p {
-            color: rgba(248, 245, 240, .6);
+            color: var(--text-secondary);
             font-size: 16px;
-            line-height: 1.75;
+            line-height: 1.8;
             max-width: 400px;
             margin-left: auto;
         }
@@ -527,6 +690,8 @@
             flex-direction: column;
             gap: 0;
             border-top: 1px solid var(--border);
+            position: relative;
+            z-index: 1;
         }
 
         .license-item {
@@ -545,48 +710,50 @@
             gap: 24px;
             text-align: left;
             transition: background .2s;
-            color: var(--white);
+            color: var(--text-primary);
         }
 
         .license-trigger:hover {
-            background: rgba(168, 255, 87, .04);
+            background: var(--surface);
             padding-left: 8px;
         }
 
         .license-num {
-            font-family: 'Hubot Sans', sans-serif;
-            font-size: 13px;
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            font-weight: 700;
             color: var(--green);
             min-width: 32px;
-            font-style: italic;
+            letter-spacing: .08em;
         }
 
         .license-icon {
             width: 42px;
             height: 42px;
-            border-radius: 50%;
+            border-radius: 12px;
             border: 1px solid var(--border);
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
             font-size: 18px;
-            transition: background .25s, border-color .25s;
+            transition: background .25s, border-color .25s, transform .35s cubic-bezier(.34, 1.56, .64, 1);
         }
 
         .license-trigger:hover .license-icon,
         .license-item.open .license-icon {
-            background: var(--green);
-            border-color: var(--green);
-            color: #080808;
+            background: var(--green-glow);
+            border-color: var(--border-bright);
+            transform: rotate(8deg) scale(1.1);
         }
 
         .license-name {
             flex: 1;
             font-family: 'Hubot Sans', sans-serif;
-            font-size: clamp(18px, 2vw, 24px);
-            font-weight: 400;
+            font-size: clamp(18px, 2vw, 22px);
+            font-weight: 700;
             color: var(--text-primary);
+            letter-spacing: -.01em;
             transition: color .2s;
         }
 
@@ -596,19 +763,21 @@
         }
 
         .license-badge {
-            font-size: 11px;
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            font-weight: 700;
             letter-spacing: .1em;
             text-transform: uppercase;
             color: var(--text-muted);
             padding: 4px 12px;
-            border: 1px solid rgba(200, 200, 200, .12);
+            border: 1px solid var(--border);
             border-radius: 100px;
             margin-right: 8px;
         }
 
         .license-badge.required {
-            color: #ff6b6b;
-            border-color: rgba(255, 107, 107, .3);
+            color: var(--red);
+            border-color: rgba(192, 57, 43, .3);
         }
 
         .license-chevron {
@@ -618,7 +787,7 @@
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
-            transition: transform .35s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: transform .35s var(--ease-out-expo);
         }
 
         .license-item.open .license-chevron {
@@ -628,7 +797,7 @@
         .license-body {
             max-height: 0;
             overflow: hidden;
-            transition: max-height .45s cubic-bezier(0.16, 1, 0.3, 1), padding .35s;
+            transition: max-height .45s var(--ease-out-expo), padding .35s;
         }
 
         .license-item.open .license-body {
@@ -647,7 +816,7 @@
         .license-body-desc {
             font-size: 15px;
             color: var(--text-secondary);
-            line-height: 1.7;
+            line-height: 1.75;
             margin-bottom: 20px;
         }
 
@@ -658,12 +827,14 @@
         }
 
         .service-tag {
-            font-size: 13px;
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            font-weight: 700;
             padding: 6px 14px;
             border-radius: 100px;
-            background: rgba(168, 255, 87, .1);
-            color: var(--green-dim);
-            border: 1px solid rgba(168, 255, 87, .18);
+            background: var(--green-glow);
+            color: var(--green);
+            border: 1px solid var(--border-bright);
             letter-spacing: .03em;
         }
 
@@ -701,14 +872,17 @@
        CITIES WE SERVE — ANIMATED TICKER
        ============================================= */
         .section-cities {
-            padding: 80px 6vw;
-            background: #0a0a08;
+            padding: 80px 60px;
+            background: var(--bg-2);
             overflow: hidden;
+            position: relative;
         }
 
         .cities-header {
             text-align: center;
             margin-bottom: 52px;
+            position: relative;
+            z-index: 1;
         }
 
         .cities-header .section-label {
@@ -719,6 +893,7 @@
         .cities-header h2 {
             font-size: clamp(32px, 4vw, 50px);
             color: var(--text-primary);
+            margin-top: 16px;
         }
 
         .cities-track-wrap {
@@ -753,7 +928,7 @@
         }
 
         .city-chip:hover {
-            border-color: var(--green);
+            border-color: var(--border-bright);
             color: var(--green);
         }
 
@@ -769,7 +944,27 @@
        WHY CHOOSE US — BENTO GRID
        ============================================= */
         .section-why {
-            padding: 120px 6vw;
+            padding: 120px 60px;
+            background: var(--bg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .why-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(140px);
+            pointer-events: none;
+            z-index: 0;
+            background: rgba(168, 255, 87, 0.05);
+            width: 800px;
+            height: 800px;
+            top: -200px;
+            right: -200px;
+        }
+
+        [data-theme="light"] .why-orb {
+            background: rgba(90, 158, 16, 0.04);
         }
 
         .why-header {
@@ -778,34 +973,39 @@
             align-items: flex-start;
             gap: 16px;
             margin-bottom: 64px;
+            position: relative;
+            z-index: 1;
         }
 
         .why-header h2 {
             font-size: clamp(36px, 4.5vw, 60px);
             color: var(--text-primary);
             max-width: 600px;
+            margin-top: 16px;
         }
 
         .bento {
             display: grid;
             grid-template-columns: repeat(12, 1fr);
             grid-template-rows: auto;
-            gap: 16px;
+            gap: 14px;
+            position: relative;
+            z-index: 1;
         }
 
         .bento-card {
             border: 1px solid var(--border);
-            border-radius: 8px;
+            border-radius: 22px;
             padding: 40px;
-            background: linear-gradient(135deg, rgba(168, 255, 87, .025) 0%, transparent 100%);
+            background: var(--bg-3);
             position: relative;
             overflow: hidden;
-            transition: border-color .3s, transform .3s;
+            transition: border-color .3s, transform .4s cubic-bezier(.34, 1.56, .64, 1);
         }
 
         .bento-card:hover {
-            border-color: rgba(168, 255, 87, .5);
-            transform: translateY(-3px);
+            border-color: var(--border-bright);
+            transform: translateY(-7px);
         }
 
         .bento-card::before {
@@ -815,7 +1015,7 @@
             left: 0;
             width: 100%;
             height: 2px;
-            background: linear-gradient(to right, transparent, var(--green), transparent);
+            background: linear-gradient(to right, var(--green), transparent);
             opacity: 0;
             transition: opacity .3s;
         }
@@ -828,7 +1028,27 @@
         .bento-c1 {
             grid-column: span 5;
             grid-row: span 2;
+            background-image: url(/images/ser5map.png) !important;
+            background-size: cover !important;
+            background-repeat: no-repeat !important;
+            background-blend-mode: soft-light;
+
+            &:hover {
+                background-blend-mode: hard-light !important;
+            }
+
+            &:hover::before {
+                opacity: 0 !important;
+
+            }
+
+            div {
+                backdrop-filter: blur(1px);
+            }
         }
+
+
+
 
         .bento-c2 {
             grid-column: span 4;
@@ -860,21 +1080,23 @@
         }
 
         .bento-label {
-            font-size: 11px;
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            font-weight: 700;
             letter-spacing: .18em;
             text-transform: uppercase;
             color: var(--green);
             margin-bottom: 10px;
-            font-weight: 600;
         }
 
         .bento-title {
             font-family: 'Hubot Sans', sans-serif;
-            font-size: clamp(20px, 2vw, 28px);
-            font-weight: 400;
+            font-size: clamp(20px, 2vw, 26px);
+            font-weight: 700;
             color: var(--text-primary);
             margin-bottom: 14px;
-            line-height: 1.2;
+            line-height: 1.15;
+            letter-spacing: -.01em;
         }
 
         .bento-desc {
@@ -886,14 +1108,14 @@
         .bento-big-num {
             font-family: 'Hubot Sans', sans-serif;
             font-size: clamp(52px, 6vw, 80px);
-            font-weight: 400;
+            font-weight: 900;
             color: var(--green);
             line-height: 1;
             margin-bottom: 8px;
             display: block;
+            letter-spacing: -.04em;
         }
 
-        /* Image in bento card — city map or team imagery */
         .bento-img-slot {
             position: absolute;
             inset: 0;
@@ -901,22 +1123,21 @@
             pointer-events: none;
         }
 
-        /* IMAGE PLACEHOLDER — Bento card c1 (large left card)
-       Recommended image: India map with pin points, or aerial photo of Indian metro.
-       Dimensions: 600 × 700px, dark-toned, works as subtle background */
         .bento-c1-bg {
             position: absolute;
             inset: 0;
-            background: linear-gradient(135deg, #0f0f0f 0%, #080808 100%);
+            /* background: linear-gradient(135deg, var(--bg-2) 0%, var(--bg) 100%); */
             opacity: 1;
         }
 
-        /* Ripple badges */
+        /* Ping badges */
         .ping-badge {
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            font-size: 12px;
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            font-weight: 700;
             color: var(--green);
             margin-top: 16px;
         }
@@ -954,10 +1175,28 @@
        PROCESS STRIP
        ============================================= */
         .section-process {
-            padding: 100px 6vw;
-            background: linear-gradient(180deg, var(--black) 0%, #0a0906 50%, var(--black) 100%);
+            padding: 100px 60px;
+            background: linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 50%, var(--bg) 100%);
             position: relative;
             overflow: hidden;
+        }
+
+        .process-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(160px);
+            pointer-events: none;
+            z-index: 0;
+            background: rgba(168, 255, 87, 0.06);
+            width: 600px;
+            height: 600px;
+            top: 50%;
+            left: -150px;
+            transform: translateY(-50%);
+        }
+
+        [data-theme="light"] .process-orb {
+            background: rgba(90, 158, 16, 0.04);
         }
 
         .process-header {
@@ -965,12 +1204,15 @@
             justify-content: space-between;
             align-items: flex-end;
             margin-bottom: 72px;
+            position: relative;
+            z-index: 1;
         }
 
         .process-header h2 {
             font-size: clamp(36px, 4vw, 54px);
-            color: var(--white);
+            color: var(--text-primary);
             max-width: 440px;
+            margin-top: 16px;
         }
 
         .process-steps {
@@ -979,38 +1221,56 @@
             gap: 1px;
             background: var(--border);
             border: 1px solid var(--border);
+            position: relative;
+            z-index: 1;
         }
 
         .process-step {
-            background: var(--black);
+            background: var(--bg);
             padding: 44px 36px;
             position: relative;
-            transition: background .3s;
+            overflow: hidden;
+            transition: background .3s, border-color .3s;
+            border: none;
         }
 
         .process-step:hover {
-            background: #100e0a;
+            background: var(--bg-3);
         }
 
-        .process-step:hover .process-step h3 {
-            color: white !important;
+        .process-step::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(to right, var(--green), transparent);
+            opacity: 0;
+            transition: opacity .3s;
+        }
+
+        .process-step:hover::before {
+            opacity: 1;
         }
 
         .process-step-num {
-            font-family: var(--font-display);
-            font-size: 13px;
-            color: var(--gold);
-            font-style: italic;
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--green);
+            letter-spacing: .14em;
             margin-bottom: 24px;
             display: block;
         }
 
         .process-step h3 {
-            font-family: var(--font-display);
-            font-size: 20px;
-            font-weight: 600;
-            color: var(--white);
+            font-family: 'Hubot Sans', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
             margin-bottom: 12px;
+            letter-spacing: -.01em;
         }
 
         .process-step p {
@@ -1029,7 +1289,7 @@
        CTA SECTION
        ============================================= */
         .section-cta {
-            padding: 140px 6vw;
+            padding: 140px 60px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -1037,39 +1297,50 @@
             gap: 28px;
             position: relative;
             overflow: hidden;
+            background: var(--bg-2);
         }
 
-        .section-cta::before {
-            content: '';
+        .cta-orb {
             position: absolute;
+            border-radius: 50%;
+            filter: blur(140px);
+            pointer-events: none;
+            z-index: 0;
+            background: rgba(168, 255, 87, 0.05);
+            width: 700px;
+            height: 700px;
             top: 50%;
             left: 50%;
-            width: 80vw;
-            height: 80vw;
-            max-width: 900px;
-            max-height: 900px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(200, 169, 110, .06) 0%, transparent 65%);
             transform: translate(-50%, -50%);
-            pointer-events: none;
+        }
+
+        [data-theme="light"] .cta-orb {
+            background: rgba(90, 158, 16, 0.04);
         }
 
         .section-cta .section-label {
             justify-content: center;
+            position: relative;
+            z-index: 1;
         }
 
         .section-cta h2 {
             font-size: clamp(40px, 5.5vw, 76px);
-            color: var(--white);
+            color: var(--text-primary);
             max-width: 800px;
-            line-height: 1.06;
+            line-height: 1.0;
+            letter-spacing: -.03em;
+            position: relative;
+            z-index: 1;
         }
 
         .section-cta p {
             font-size: 17px;
-            color: rgba(248, 245, 240, .55);
+            color: var(--text-secondary);
             max-width: 500px;
-            line-height: 1.7;
+            line-height: 1.75;
+            position: relative;
+            z-index: 1;
         }
 
         .cta-buttons {
@@ -1078,13 +1349,24 @@
             flex-wrap: wrap;
             justify-content: center;
             margin-top: 12px;
+            position: relative;
+            z-index: 1;
         }
 
         /* =============================================
-       IMAGE PLACEHOLDER — CTA background
-       Recommended: aerial kitchen top-shot or steam rising from wok
-       Dimensions: 1920 × 600px wide cinematic crop, very dark
-    ============================================= */
+       RIPPLE KEYFRAMES
+       ============================================= */
+        @keyframes ripple {
+            from {
+                transform: scale(0);
+                opacity: 1;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 0;
+            }
+        }
 
         /* =============================================
        RESPONSIVE
@@ -1122,6 +1404,7 @@
         @media (max-width: 860px) {
             .hero {
                 grid-template-columns: 1fr;
+                padding: 120px 40px 80px;
             }
 
             .hero-right {
@@ -1165,22 +1448,31 @@
             }
         }
 
+        @media (max-width: 768px) {
+
+            .hero,
+            .section-licenses,
+            .section-why,
+            .section-cities,
+            .section-process,
+            .section-cta {
+                padding-left: 24px;
+                padding-right: 24px;
+            }
+
+            .intro-band {
+                padding-left: 24px;
+                padding-right: 24px;
+            }
+        }
+
         @media (max-width: 540px) {
             body {
                 font-size: 15px;
             }
 
             .hero {
-                padding: 0 5vw 60px;
-            }
-
-            .section-licenses,
-            .section-why,
-            .section-cities,
-            .section-process,
-            .section-cta {
-                padding-left: 5vw;
-                padding-right: 5vw;
+                padding: 100px 24px 60px;
             }
 
             .license-trigger {
@@ -1205,7 +1497,7 @@
                 grid-column: span 1;
             }
 
-            #cursor-dot,
+            #cursor,
             #cursor-ring {
                 display: none;
             }
@@ -1215,7 +1507,9 @@
             }
 
             .btn-primary,
-            .btn-ghost {
+            .btn-ghost,
+            .license-trigger,
+            #theme-toggle {
                 cursor: pointer;
             }
         }
@@ -1227,7 +1521,9 @@
     <!-- CUSTOM CURSOR -->
     <div id="cursor"></div>
     <div id="cursor-ring"></div>
+    <canvas id="particles"></canvas>
 
+    <!-- THEME TOGGLE -->
     <button id="theme-toggle" aria-label="Toggle theme">
         <svg id="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
             color="var(--text-secondary)">
@@ -1245,6 +1541,9 @@
        HERO
        ============================================================ -->
     <section class="hero">
+        <div class="hero-orb-1"></div>
+        <div class="hero-orb-2"></div>
+
         <div class="hero-left reveal">
             <div class="section-label">License Support</div>
 
@@ -1272,6 +1571,16 @@
 
         <div class="hero-right reveal" style="transition-delay:.18s">
 
+            <!-- <div class="hero-img-wrap">
+                <div class="hero-img-placeholder">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                        <rect x="3" y="3" width="18" height="18" rx="2" />
+                        <circle cx="8.5" cy="8.5" r="1.5" />
+                        <path d="M21 15l-5-5L5 21" />
+                    </svg>
+                    Image Placeholder
+                </div>
+            </div> -->
 
             <div class="stat-pills">
                 <div class="stat-pill"><strong>10+</strong> License Types</div>
@@ -1318,6 +1627,8 @@
        LICENSES ACCORDION
        ============================================================ -->
     <section class="section-licenses" id="licenses">
+        <div class="licenses-orb"></div>
+
         <div class="licenses-header reveal">
             <div>
                 <div class="section-label" style="margin-bottom:20px">What's Included</div>
@@ -1695,12 +2006,14 @@
        PROCESS STEPS
        ============================================================ -->
     <section class="section-process">
+        <div class="process-orb"></div>
+
         <div class="process-header reveal">
             <div>
                 <div class="section-label" style="margin-bottom:16px">Our Process</div>
                 <h2>From documents<br /><em>to approved.</em></h2>
             </div>
-            <p style="max-width:320px;font-size:15px;color:rgba(248,245,240,.5);line-height:1.7;text-align:right">
+            <p style="max-width:320px;font-size:15px;color:var(--text-secondary);line-height:1.8;text-align:right">
                 A streamlined four-step journey that gets your kitchen legally operational —
                 fast, accurate, and completely hands-off for you.
             </p>
@@ -1709,28 +2022,28 @@
         <div class="process-steps reveal" style="transition-delay:.1s">
             <div class="process-step">
                 <span class="process-step-icon">🗂️</span>
-                <span class="process-step-num">Step 01</span>
+                <span class="process-step-num">STEP 01</span>
                 <h3>Discovery & Assessment</h3>
                 <p>We evaluate your kitchen model, location, scale, and business type to map the exact set of licenses
                     required.</p>
             </div>
             <div class="process-step">
                 <span class="process-step-icon">📝</span>
-                <span class="process-step-num">Step 02</span>
+                <span class="process-step-num">STEP 02</span>
                 <h3>Documentation</h3>
                 <p>Our compliance team collects, verifies, and prepares all paperwork — no delays, no rejections, no
                     back-and-forth.</p>
             </div>
             <div class="process-step">
                 <span class="process-step-icon">📤</span>
-                <span class="process-step-num">Step 03</span>
+                <span class="process-step-num">STEP 03</span>
                 <h3>Filing & Follow-Up</h3>
                 <p>We file all applications with the relevant authorities and track every submission through to
                     approval.</p>
             </div>
             <div class="process-step">
                 <span class="process-step-icon">✅</span>
-                <span class="process-step-num">Step 04</span>
+                <span class="process-step-num">STEP 04</span>
                 <h3>Delivery & Ongoing Support</h3>
                 <p>All approved licenses delivered. We stay on hand for renewals, upgrades, and compliance as your
                     business scales.</p>
@@ -1742,6 +2055,8 @@
        WHY CHOOSE US — BENTO
        ============================================================ -->
     <section class="section-why">
+        <div class="why-orb"></div>
+
         <div class="why-header reveal">
             <div class="section-label">Why Choose Us</div>
             <h2>The partner your kitchen<br /><em>deserves.</em></h2>
@@ -1751,14 +2066,6 @@
 
             <!-- Large card — Pan India -->
             <div class="bento-card bento-c1">
-                <!--
-          IMAGE PLACEMENT: Bento large card background
-          Description : India outline / city pins map, dark aesthetic OR
-                        interior of a busy professional kitchen with license documents
-          Dimensions  : 600 × 700px, dark, used as subtle overlay
-          Path        : /images/india-map-dark.png
-          Add as: <img src="/images/india-map-dark.png" class="bento-img-slot" alt="" />
-        -->
                 <div class="bento-c1-bg"></div>
                 <div style="position:relative;z-index:1">
                     <span class="bento-icon">🗺️</span>
@@ -1803,28 +2110,12 @@
             </div>
 
             <!-- Licenses count -->
-            <div class="bento-card bento-c5"
-                style="background: linear-gradient(135deg, rgba(200,169,110,.1) 0%, rgba(200,169,110,.03) 100%);">
+            <div class="bento-card bento-c5" style="background: var(--green-glow); border-color: var(--border-bright);">
                 <span class="bento-big-num">10+</span>
                 <div class="bento-label">License Types</div>
                 <p class="bento-desc" style="margin-top:8px">Every permit a cloud kitchen needs — under one roof.</p>
             </div>
 
-            <!-- Wide strip -->
-            <div class="bento-card bento-c6">
-                <div style="flex:1">
-                    <span class="bento-icon">🚀</span>
-                    <div class="bento-label">Our Guarantee</div>
-                    <h3 class="bento-title">Launch Without Legal Hurdles</h3>
-                    <p class="bento-desc">
-                        From FSSAI to Fire NOC and everything in between — we ensure your cloud kitchen is
-                        fully compliant, scalable, and ready to launch on day one.
-                    </p>
-                </div>
-                <div style="flex-shrink:0">
-                    <a href="#contact" class="btn-primary">Get Started Today</a>
-                </div>
-            </div>
 
         </div>
     </section>
@@ -1892,7 +2183,8 @@
        CTA
        ============================================================ -->
     <section class="section-cta" id="contact">
-        <div class="section-label reveal">Start Today</div>
+        <div class="cta-orb"></div>
+        <div class="section-label reveal">🚀 Start Today</div>
         <h2 class="reveal" style="transition-delay:.1s">
             Your kitchen.<br /><em>Legally ready.</em>
         </h2>
@@ -1912,67 +2204,102 @@
                 📞 Call Us Now
             </a>
         </div>
-
-        <!--
-      IMAGE PLACEMENT: CTA section — full-width cinematic background
-      Description : Steam rising from a wok or hands flipping documents/stamps
-                    Dark, moody, with strong lighting contrast
-      Dimensions  : 1920 × 500px (super wide crop), dark toned
-      Path        : /images/license-cta-bg.jpg
-      Implement as:
-      <img src="/images/license-cta-bg.jpg"
-           style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.06;pointer-events:none;z-index:0;"
-           alt="" />
-    -->
     </section>
 
     <!-- ============================================================
        JAVASCRIPT
        ============================================================ -->
     <script>
-        // ── Custom cursor
+        // ── Custom cursor (ser6 style with class-based hover)
         const cursor = document.getElementById('cursor');
-        const ring = document.getElementById('cursor-ring');
-        let ringX = 0, ringY = 0, mx = 0, my = 0;
+        const cursorRing = document.getElementById('cursor-ring');
+        let mx = 0, my = 0, rx = 0, ry = 0;
 
         document.addEventListener('mousemove', e => {
-            mx = e.clientX; my = e.clientY;
+            mx = e.clientX;
+            my = e.clientY;
             cursor.style.left = mx + 'px';
             cursor.style.top = my + 'px';
         });
 
         (function animateRing() {
-            ringX += (mx - ringX) * 0.15;
-            ringY += (my - ringY) * 0.15;
-            ring.style.left = ringX + 'px';
-            ring.style.top = ringY + 'px';
+            rx += (mx - rx) * 0.12;
+            ry += (my - ry) * 0.12;
+            cursorRing.style.left = rx + 'px';
+            cursorRing.style.top = ry + 'px';
             requestAnimationFrame(animateRing);
         })();
 
-        /* Add cursor hover effect */
-        const interactive = document.querySelectorAll('a, button, .btn-primary, .btn-ghost');
-        interactive.forEach(el => {
+        // Cursor hover state for interactive elements
+        document.querySelectorAll('a, button, .bento-card, .process-step, .license-trigger, .city-chip, .stat-pill').forEach(el => {
             el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
             el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
         });
 
-        /* ── THEME TOGGLE ──────────────────────────────────────── */
+        // ── Theme toggle
         document.getElementById('theme-toggle').addEventListener('click', () => {
-            const h = document.documentElement;
-            h.setAttribute('data-theme', h.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+            const html = document.documentElement;
+            html.setAttribute('data-theme', html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
         });
 
-        // ── Scroll reveal
-        const reveals = document.querySelectorAll('.reveal');
-        const io = new IntersectionObserver(entries => {
-            entries.forEach(e => {
-                if (e.isIntersecting) {
-                    e.target.classList.add('visible');
-                    io.unobserve(e.target);
+        // ── Particles (ser6 style)
+        const canvas = document.getElementById('particles');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        const particles = [];
+
+        class Particle {
+            constructor() { this.reset(); }
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 1.5 + 0.3;
+                this.speedX = (Math.random() - 0.5) * 0.3;
+                this.speedY = (Math.random() - 0.5) * 0.3;
+                this.opacity = Math.random() * 0.4 + 0.05;
+                this.green = Math.random() > 0.7;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) this.reset();
+            }
+            draw() {
+                const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = this.green
+                    ? (isDark ? `rgba(168,255,87,${this.opacity})` : `rgba(90,158,16,${this.opacity * 0.6})`)
+                    : (isDark ? `rgba(255,255,255,${this.opacity * 0.3})` : `rgba(0,0,0,${this.opacity * 0.15})`);
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < 55; i++) particles.push(new Particle());
+
+        (function animParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animParticles);
+        })();
+
+        // ── Scroll reveal (ser6 style with multi-directional support)
+        const revealObs = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
                 }
             });
-        }, { threshold: 0.12 });
-        reveals.forEach(el => io.observe(el));
+        }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+
+        document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale').forEach(el => revealObs.observe(el));
 
         // ── License accordion
         document.querySelectorAll('.license-trigger').forEach(btn => {
@@ -1980,18 +2307,53 @@
                 const item = btn.closest('.license-item');
                 const isOpen = item.classList.contains('open');
 
-                // Close all
                 document.querySelectorAll('.license-item.open').forEach(i => {
                     i.classList.remove('open');
                     i.querySelector('.license-trigger').setAttribute('aria-expanded', 'false');
                 });
 
-                // Toggle clicked
                 if (!isOpen) {
                     item.classList.add('open');
                     btn.setAttribute('aria-expanded', 'true');
                 }
             });
+        });
+
+        // ── Card glow effect (ser6 style radial gradient on mousemove)
+        document.querySelectorAll('.bento-card').forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                const x = ((e.clientX - rect.left) / rect.width) * 100;
+                const y = ((e.clientY - rect.top) / rect.height) * 100;
+                const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+                const glowColor = isDark ? 'rgba(168,255,87,0.05)' : 'rgba(90,158,16,0.04)';
+                card.style.background = `radial-gradient(circle at ${x}% ${y}%,${glowColor},var(--bg-3) 60%)`;
+            });
+            card.addEventListener('mouseleave', () => { card.style.background = ''; });
+        });
+
+        // ── Process step glow
+        document.querySelectorAll('.process-step').forEach(step => {
+            step.addEventListener('mousemove', e => {
+                const rect = step.getBoundingClientRect();
+                const x = ((e.clientX - rect.left) / rect.width) * 100;
+                const y = ((e.clientY - rect.top) / rect.height) * 100;
+                const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+                const glowColor = isDark ? 'rgba(168,255,87,0.04)' : 'rgba(90,158,16,0.03)';
+                step.style.background = `radial-gradient(circle at ${x}% ${y}%,${glowColor},var(--bg) 60%)`;
+            });
+            step.addEventListener('mouseleave', () => { step.style.background = ''; });
+        });
+
+        // ── Magnetic buttons (ser6 style)
+        document.querySelectorAll('.btn-primary').forEach(btn => {
+            btn.addEventListener('mousemove', e => {
+                const rect = btn.getBoundingClientRect();
+                const dx = (e.clientX - rect.left - rect.width / 2) * 0.3;
+                const dy = (e.clientY - rect.top - rect.height / 2) * 0.3;
+                btn.style.transform = `translate(${dx}px,${dy}px)`;
+            });
+            btn.addEventListener('mouseleave', () => { btn.style.transform = ''; });
         });
 
         // ── Ripple on btn-primary click
@@ -2001,31 +2363,21 @@
                 const rect = this.getBoundingClientRect();
                 const size = Math.max(rect.width, rect.height) * 2;
                 r.style.cssText = `
-          position:absolute;
-          width:${size}px;height:${size}px;
-          top:${e.clientY - rect.top - size / 2}px;
-          left:${e.clientX - rect.left - size / 2}px;
-          border-radius:50%;
-          background:rgba(255,255,255,.25);
-          animation:ripple .6s ease-out forwards;
-          pointer-events:none;
-        `;
+                    position:absolute;
+                    width:${size}px;height:${size}px;
+                    top:${e.clientY - rect.top - size / 2}px;
+                    left:${e.clientX - rect.left - size / 2}px;
+                    border-radius:50%;
+                    background:rgba(255,255,255,.25);
+                    animation:ripple .6s ease-out forwards;
+                    pointer-events:none;
+                `;
                 this.style.position = 'relative';
                 this.style.overflow = 'hidden';
                 this.appendChild(r);
                 setTimeout(() => r.remove(), 700);
             });
         });
-
-        // Ripple keyframes
-        const style = document.createElement('style');
-        style.textContent = `
-      @keyframes ripple {
-        from { transform: scale(0); opacity: 1; }
-        to   { transform: scale(1); opacity: 0; }
-      }
-    `;
-        document.head.appendChild(style);
     </script>
 
 </body>

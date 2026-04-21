@@ -1,0 +1,2182 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi Brand Cloud Kitchen Model — My Cloud Kitchen</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Hubot+Sans:ital,wght@0,200..900;1,200..900&family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --green: #a8ff57;
+            --green-dim: #6bc930;
+            --green-glow: rgba(168, 255, 87, 0.18);
+            --green-glow-strong: rgba(168, 255, 87, 0.35);
+            --bg: #080808;
+            --bg-2: #0f0f0f;
+            --bg-3: #161616;
+            --surface: rgba(255, 255, 255, 0.04);
+            --surface-hover: rgba(255, 255, 255, 0.07);
+            --border: rgba(255, 255, 255, 0.08);
+            --border-bright: rgba(168, 255, 87, 0.25);
+            --text-primary: #f0f0f0;
+            --text-secondary: #c8c4c4;
+            --text-muted: #9a9a9a;
+            --card-bg: rgba(20, 20, 20, 0.85);
+        }
+
+        [data-theme="light"] {
+            --bg: #f4f2ed;
+            --bg-2: #ede9e2;
+            --bg-3: #e5e0d8;
+            --surface: rgba(0, 0, 0, 0.04);
+            --surface-hover: rgba(0, 0, 0, 0.07);
+            --border: rgba(0, 0, 0, 0.08);
+            --border-bright: rgba(100, 180, 30, 0.3);
+            --text-primary: #111;
+            --text-secondary: #555;
+            --text-muted: #7d7a7a;
+            --card-bg: rgba(240, 237, 230, 0.9);
+            --green: #5a9e10;
+            --green-dim: #4a8a0c;
+            --green-glow: rgba(90, 158, 16, 0.12);
+            --green-glow-strong: rgba(90, 158, 16, 0.22);
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            font-family: 'Hubot Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            cursor: none;
+            line-height: 1.6;
+            transition: background .5s, color .5s;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            background-size: 256px;
+        }
+
+        #cursor {
+            width: 12px;
+            height: 12px;
+            background: var(--green);
+            border-radius: 50%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 9999;
+            mix-blend-mode: difference;
+            transform: translate(-50%, -50%);
+            transition: width .25s, height .25s;
+        }
+
+        #cursor-ring {
+            width: 36px;
+            height: 36px;
+            border: 1px solid var(--green);
+            border-radius: 50%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            opacity: .5;
+        }
+
+        body.cursor-hover #cursor {
+            width: 20px;
+            height: 20px;
+        }
+
+        body.cursor-hover #cursor-ring {
+            width: 60px;
+            height: 60px;
+            opacity: .2;
+        }
+
+        #theme-toggle {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            z-index: 1000;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: none;
+            backdrop-filter: blur(12px);
+            transition: background .3s, transform .4s;
+        }
+
+        #theme-toggle:hover {
+            background: var(--surface-hover);
+            transform: rotate(30deg);
+        }
+
+        #theme-toggle svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        #sun-icon {
+            display: none;
+        }
+
+        [data-theme="light"] #sun-icon {
+            display: block;
+        }
+
+        [data-theme="light"] #moon-icon {
+            display: none;
+        }
+
+        canvas#particles {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            opacity: .4;
+        }
+
+        /* REVEAL */
+        .reveal,
+        .reveal-left,
+        .reveal-right,
+        .reveal-scale {
+            opacity: 0;
+            transition: opacity .9s cubic-bezier(.16, 1, .3, 1), transform .9s cubic-bezier(.16, 1, .3, 1);
+        }
+
+        .reveal {
+            transform: translateY(50px);
+        }
+
+        .reveal-left {
+            transform: translateX(-60px);
+        }
+
+        .reveal-right {
+            transform: translateX(60px);
+        }
+
+        .reveal-scale {
+            transform: scale(.88);
+        }
+
+        .reveal.visible,
+        .reveal-left.visible,
+        .reveal-right.visible,
+        .reveal-scale.visible {
+            opacity: 1;
+            transform: none;
+        }
+
+        .d1 {
+            transition-delay: .1s
+        }
+
+        .d2 {
+            transition-delay: .2s
+        }
+
+        .d3 {
+            transition-delay: .3s
+        }
+
+        .d4 {
+            transition-delay: .4s
+        }
+
+        .d5 {
+            transition-delay: .5s
+        }
+
+        .d6 {
+            transition-delay: .6s
+        }
+
+        .section-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            letter-spacing: .14em;
+            color: var(--green);
+            text-transform: uppercase;
+            margin-bottom: 28px;
+        }
+
+        .section-tag::before {
+            content: "";
+            width: 20px;
+            height: 1px;
+            background: currentColor;
+        }
+
+        /* ====== HERO ====== */
+        #hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 0 60px 100px;
+            position: relative;
+            overflow: hidden;
+            background-image: url(/images/multib.png);
+            background-size: contain;
+            background-position: right;
+            background-repeat: no-repeat;
+        }
+
+        .hero-orb-1 {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            pointer-events: none;
+            z-index: 0;
+            background: rgba(168, 255, 87, 0.09);
+            width: 700px;
+            height: 700px;
+            top: -200px;
+            right: -100px;
+            animation: orbFloat 12s ease-in-out infinite alternate;
+        }
+
+        .hero-orb-2 {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            pointer-events: none;
+            z-index: 0;
+            background: rgba(168, 255, 87, 0.04);
+            width: 400px;
+            height: 400px;
+            bottom: 0;
+            left: -100px;
+            animation: orbFloat2 15s ease-in-out infinite alternate;
+        }
+
+        [data-theme="light"] .hero-orb-1 {
+            background: rgba(90, 158, 16, 0.07);
+        }
+
+        [data-theme="light"] .hero-orb-2 {
+            background: rgba(90, 158, 16, 0.04);
+        }
+
+        @keyframes orbFloat {
+            from {
+                transform: translate(0, 0) scale(1)
+            }
+
+            to {
+                transform: translate(-40px, 30px) scale(1.1)
+            }
+        }
+
+        @keyframes orbFloat2 {
+            from {
+                transform: translate(0, 0)
+            }
+
+            to {
+                transform: translate(30px, -40px)
+            }
+        }
+
+        .hero-bg-word {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-weight: 900;
+            font-size: clamp(60px, 13vw, 200px);
+            letter-spacing: -.04em;
+            line-height: 1;
+            color: transparent;
+            -webkit-text-stroke: 1px var(--border);
+            user-select: none;
+            pointer-events: none;
+            z-index: 1;
+            white-space: nowrap;
+            opacity: .2;
+        }
+
+        /* Floating grid lines decoration */
+        .hero-grid {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 1;
+            background-image:
+                linear-gradient(rgba(168, 255, 87, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(168, 255, 87, 0.03) 1px, transparent 1px);
+            background-size: 80px 80px;
+            mask-image: radial-gradient(ellipse at center, black 0%, transparent 70%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 3;
+            max-width: 900px;
+        }
+
+        .hero-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            letter-spacing: .14em;
+            color: var(--green);
+            text-transform: uppercase;
+            margin-bottom: 32px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp .8s .3s forwards;
+        }
+
+        .hero-label::before {
+            content: "";
+            width: 24px;
+            height: 1px;
+            background: var(--green);
+        }
+
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+
+        .hero-title {
+            font-weight: 800;
+            font-size: clamp(44px, 7vw, 88px);
+            line-height: .95;
+            letter-spacing: -.03em;
+            margin-bottom: 32px;
+        }
+
+        .hero-title .word {
+            display: inline-block;
+            overflow: hidden;
+        }
+
+        .hero-title .word span {
+            display: inline-block;
+            transform: translateY(110%);
+            animation: wordReveal .9s cubic-bezier(.16, 1, .3, 1) forwards;
+        }
+
+        .hero-title em {
+            font-style: italic;
+            font-weight: 400;
+            color: var(--green);
+        }
+
+        .hero-title .word:nth-child(1) span {
+            animation-delay: .4s
+        }
+
+        .hero-title .word:nth-child(2) span {
+            animation-delay: .52s
+        }
+
+        .hero-title .word:nth-child(3) span {
+            animation-delay: .64s
+        }
+
+        .hero-title .word:nth-child(4) span {
+            animation-delay: .76s
+        }
+
+        .hero-title .word:nth-child(5) span {
+            animation-delay: .88s
+        }
+
+        @keyframes wordReveal {
+            to {
+                transform: translateY(0)
+            }
+        }
+
+        .hero-body {
+            max-width: 560px;
+            font-size: 17px;
+            line-height: 1.75;
+            color: var(--text-secondary);
+            margin-bottom: 48px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp .8s 1.1s forwards;
+        }
+
+        .hero-badge-row {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp .8s 1.3s forwards;
+        }
+
+        .h-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 18px;
+            background: var(--surface);
+            border: 1px solid var(--border-bright);
+            border-radius: 50px;
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--green);
+            letter-spacing: .08em;
+        }
+
+        .h-badge-accent {
+            background: var(--green);
+            color: #080808;
+            border: none;
+        }
+
+        /* Floating cards */
+        .hero-float {
+            position: absolute;
+            z-index: 12;
+        }
+
+        .hf-1 {
+            top: 100px;
+            right: 80px;
+            background: var(--green);
+            padding: 14px 22px;
+            border-radius: 16px;
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            font-weight: 700;
+            color: #080808;
+            letter-spacing: .06em;
+            opacity: 0;
+            animation: badgeEntry .7s 1.6s cubic-bezier(.34, 1.56, .64, 1) forwards, badgeFloat2 8s 2.4s ease-in-out infinite;
+        }
+
+        .hf-2 {
+            bottom: 120px;
+            right: 100px;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-bright);
+            border-radius: 16px;
+            padding: 16px 20px;
+            opacity: 0;
+            animation: badgeEntry .7s 1.9s cubic-bezier(.34, 1.56, .64, 1) forwards, badgeFloat 6s 2.6s ease-in-out infinite;
+        }
+
+        .hf-num {
+            font-weight: 800;
+            font-size: 28px;
+            color: var(--green);
+            line-height: 1;
+        }
+
+        .hf-lbl {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        @keyframes badgeEntry {
+            from {
+                opacity: 0;
+                transform: translateY(-15px) rotate(-6deg)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) rotate(-2deg)
+            }
+        }
+
+        @keyframes badgeFloat {
+
+            0%,
+            100% {
+                transform: translateY(0)
+            }
+
+            50% {
+                transform: translateY(-8px)
+            }
+        }
+
+        @keyframes badgeFloat2 {
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(-2deg)
+            }
+
+            50% {
+                transform: translateY(-10px) rotate(2deg)
+            }
+        }
+
+        .scroll-hint {
+            position: absolute;
+            bottom: 40px;
+            left: 60px;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            opacity: 0;
+            animation: fadeIn 1s 2s forwards;
+        }
+
+        .scroll-line {
+            width: 1px;
+            height: 60px;
+            background: linear-gradient(to bottom, var(--green), transparent);
+            animation: scrollLine 2s ease-in-out infinite;
+        }
+
+        @keyframes scrollLine {
+
+            0%,
+            100% {
+                opacity: .3;
+                transform: scaleY(1)
+            }
+
+            50% {
+                opacity: 1;
+                transform: scaleY(1.3)
+            }
+        }
+
+        .scroll-hint span {
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            letter-spacing: .12em;
+            color: var(--text-muted);
+            writing-mode: vertical-rl;
+            text-transform: uppercase;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1
+            }
+        }
+
+        /* ====== MARQUEE ====== */
+        .marquee-section {
+            overflow: hidden;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            background: var(--bg-2);
+        }
+
+        .marquee-track {
+            display: flex;
+            width: max-content;
+            animation: marqueeScroll 28s linear infinite;
+            padding: 16px 0;
+        }
+
+        .marquee-item {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            padding: 0 32px;
+            white-space: nowrap;
+            font-weight: 600;
+            font-size: 13px;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+
+        .marquee-item .dot {
+            width: 6px;
+            height: 6px;
+            background: var(--green);
+            border-radius: 50%;
+        }
+
+        .marquee-item.accent {
+            color: var(--text-secondary);
+        }
+
+        @keyframes marqueeScroll {
+            from {
+                transform: translateX(0)
+            }
+
+            to {
+                transform: translateX(-50%)
+            }
+        }
+
+        /* ====== WHAT IS SECTION ====== */
+        #what-is {
+            padding: 120px 60px;
+            background: var(--bg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .wi-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(140px);
+            pointer-events: none;
+            z-index: 0;
+            background: rgba(168, 255, 87, 0.05);
+            width: 700px;
+            height: 700px;
+            top: 50%;
+            right: -200px;
+            transform: translateY(-50%);
+        }
+
+        .wi-inner {
+            max-width: 1300px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .wi-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .wi-left {}
+
+        .wi-eyebrow {
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: .14em;
+            color: var(--green);
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .wi-eyebrow::before {
+            content: "";
+            width: 20px;
+            height: 1px;
+            background: currentColor;
+        }
+
+        .wi-headline {
+            font-weight: 800;
+            font-size: clamp(36px, 4.5vw, 62px);
+            line-height: 1.0;
+            letter-spacing: -.025em;
+            margin-bottom: 28px;
+        }
+
+        .wi-headline em {
+            font-style: italic;
+            font-weight: 400;
+            color: var(--green);
+            display: block;
+        }
+
+        .wi-body {
+            font-size: 16px;
+            line-height: 1.85;
+            color: var(--text-secondary);
+            margin-bottom: 18px;
+        }
+
+        /* Image placeholder box */
+        .img-placeholder {
+            width: 100%;
+            aspect-ratio: 4/3;
+            border-radius: 20px;
+            background: var(--bg-3);
+            border: 1px solid var(--border-bright);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            position: relative;
+            overflow: hidden;
+            background-image: url(/images/sert5.png);
+            background-size: cover;
+        }
+
+        .img-placeholder::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at top right, var(--green-glow), transparent 60%);
+        }
+
+        .img-placeholder-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            letter-spacing: .12em;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .img-placeholder-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: var(--green-glow);
+            border: 1px solid var(--border-bright);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .img-placeholder-icon svg {
+            width: 22px;
+            height: 22px;
+            color: var(--green);
+        }
+
+        /* ====== ESRC SECTION ====== */
+        #esrc {
+            padding: 120px 60px;
+            background: var(--bg-2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .esrc-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(160px);
+            pointer-events: none;
+            z-index: 0;
+            background: rgba(168, 255, 87, 0.06);
+            width: 800px;
+            height: 800px;
+            bottom: -300px;
+            left: -200px;
+        }
+
+        .esrc-inner {
+            max-width: 1300px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .esrc-header {
+            margin-bottom: 80px;
+        }
+
+        .esrc-headline {
+            font-weight: 800;
+            font-size: clamp(36px, 4.5vw, 64px);
+            line-height: 1.0;
+            letter-spacing: -.03em;
+            margin-top: 16px;
+        }
+
+        .esrc-headline em {
+            font-style: italic;
+            font-weight: 400;
+            color: var(--green);
+        }
+
+        .esrc-sub {
+            font-size: 16px;
+            color: var(--text-secondary);
+            line-height: 1.75;
+            margin-top: 16px;
+            max-width: 600px;
+        }
+
+        /* ESRC pillars grid */
+        .esrc-pillars {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .esrc-card {
+            background: var(--bg-3);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 40px 36px;
+            position: relative;
+            overflow: hidden;
+            transition: transform .45s cubic-bezier(.34, 1.56, .64, 1), border-color .3s;
+            cursor: none;
+        }
+
+        .esrc-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--border-bright);
+        }
+
+        .esrc-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(to right, var(--green), transparent);
+        }
+
+        .esrc-card:hover::before {
+            background: var(--green);
+        }
+
+        .esrc-card-num {
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: .12em;
+            color: var(--green);
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .esrc-card-num::before {
+            content: "";
+            width: 16px;
+            height: 1px;
+            background: var(--green);
+        }
+
+        .esrc-card-icon {
+            width: 56px;
+            height: 56px;
+            background: var(--green-glow);
+            border: 1px solid var(--border-bright);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+            transition: transform .35s cubic-bezier(.34, 1.56, .64, 1);
+        }
+
+        .esrc-card:hover .esrc-card-icon {
+            transform: scale(1.1) rotate(6deg);
+        }
+
+        .esrc-card-icon svg {
+            width: 24px;
+            height: 24px;
+            color: var(--green);
+        }
+
+        .esrc-card-title {
+            font-weight: 700;
+            font-size: 20px;
+            letter-spacing: -.01em;
+            margin-bottom: 12px;
+        }
+
+        .esrc-card-body {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .esrc-result {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: var(--green-glow);
+            border: 1px solid var(--border-bright);
+            border-radius: 50px;
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--green);
+            letter-spacing: .06em;
+        }
+
+        .esrc-result::before {
+            content: "→";
+        }
+
+        /* ====== GAME CHANGER STRIP ====== */
+        .game-changer-strip {
+            max-width: 1300px;
+            margin: 80px auto 0;
+            background: var(--green);
+            border-radius: 24px;
+            padding: 56px 64px;
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 60px;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .game-changer-strip::before {
+            content: "";
+            position: absolute;
+            top: -80px;
+            right: -80px;
+            width: 280px;
+            height: 280px;
+            background: rgba(0, 0, 0, .07);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .gcs-left {
+            position: relative;
+            z-index: 1;
+        }
+
+        .gcs-eyebrow {
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+            color: rgba(8, 8, 8, .5);
+            margin-bottom: 12px;
+        }
+
+        .gcs-heading {
+            font-weight: 800;
+            font-size: clamp(26px, 3vw, 40px);
+            line-height: 1.05;
+            letter-spacing: -.02em;
+            color: #080808;
+        }
+
+        .gcs-heading em {
+            font-style: italic;
+            font-weight: 400;
+        }
+
+        .gcs-right {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .gcs-point {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .gcs-icon {
+            width: 34px;
+            height: 34px;
+            background: rgba(8, 8, 8, .1);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .gcs-icon svg {
+            width: 15px;
+            height: 15px;
+            color: #080808;
+        }
+
+        .gcs-text {
+            font-size: 13px;
+            font-weight: 600;
+            color: #080808;
+            line-height: 1.5;
+        }
+
+        .gcs-text span {
+            display: block;
+            font-weight: 400;
+            font-size: 12px;
+            color: rgba(8, 8, 8, .6);
+            margin-top: 2px;
+        }
+
+        /* ====== EXAMPLE SETUP SECTION ====== */
+        #example-setup {
+            padding: 120px 60px;
+            background: var(--bg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .es-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(140px);
+            pointer-events: none;
+            z-index: 0;
+            background: rgba(168, 255, 87, 0.05);
+            width: 600px;
+            height: 600px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .es-inner {
+            max-width: 1300px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .es-header {
+            text-align: center;
+            max-width: 640px;
+            margin: 0 auto 80px;
+        }
+
+        .es-headline {
+            font-weight: 800;
+            font-size: clamp(34px, 4vw, 56px);
+            line-height: 1.05;
+            letter-spacing: -.025em;
+            margin-top: 16px;
+        }
+
+        .es-headline em {
+            font-style: italic;
+            font-weight: 400;
+            color: var(--green);
+        }
+
+        .es-sub {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.75;
+            margin-top: 16px;
+        }
+
+        /* Brand cards in a horizontal layout */
+        .es-brands {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 40px;
+        }
+
+        .brand-card {
+            background: var(--bg-3);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 28px 24px;
+            position: relative;
+            overflow: hidden;
+            transition: transform .45s cubic-bezier(.34, 1.56, .64, 1), border-color .3s;
+            cursor: none;
+        }
+
+        .brand-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--border-bright);
+        }
+
+        .brand-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(to right, var(--green), transparent);
+        }
+
+        /* Image placeholder for brand card — replace with actual brand image */
+        .brand-card-img {
+            width: 100%;
+            aspect-ratio: 3/2;
+            border-radius: 12px;
+            background: var(--bg-2);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .brand-card-img::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at bottom left, var(--green-glow), transparent 60%);
+        }
+
+        .brand-card-img-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            letter-spacing: .1em;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 10px;
+        }
+
+        .brand-card-emoji {
+            font-size: 32px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .brand-card-tag {
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: .12em;
+            color: var(--green);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .brand-card-name {
+            font-weight: 700;
+            font-size: 17px;
+            letter-spacing: -.01em;
+            margin-bottom: 8px;
+        }
+
+        .brand-card-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Overlap indicator */
+        .es-overlap {
+            background: var(--bg-3);
+            border: 1px solid var(--border-bright);
+            border-radius: 20px;
+            padding: 32px 40px;
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .eo-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: .12em;
+            color: var(--green);
+            text-transform: uppercase;
+            flex-shrink: 0;
+        }
+
+        .eo-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .eo-tag {
+            padding: 6px 14px;
+            background: var(--green-glow);
+            border: 1px solid var(--border-bright);
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* ====== WHO SECTION ====== */
+        #who {
+            padding: 120px 60px;
+            background: var(--bg-2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .who-inner {
+            max-width: 1300px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .who-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: start;
+        }
+
+        .who-left {}
+
+        .who-headline {
+            font-weight: 800;
+            font-size: clamp(34px, 4vw, 56px);
+            line-height: 1.05;
+            letter-spacing: -.025em;
+            margin-top: 16px;
+            margin-bottom: 40px;
+        }
+
+        .who-headline em {
+            font-style: italic;
+            font-weight: 400;
+            color: var(--green);
+        }
+
+        .who-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .who-card {
+            background: var(--bg-3);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px 28px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            transition: border-color .3s, transform .35s cubic-bezier(.34, 1.56, .64, 1);
+            cursor: none;
+        }
+
+        .who-card:hover {
+            border-color: var(--border-bright);
+            transform: translateX(8px);
+        }
+
+        .who-card-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--green-glow);
+            border: 1px solid var(--border-bright);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .who-card-icon svg {
+            width: 20px;
+            height: 20px;
+            color: var(--green);
+        }
+
+        .who-card-text {
+            font-weight: 600;
+            font-size: 15px;
+            color: var(--text-primary);
+            line-height: 1.4;
+        }
+
+        .who-card-sub {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-top: 3px;
+            font-weight: 400;
+        }
+
+        /* Stats on the right */
+        .who-right {}
+
+        .who-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .who-stat {
+            background: var(--bg-3);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 28px 24px;
+            position: relative;
+            overflow: hidden;
+            transition: border-color .3s;
+        }
+
+        .who-stat::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(to right, var(--green), transparent);
+        }
+
+        .who-stat-num {
+            font-weight: 800;
+            font-size: 42px;
+            letter-spacing: -.03em;
+            color: var(--green);
+            line-height: 1;
+        }
+
+        .who-stat-lbl {
+            font-size: 14px;
+            color: var(--text-primary);
+            font-weight: 600;
+            margin-top: 4px;
+        }
+
+        .who-stat-sub {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 3px;
+        }
+
+        /* Right side image placeholder */
+        .who-img {
+            width: 100%;
+            aspect-ratio: 16/9;
+            border-radius: 20px;
+            background: var(--bg-3);
+            border: 1px solid var(--border-bright);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .who-img::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at center, var(--green-glow), transparent 60%);
+        }
+
+        .who-img-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            letter-spacing: .12em;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 20px;
+        }
+
+        /* ====== CTA BOTTOM ====== */
+        #cta-bottom {
+            padding: 100px 60px;
+            background: var(--bg);
+        }
+
+        .cta-inner {
+            max-width: 1300px;
+            margin: 0 auto;
+            background: var(--bg-3);
+            border: 1px solid var(--border);
+            border-radius: 32px;
+            padding: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 60px;
+            position: relative;
+            overflow: hidden;
+            /* CTA BACKGROUND IMAGE — place your brand/lifestyle image here */
+            /* background-image:url('/images/cta-bg.jpg'); */
+            background-blend-mode: overlay;
+        }
+
+        .cta-inner::before {
+            content: "";
+            position: absolute;
+            top: -100px;
+            right: -100px;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(ellipse, var(--green-glow), transparent 70%);
+            pointer-events: none;
+        }
+
+        .cta-text {
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-headline {
+            font-weight: 800;
+            font-size: clamp(30px, 3.5vw, 52px);
+            line-height: 1.05;
+            letter-spacing: -.025em;
+            margin-top: 16px;
+        }
+
+        .cta-headline em {
+            font-style: italic;
+            font-weight: 400;
+            color: var(--green);
+        }
+
+        .cta-body {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.75;
+            margin-top: 16px;
+            max-width: 460px;
+        }
+
+        .cta-actions {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            flex-direction: column;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--green);
+            color: #080808;
+            font-weight: 700;
+            font-size: 13px;
+            letter-spacing: .06em;
+            padding: 16px 32px;
+            border-radius: 50px;
+            text-decoration: none;
+            border: none;
+            cursor: none;
+            transition: transform .2s, box-shadow .3s;
+            white-space: nowrap;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .2), transparent);
+            transform: translateX(-100%);
+            transition: transform .5s;
+        }
+
+        .btn-primary:hover::after {
+            transform: translateX(100%);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px var(--green-glow-strong);
+        }
+
+        .btn-primary svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        .btn-ghost {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: transparent;
+            color: var(--text-secondary);
+            font-size: 13px;
+            font-weight: 500;
+            padding: 16px 24px;
+            border-radius: 50px;
+            text-decoration: none;
+            border: 1px solid var(--border);
+            cursor: none;
+            transition: color .2s, border-color .2s, transform .2s;
+            white-space: nowrap;
+        }
+
+        .btn-ghost:hover {
+            color: var(--text-primary);
+            border-color: var(--text-muted);
+            transform: translateY(-2px);
+        }
+
+        /* ====== RESPONSIVE ====== */
+        @media(max-width:1100px) {
+            .esrc-pillars {
+                grid-template-columns: 1fr;
+            }
+
+            .es-brands {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .who-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .game-changer-strip {
+                grid-template-columns: 1fr;
+                gap: 32px;
+            }
+
+            .gcs-right {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media(max-width:800px) {
+            #hero {
+                padding: 20px 24px 80px;
+            }
+
+            #what-is,
+            #esrc,
+            #example-setup,
+            #who,
+            #cta-bottom {
+                padding: 80px 24px;
+            }
+
+            .wi-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .es-brands {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .who-stats {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .cta-inner {
+                flex-direction: column;
+                padding: 48px 32px;
+            }
+
+            .hf-1,
+            .hf-2 {
+                display: none;
+            }
+
+            .gcs-right {
+                grid-template-columns: 1fr;
+            }
+
+            .es-overlap {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+            }
+        }
+
+        @media(max-width:480px) {
+            .es-brands {
+                grid-template-columns: 1fr;
+            }
+
+            .who-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="cursor"></div>
+    <div id="cursor-ring"></div>
+    <canvas id="particles"></canvas>
+
+    <button id="theme-toggle" aria-label="Toggle theme">
+        <svg id="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+            color="var(--text-secondary)">
+            <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
+        </svg>
+        <svg id="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+            color="var(--text-secondary)">
+            <circle cx="12" cy="12" r="5" />
+            <path
+                d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+        </svg>
+    </button>
+
+    <!-- ============ HERO ============ -->
+    <section id="hero">
+        <div class="hero-orb-1"></div>
+        <div class="hero-orb-2"></div>
+        <div class="hero-grid"></div>
+        <div class="hero-bg-word">MULTI·BRAND</div>
+
+        <!-- Floating badges -->
+        <div class="hero-float hf-1">Powered by ESRC</div>
+        <div class="hero-float hf-2">
+            <div class="hf-num">4×</div>
+            <div class="hf-lbl">Revenue Streams</div>
+        </div>
+
+        <div class="hero-content">
+            <div class="hero-label">My Cloud Kitchen · Model</div>
+            <h1 class="hero-title">
+                <span class="word"><span>Multi</span></span>&nbsp;
+                <span class="word"><span>Brand</span></span>&nbsp;
+                <span class="word"><span>Cloud</span></span>&nbsp;<br>
+                <span class="word"><span><em>Kitchen</em></span></span>&nbsp;
+                <span class="word"><span>Model</span></span>
+            </h1>
+            <p class="hero-body">One kitchen. Multiple brands. Maximum profit. The smart way to scale your food business
+                without scaling your costs.</p>
+            <div class="hero-badge-row">
+                <div class="h-badge h-badge-accent">ESRC Framework</div>
+                <div class="h-badge">Zero Extra CAPEX</div>
+                <div class="h-badge">Zomato & Swiggy Optimised</div>
+                <div class="h-badge">Urban Market Ready</div>
+            </div>
+        </div>
+        <div class="scroll-hint">
+            <div class="scroll-line"></div><span>Scroll</span>
+        </div>
+    </section>
+
+    <!-- ============ MARQUEE ============ -->
+    <div class="marquee-section">
+        <div class="marquee-track">
+            <div class="marquee-item">
+                <div class="dot"></div>Multi Brand Strategy
+            </div>
+            <div class="marquee-item accent">
+                <div class="dot"></div>Shared Resources
+            </div>
+            <div class="marquee-item">
+                <div class="dot"></div>ESRC Model
+            </div>
+            <div class="marquee-item accent">
+                <div class="dot"></div>Higher Margins
+            </div>
+            <div class="marquee-item">
+                <div class="dot"></div>Zero Extra CAPEX
+            </div>
+            <div class="marquee-item accent">
+                <div class="dot"></div>Cross Selling
+            </div>
+            <div class="marquee-item">
+                <div class="dot"></div>Bulk Purchasing
+            </div>
+            <div class="marquee-item accent">
+                <div class="dot"></div>Staff Utilisation
+            </div>
+            <div class="marquee-item">
+                <div class="dot"></div>Multi Brand Strategy
+            </div>
+            <div class="marquee-item accent">
+                <div class="dot"></div>Shared Resources
+            </div>
+            <div class="marquee-item">
+                <div class="dot"></div>ESRC Model
+            </div>
+            <div class="marquee-item accent">
+                <div class="dot"></div>Higher Margins
+            </div>
+            <div class="marquee-item">
+                <div class="dot"></div>Zero Extra CAPEX
+            </div>
+            <div class="marquee-item accent">
+                <div class="dot"></div>Cross Selling
+            </div>
+            <div class="marquee-item">
+                <div class="dot"></div>Bulk Purchasing
+            </div>
+            <div class="marquee-item accent">
+                <div class="dot"></div>Staff Utilisation
+            </div>
+        </div>
+    </div>
+
+    <!-- ============ WHAT IS ============ -->
+    <section id="what-is">
+        <div class="wi-orb"></div>
+        <div class="wi-inner">
+            <div class="wi-grid">
+                <div class="wi-left reveal-left">
+                    <div class="wi-eyebrow">The Concept</div>
+                    <h2 class="wi-headline">What is a Multi Brand<br><em>Cloud Kitchen?</em></h2>
+                    <p class="wi-body">A Multi Brand Cloud Kitchen is a smart, scalable food business model where
+                        multiple virtual restaurant brands operate from a single kitchen infrastructure.</p>
+                    <p class="wi-body">Instead of investing in separate outlets for different cuisines or concepts, you
+                        leverage one centralized kitchen to run multiple brands simultaneously across delivery platforms
+                        like Zomato and Swiggy.</p>
+                    <p class="wi-body">This model is rapidly becoming the future of the food industry, especially in
+                        high-density urban markets like Mumbai, where rentals and operational costs are high.</p>
+                    <div style="margin-top:32px;display:flex;gap:12px;flex-wrap:wrap;">
+                        <div class="h-badge">Single Infrastructure</div>
+                        <div class="h-badge">Multiple Brands</div>
+                        <div class="h-badge">Maximum Revenue</div>
+                    </div>
+                </div>
+                <div class="wi-right reveal-right">
+                    <!-- REPLACE WITH IMAGE: A photo showing a busy cloud kitchen setup, multiple orders, tablet with Zomato/Swiggy open -->
+                    <div class="img-placeholder" style="aspect-ratio:4/3">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ ESRC SECTION ============ -->
+    <section id="esrc">
+        <div class="esrc-orb"></div>
+        <div class="esrc-inner">
+            <div class="esrc-header reveal">
+                <div class="section-tag">The Framework</div>
+                <h2 class="esrc-headline">What is ESRC?<br><em>Efficient Shared Resource Concept.</em></h2>
+                <p class="esrc-sub">The backbone of every successful multi-brand cloud kitchen. One setup — engineered
+                    to extract maximum output at minimum cost.</p>
+            </div>
+
+            <div class="esrc-pillars">
+
+                <!-- Pillar 1 -->
+                <div class="esrc-card reveal d1">
+                    <div class="esrc-card-num">01 / Equipment</div>
+                    <div class="esrc-card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+                        </svg>
+                    </div>
+                    <div class="esrc-card-title">Same Equipment, Maximum Output</div>
+                    <div class="esrc-card-body">You don't need to invest in new machinery for every new brand. A
+                        well-designed kitchen setup handles multiple cuisines and menus using the same base equipment —
+                        burners, fryers, ovens, and prep stations.</div>
+                    <div class="esrc-result">Zero or minimal additional CAPEX</div>
+                </div>
+
+                <!-- Pillar 2 -->
+                <div class="esrc-card reveal d2">
+                    <div class="esrc-card-num">02 / Staff</div>
+                    <div class="esrc-card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
+                            <circle cx="9" cy="7" r="4" />
+                            <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" />
+                        </svg>
+                    </div>
+                    <div class="esrc-card-title">Same Staff, Higher Productivity</div>
+                    <div class="esrc-card-body">A single trained team executes dishes across multiple brands by
+                        following standardized SOPs and prep systems. Reduced salary overhead, better staff utilization,
+                        and faster order turnaround.</div>
+                    <div class="esrc-result">Higher productivity, lower payroll</div>
+                </div>
+
+                <!-- Pillar 3 -->
+                <div class="esrc-card reveal d3">
+                    <div class="esrc-card-num">03 / Inventory</div>
+                    <div class="esrc-card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z" />
+                            <line x1="7" y1="7" x2="7.01" y2="7" />
+                        </svg>
+                    </div>
+                    <div class="esrc-card-title">Same Raw Materials, Lower Wastage</div>
+                    <div class="esrc-card-body">Smart menu design allows brands to share core ingredients — sauces,
+                        gravies, vegetables, proteins, and spices. Bulk purchasing benefits, reduced inventory dead
+                        stock, and better food cost control.</div>
+                    <div class="esrc-result">Bulk savings + less dead stock</div>
+                </div>
+
+                <!-- Pillar 4 -->
+                <div class="esrc-card reveal d4">
+                    <div class="esrc-card-num">04 / Revenue</div>
+                    <div class="esrc-card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <polyline points="22 7 13.5 15.5 8.5 10.5 2 17" />
+                            <polyline points="16 7 22 7 22 13" />
+                        </svg>
+                    </div>
+                    <div class="esrc-card-title">Cross-Selling Across Brands</div>
+                    <div class="esrc-card-body">Different brands under one kitchen complement each other. Customers
+                        ordering from one brand can be encouraged to add items from another — increasing average order
+                        value, order frequency, and customer retention.</div>
+                    <div class="esrc-result">Higher AOV + stronger retention</div>
+                </div>
+
+            </div>
+
+            <!-- Game Changer Strip -->
+            <div class="game-changer-strip reveal">
+                <div class="gcs-left">
+                    <div class="gcs-eyebrow">Why It Works</div>
+                    <div class="gcs-heading">A model that's a<br><em>game changer.</em></div>
+                </div>
+                <div class="gcs-right">
+                    <div class="gcs-point">
+                        <div class="gcs-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="1.5">
+                                <path d="M13 10V3L4 14h7v7l9-11h-7z" />
+                            </svg></div>
+                        <div class="gcs-text">Minimal Investment for New Brands<span>Launch new concepts with just
+                                branding, menu engineering, and listing optimisation — no heavy setup costs.</span>
+                        </div>
+                    </div>
+                    <div class="gcs-point">
+                        <div class="gcs-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="1.5">
+                                <circle cx="12" cy="12" r="10" />
+                                <polyline points="12 6 12 12 16 14" />
+                            </svg></div>
+                        <div class="gcs-text">Immediate Revenue Upside<span>Add new brands and start generating
+                                incremental sales from Day 1.</span></div>
+                    </div>
+                    <div class="gcs-point">
+                        <div class="gcs-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="1.5">
+                                <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+                                <line x1="8" y1="21" x2="16" y2="21" />
+                                <line x1="12" y1="17" x2="12" y2="21" />
+                            </svg></div>
+                        <div class="gcs-text">Maximum Kitchen Utilisation<span>Turn idle kitchen capacity into
+                                revenue-generating opportunities throughout the day.</span></div>
+                    </div>
+                    <div class="gcs-point">
+                        <div class="gcs-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="1.5">
+                                <line x1="12" y1="1" x2="12" y2="23" />
+                                <path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" />
+                            </svg></div>
+                        <div class="gcs-text">Higher Profitability<span>Operate multiple revenue streams on the same
+                                fixed cost base — significantly improving margins.</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ EXAMPLE SETUP ============ -->
+    <section id="example-setup">
+        <div class="es-orb"></div>
+        <div class="es-inner">
+            <div class="es-header reveal">
+                <div class="section-tag">Real World Example</div>
+                <h2 class="es-headline">A winning<br><em>multi-brand setup.</em></h2>
+                <p class="es-sub">From one kitchen, you can operate all of these — all using overlapping ingredients
+                    like gravies, sauces, proteins, and prep bases.</p>
+            </div>
+
+            <div class="es-brands">
+                <!-- Brand 1 -->
+                <div class="brand-card reveal d1">
+                    <!-- REPLACE: Image of North Indian food (rajma rice, dal makhani bowls) -->
+                    <div class="brand-card-img" style="background-image: url(/images/brand/chinese\ wok.png);
+    background-size: cover;
+    background-position: center;">
+
+                    </div>
+                    <div class="brand-card-tag">Brand 01</div>
+                    <div class="brand-card-name">North Indian Bowl Brand</div>
+                    <div class="brand-card-desc">Rajma rice, dal makhani bowls — comfort food that converts.</div>
+                </div>
+                <!-- Brand 2 -->
+                <div class="brand-card reveal d2">
+                    <!-- REPLACE: Image of rolls & wraps (kathi rolls, shawarma) -->
+                    <div class="brand-card-img" style="background-image: url(/images/brand/meal.jpeg);
+    background-size: cover;
+    background-position: center;">
+
+                    </div>
+                    <div class="brand-card-tag">Brand 02</div>
+                    <div class="brand-card-name">Rolls & Wraps Brand</div>
+                    <div class="brand-card-desc">Kathi rolls, shawarma — quick, high-demand, high-margin.</div>
+                </div>
+                <!-- Brand 3 -->
+                <div class="brand-card reveal d3">
+                    <!-- REPLACE: Image of Chinese/Asian food (noodles, fried rice) -->
+                    <div class="brand-card-img">
+                        <div class="brand-card-emoji">🍜</div>
+                        <div class="brand-card-img-label">📸 Place Brand Image<br>Chinese / Asian food photo</div>
+                    </div>
+                    <div class="brand-card-tag">Brand 03</div>
+                    <div class="brand-card-name">Chinese / Asian Brand</div>
+                    <div class="brand-card-desc">Noodles, fried rice, gravies — India's most-ordered cuisine.</div>
+                </div>
+                <!-- Brand 4 -->
+                <div class="brand-card reveal d4">
+                    <!-- REPLACE: Image of desserts (churros, brownies, shakes) -->
+                    <div class="brand-card-img">
+                        <div class="brand-card-emoji">🍫</div>
+                        <div class="brand-card-img-label">📸 Place Brand Image<br>Desserts / shakes photo</div>
+                    </div>
+                    <div class="brand-card-tag">Brand 04</div>
+                    <div class="brand-card-name">Dessert Brand</div>
+                    <div class="brand-card-desc">Churros, brownies, shakes — upsell and increase AOV effortlessly.</div>
+                </div>
+            </div>
+
+            <!-- Shared ingredient overlap bar -->
+            <div class="es-overlap reveal">
+                <div class="eo-label">Shared Ingredients</div>
+                <div class="eo-tags">
+                    <div class="eo-tag">Gravies & Sauces</div>
+                    <div class="eo-tag">Core Proteins</div>
+                    <div class="eo-tag">Vegetables</div>
+                    <div class="eo-tag">Spice Blends</div>
+                    <div class="eo-tag">Prep Bases</div>
+                    <div class="eo-tag">Packaging Materials</div>
+                    <div class="eo-tag">Kitchen Equipment</div>
+                    <div class="eo-tag">Staff & SOPs</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ WHO SHOULD OPT ============ -->
+    <section id="who">
+        <div class="who-inner">
+            <div class="who-grid">
+                <div class="who-left">
+                    <div class="section-tag reveal">Who Is This For</div>
+                    <h2 class="who-headline reveal">Who should opt for<br>a Multi Brand<br><em>Cloud Kitchen?</em></h2>
+                    <div class="who-cards">
+                        <div class="who-card reveal d1">
+                            <div class="who-card-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+                                    <polyline points="9 22 9 12 15 12 15 22" />
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="who-card-text">Existing Restaurant Owners</div>
+                                <div class="who-card-sub">Looking to increase revenue without physical expansion.</div>
+                            </div>
+                        </div>
+                        <div class="who-card reveal d2">
+                            <div class="who-card-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <path
+                                        d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="who-card-text">New Food Entrepreneurs</div>
+                                <div class="who-card-sub">Wanting a low-risk entry into the F&B industry.</div>
+                            </div>
+                        </div>
+                        <div class="who-card reveal d3">
+                            <div class="who-card-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <path
+                                        d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="who-card-text">Cloud Kitchen Operators</div>
+                                <div class="who-card-sub">Struggling with low utilisation or profitability.</div>
+                            </div>
+                        </div>
+                        <div class="who-card reveal d4">
+                            <div class="who-card-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <line x1="12" y1="1" x2="12" y2="23" />
+                                    <path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" />
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="who-card-text">Investors</div>
+                                <div class="who-card-sub">Seeking high-ROI food business models with proven frameworks.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="who-right">
+                    <div class="who-stats reveal">
+                        <div class="who-stat">
+                            <div class="who-stat-num">₹0</div>
+                            <div class="who-stat-lbl">Extra CAPEX</div>
+                            <div class="who-stat-sub">For adding new brands</div>
+                        </div>
+                        <div class="who-stat">
+                            <div class="who-stat-num">Day 1</div>
+                            <div class="who-stat-lbl">Revenue Starts</div>
+                            <div class="who-stat-sub">From new brand launch</div>
+                        </div>
+                        <div class="who-stat">
+                            <div class="who-stat-num">4+</div>
+                            <div class="who-stat-lbl">Brands per Kitchen</div>
+                            <div class="who-stat-sub">On a single fixed cost base</div>
+                        </div>
+                        <div class="who-stat">
+                            <div class="who-stat-num">Max</div>
+                            <div class="who-stat-lbl">Utilisation</div>
+                            <div class="who-stat-sub">Idle capacity → Revenue</div>
+                        </div>
+                    </div>
+                    <!-- REPLACE: Lifestyle/success photo of a multi-brand cloud kitchen operator, happy chef, orders on screen, etc. -->
+                    <div class="who-img reveal d3">
+                        <svg style="width:40px;height:40px;color:var(--green);opacity:.4;position:relative;z-index:1"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                            <circle cx="8.5" cy="8.5" r="1.5" />
+                            <polyline points="21 15 16 10 5 21" />
+                        </svg>
+                        <div class="who-img-label">📸 Place Image Here<br>Recommended: Cloud kitchen operator reviewing
+                            Zomato/Swiggy dashboard,<br>multiple order receipts, happy chef — ~1200×675px</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ CTA BOTTOM ============ -->
+    <section id="cta-bottom">
+        <div class="cta-inner reveal">
+            <div class="cta-text">
+                <div class="section-tag">Start Today</div>
+                <h2 class="cta-headline">Let's build a <em>profitable</em><br>cloud kitchen for you.</h2>
+                <p class="cta-body">At MyCloudKitchen Consulting, we help you launch, optimise, and scale multi-brand
+                    cloud kitchens using the proven ESRC framework — designed to maximise profit from day one.</p>
+            </div>
+            <div class="cta-actions">
+                <a href="#" class="btn-primary">
+                    Get a Free Consult
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7" />
+                    </svg>
+                </a>
+                <a href="#" class="btn-ghost">Call +91-9022453555</a>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        /* CURSOR */
+        const cursor = document.getElementById('cursor');
+        const cursorRing = document.getElementById('cursor-ring');
+        let mx = 0, my = 0, rx = 0, ry = 0;
+        document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; cursor.style.left = mx + 'px'; cursor.style.top = my + 'px'; });
+        (function animateRing() { rx += (mx - rx) * .12; ry += (my - ry) * .12; cursorRing.style.left = rx + 'px'; cursorRing.style.top = ry + 'px'; requestAnimationFrame(animateRing); })();
+        document.querySelectorAll('a,button,.esrc-card,.brand-card,.who-card,.who-stat').forEach(el => {
+            el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+            el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+        });
+
+        /* THEME */
+        document.getElementById('theme-toggle').addEventListener('click', () => {
+            const html = document.documentElement;
+            html.setAttribute('data-theme', html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+        });
+
+        /* PARTICLES */
+        const canvas = document.getElementById('particles');
+        const ctx = canvas.getContext('2d');
+        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        resizeCanvas(); window.addEventListener('resize', resizeCanvas);
+        const particles = [];
+        class Particle {
+            constructor() { this.reset(); }
+            reset() { this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height; this.size = Math.random() * 1.5 + .3; this.speedX = (Math.random() - .5) * .3; this.speedY = (Math.random() - .5) * .3; this.opacity = Math.random() * .4 + .05; this.green = Math.random() > .7; }
+            update() { this.x += this.speedX; this.y += this.speedY; if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) this.reset(); }
+            draw() { const isDark = document.documentElement.getAttribute('data-theme') === 'dark'; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fillStyle = this.green ? (isDark ? `rgba(168,255,87,${this.opacity})` : `rgba(90,158,16,${this.opacity * .6})`) : (isDark ? `rgba(255,255,255,${this.opacity * .3})` : `rgba(0,0,0,${this.opacity * .15})`); ctx.fill(); }
+        }
+        for (let i = 0; i < 55; i++)particles.push(new Particle());
+        (function animateParticles() { ctx.clearRect(0, 0, canvas.width, canvas.height); particles.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animateParticles); })();
+
+        /* REVEAL */
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+        }, { threshold: .1, rootMargin: '0px 0px -60px 0px' });
+        document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale').forEach(el => revealObserver.observe(el));
+
+        /* CARD GLOW */
+        document.querySelectorAll('.esrc-card,.brand-card,.who-stat').forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                const x = ((e.clientX - rect.left) / rect.width) * 100;
+                const y = ((e.clientY - rect.top) / rect.height) * 100;
+                const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+                const gc = isDark ? 'rgba(168,255,87,0.05)' : 'rgba(90,158,16,0.04)';
+                card.style.background = `radial-gradient(circle at ${x}% ${y}%,${gc},var(--bg-3) 60%)`;
+            });
+            card.addEventListener('mouseleave', () => { card.style.background = ''; });
+        });
+
+        /* MAGNETIC BUTTONS */
+        document.querySelectorAll('.btn-primary').forEach(btn => {
+            btn.addEventListener('mousemove', e => {
+                const rect = btn.getBoundingClientRect();
+                const dx = (e.clientX - rect.left - rect.width / 2) * .3;
+                const dy = (e.clientY - rect.top - rect.height / 2) * .3;
+                btn.style.transform = `translate(${dx}px,${dy}px)`;
+            });
+            btn.addEventListener('mouseleave', () => { btn.style.transform = ''; });
+        });
+    </script>
+</body>
+
+</html>
