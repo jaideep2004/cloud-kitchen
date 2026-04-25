@@ -1,0 +1,2977 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Growth Hack — Hustlers Hospitality</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Hubot+Sans:ital,wght@0,200..900;1,200..900&family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --green: #a8ff57;
+            --green-dim: #6bc930;
+            --green-glow: rgba(168, 255, 87, 0.18);
+            --green-glow-strong: rgba(168, 255, 87, 0.35);
+            --bg: #080808;
+            --bg-2: #0f0f0f;
+            --bg-3: #161616;
+            --surface: rgba(255, 255, 255, 0.04);
+            --surface-hover: rgba(255, 255, 255, 0.07);
+            --border: rgba(255, 255, 255, 0.08);
+            --border-bright: rgba(168, 255, 87, 0.25);
+            --text-primary: #f0f0f0;
+            --text-secondary: #c8c0c0;
+            --text-muted: #9a9a9a;
+            --card-bg: rgba(20, 20, 20, 0.9);
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            font-family: 'Hubot Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            cursor: none;
+            line-height: 1.6;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            opacity: .03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            background-size: 256px;
+        }
+
+        /* CURSOR */
+        #cursor {
+            width: 12px;
+            height: 12px;
+            background: var(--green);
+            border-radius: 50%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 9999;
+            mix-blend-mode: difference;
+            transform: translate(-50%, -50%);
+            transition: width .25s, height .25s;
+        }
+
+        #cursor-ring {
+            width: 36px;
+            height: 36px;
+            border: 1px solid var(--green);
+            border-radius: 50%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            opacity: .5;
+        }
+
+        body.cursor-hover #cursor {
+            width: 22px;
+            height: 22px;
+        }
+
+        body.cursor-hover #cursor-ring {
+            width: 64px;
+            height: 64px;
+            opacity: .2;
+        }
+
+        canvas#particles {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            opacity: .35;
+        }
+
+        /* REVEAL SYSTEM */
+        .reveal,
+        .reveal-left,
+        .reveal-right,
+        .reveal-scale,
+        .reveal-up {
+            opacity: 0;
+            transition: opacity .9s cubic-bezier(.16, 1, .3, 1), transform .9s cubic-bezier(.16, 1, .3, 1);
+        }
+
+        .reveal,
+        .reveal-up {
+            transform: translateY(50px);
+        }
+
+        .reveal-left {
+            transform: translateX(-60px);
+        }
+
+        .reveal-right {
+            transform: translateX(60px);
+        }
+
+        .reveal-scale {
+            transform: scale(.88);
+        }
+
+        .reveal.visible,
+        .reveal-left.visible,
+        .reveal-right.visible,
+        .reveal-scale.visible,
+        .reveal-up.visible {
+            opacity: 1;
+            transform: none;
+        }
+
+        .d1 {
+            transition-delay: .1s
+        }
+
+        .d2 {
+            transition-delay: .2s
+        }
+
+        .d3 {
+            transition-delay: .3s
+        }
+
+        .d4 {
+            transition-delay: .4s
+        }
+
+        .d5 {
+            transition-delay: .5s
+        }
+
+        .d6 {
+            transition-delay: .6s
+        }
+
+        .section-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            letter-spacing: .14em;
+            color: var(--green);
+            text-transform: uppercase;
+            margin-bottom: 24px;
+        }
+
+        .section-tag::before {
+            content: "";
+            width: 20px;
+            height: 1px;
+            background: currentColor;
+        }
+
+        /* ═══════════════════════════════════════
+           HERO — diagonal split layout
+        ═══════════════════════════════════════ */
+        #hero {
+            min-height: 100vh;
+            position: relative;
+            overflow: hidden;
+            background: var(--bg);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .hero-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 100px 0 100px 60px;
+            position: relative;
+            z-index: 3;
+        }
+
+        .hero-right {
+            position: relative;
+            overflow: hidden;
+            /* ─── HERO IMAGE ──────────────────────────────────────
+               Replace this .hero-right block's ::after with an image:
+               <img src="https://mykitchen.websblog.in/wp-content/uploads/2026/04/growth-hack-hero.jpg"
+                    alt="Restaurant kitchen in action"
+                    style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;">
+               Recommended: dramatic top-down or side shot of busy restaurant kitchen
+            ─────────────────────────────────────────────────────── */
+        }
+
+        .hero-right::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(168, 255, 87, 0.07) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 40%, rgba(168, 255, 87, 0.1), transparent 60%);
+        }
+
+        .hero-right-placeholder {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            border-left: 1px solid var(--border);
+        }
+
+        .hero-right-placeholder .ph-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 24px;
+            background: var(--green-glow);
+            border: 1px solid var(--border-bright);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero-right-placeholder .ph-icon svg {
+            width: 38px;
+            height: 38px;
+            color: var(--green);
+        }
+
+        .hero-right-placeholder span {
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            letter-spacing: .1em;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        /* Diagonal slice overlay */
+        .hero-slice {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 120px;
+            background: var(--bg);
+            clip-path: polygon(40% 0, 100% 0, 60% 100%, 0 100%);
+            z-index: 4;
+            pointer-events: none;
+        }
+
+        .hero-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(140px);
+            pointer-events: none;
+            z-index: 1;
+            background: rgba(168, 255, 87, .07);
+            width: 600px;
+            height: 600px;
+            top: -150px;
+            left: -100px;
+            animation: orbFloat 14s ease-in-out infinite alternate;
+        }
+
+        @keyframes orbFloat {
+            from {
+                transform: translate(0, 0) scale(1)
+            }
+
+            to {
+                transform: translate(-30px, 40px) scale(1.1)
+            }
+        }
+
+        .hero-bg-word {
+            position: absolute;
+            bottom: -40px;
+            left: -20px;
+            font-weight: 900;
+            font-size: clamp(100px, 20vw, 260px);
+            letter-spacing: -.05em;
+            color: transparent;
+            -webkit-text-stroke: 1px rgba(255, 255, 255, 0.04);
+            user-select: none;
+            pointer-events: none;
+            z-index: 1;
+            white-space: nowrap;
+            line-height: 1;
+        }
+
+        .hero-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            letter-spacing: .14em;
+            color: var(--green);
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp .8s .3s forwards;
+        }
+
+        .hero-label::before {
+            content: "";
+            width: 24px;
+            height: 1px;
+            background: var(--green);
+        }
+
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+
+        .hero-title {
+            font-weight: 900;
+            font-size: clamp(60px, 7vw, 96px);
+            line-height: .9;
+            letter-spacing: -.04em;
+            margin-bottom: 8px;
+        }
+
+        .hero-title .word {
+            display: inline-block;
+            overflow: hidden;
+        }
+
+        .hero-title .word span {
+            display: inline-block;
+            transform: translateY(110%);
+            animation: wordReveal .9s cubic-bezier(.16, 1, .3, 1) forwards;
+        }
+
+        .hero-title .word:nth-child(1) span {
+            animation-delay: .4s;
+        }
+
+        .hero-title .word:nth-child(2) span {
+            animation-delay: .55s;
+        }
+
+        @keyframes wordReveal {
+            to {
+                transform: translateY(0)
+            }
+        }
+
+        .hero-title-accent {
+            font-weight: 900;
+            font-size: clamp(60px, 7vw, 96px);
+            line-height: .9;
+            letter-spacing: -.04em;
+            color: var(--green);
+            font-style: italic;
+            font-weight: 400;
+            margin-bottom: 40px;
+            opacity: 0;
+            animation: fadeUp .8s .85s forwards;
+        }
+
+        .hero-desc {
+            font-size: 17px;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            max-width: 480px;
+            margin-bottom: 44px;
+            opacity: 0;
+            animation: fadeUp .8s 1.1s forwards;
+        }
+
+        .hero-desc strong {
+            color: var(--text-primary);
+            font-weight: 700;
+        }
+
+        .hero-cta-row {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            opacity: 0;
+            animation: fadeUp .8s 1.3s forwards;
+        }
+
+        .hero-stat-strip {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 50%;
+            border-top: 1px solid var(--border);
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            z-index: 5;
+        }
+
+        .hss-item {
+            padding: 20px 24px;
+            border-right: 1px solid var(--border);
+            opacity: 0;
+            animation: fadeUp .6s forwards;
+        }
+
+        .hss-item:nth-child(1) {
+            animation-delay: 1.5s
+        }
+
+        .hss-item:nth-child(2) {
+            animation-delay: 1.65s
+        }
+
+        .hss-item:nth-child(3) {
+            animation-delay: 1.8s;
+            border-right: none;
+        }
+
+        .hss-num {
+            font-weight: 800;
+            font-size: 26px;
+            letter-spacing: -.03em;
+            color: var(--green);
+            line-height: 1;
+        }
+
+        .hss-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .scroll-hint {
+            position: absolute;
+            bottom: 40px;
+            right: 40px;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            opacity: 0;
+            animation: fadeIn 1s 2s forwards;
+        }
+
+        .scroll-line {
+            width: 1px;
+            height: 60px;
+            background: linear-gradient(to bottom, var(--green), transparent);
+            animation: scrollLine 2s ease-in-out infinite;
+        }
+
+        @keyframes scrollLine {
+
+            0%,
+            100% {
+                opacity: .3;
+                transform: scaleY(1)
+            }
+
+            50% {
+                opacity: 1;
+                transform: scaleY(1.3)
+            }
+        }
+
+        .scroll-hint span {
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            letter-spacing: .12em;
+            color: var(--text-muted);
+            writing-mode: vertical-rl;
+            text-transform: uppercase;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1
+            }
+        }
+
+        /* ═══════════════════════════════════════
+           MARQUEE
+        ═══════════════════════════════════════ */
+        .marquee-section {
+            overflow: hidden;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            background: var(--bg-2);
+        }
+
+        .marquee-track {
+            display: flex;
+            width: max-content;
+            animation: marqueeScroll 30s linear infinite;
+            padding: 14px 0;
+        }
+
+        .marquee-item {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            padding: 0 32px;
+            white-space: nowrap;
+            font-weight: 600;
+            font-size: 12px;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+
+        .marquee-item .dot {
+            width: 6px;
+            height: 6px;
+            background: var(--green);
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .marquee-item.accent {
+            color: var(--text-secondary);
+        }
+
+        @keyframes marqueeScroll {
+            from {
+                transform: translateX(0)
+            }
+
+            to {
+                transform: translateX(-50%)
+            }
+        }
+
+        /* ═══════════════════════════════════════
+           CONCEPT — What is Growth Hack
+        ═══════════════════════════════════════ */
+        #concept {
+            padding: 140px 60px;
+            background: var(--bg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .concept-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(160px);
+            pointer-events: none;
+            z-index: 0;
+            background: rgba(168, 255, 87, .05);
+            width: 700px;
+            height: 700px;
+            top: -200px;
+            right: -200px;
+        }
+
+        .concept-inner {
+            max-width: 1300px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .concept-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 100px;
+            align-items: center;
+        }
+
+        .concept-headline {
+            font-weight: 800;
+            font-size: clamp(38px, 4.5vw, 64px);
+            line-height: .98;
+            letter-spacing: -.03em;
+            margin-bottom: 32px;
+        }
+
+        .concept-headline em {
+            font-style: italic;
+            font-weight: 400;
+            color: var(--green);
+            display: block;
+        }
+
+        .concept-body {
+            font-size: 16px;
+            line-height: 1.85;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+
+        .concept-highlight-box {
+            margin-top: 36px;
+            padding: 32px 36px;
+            background: var(--green);
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .concept-highlight-box::before {
+            content: "";
+            position: absolute;
+            bottom: -40px;
+            right: -30px;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.08);
+        }
+
+        .chb-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            letter-spacing: .14em;
+            color: rgba(8, 8, 8, .55);
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .chb-text {
+            font-weight: 800;
+            font-size: clamp(18px, 2vw, 26px);
+            line-height: 1.2;
+            letter-spacing: -.02em;
+            color: #080808;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ─── IMAGE PLACEHOLDER ──────────────────────────
+           Replace .concept-visual with:
+           <img src="https://mykitchen.websblog.in/wp-content/uploads/2026/04/growth-hack-concept.jpg"
+                alt="Multiple brands one kitchen"
+                style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:24px;border:1px solid var(--border);">
+           Recommended: overhead shot of kitchen with multiple brand packaging/logos
+        ────────────────────────────────────────────────── */
+        .concept-visual {
+            aspect-ratio: 1;
+            border-radius: 24px;
+            background: var(--bg-3);
+            border: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .concept-visual::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at 50% 50%, rgba(168, 255, 87, 0.07), transparent 70%);
+        }
+
+        .cv-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 22px;
+            background: var(--green-glow);
+            border: 1px solid var(--border-bright);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cv-icon svg {
+            width: 38px;
+            height: 38px;
+            color: var(--green);
+        }
+
+        .concept-visual span {
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            letter-spacing: .1em;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ═══════════════════════════════════════
+           ZERO EXTRAS — the 3 "No" cards
+        ═══════════════════════════════════════ */
+        #zero-extras {
+            padding: 0 60px 140px;
+            background: var(--bg);
+            position: relative;
+            z-index: 1;
+        }
+
+        .zero-inner {
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .zero-header {
+            text-align: center;
+            margin-bottom: 64px;
+        }
+
+        .zero-headline {
+            font-weight: 800;
+            font-size: clamp(36px, 4.5vw, 64px);
+            line-height: 1.0;
+            letter-spacing: -.03em;
+            margin-top: 8px;
+        }
+
+        .zero-headline em {
+            font-style: italic;
+            font-weight: 400;
+            color: var(--green);
+        }
+
+        .zero-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .zero-card {
+            padding: 44px 40px;
+            border-radius: 24px;
+            background: var(--bg-3);
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+            cursor: none;
+            transition: transform .45s cubic-bezier(.34, 1.56, .64, 1), border-color .3s;
+        }
+
+        .zero-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--border-bright);
+        }
+
+        .zero-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(to right, var(--green), transparent);
+        }
+
+        .zero-no {
+            font-family: 'Space Mono', monospace;
+            font-weight: 700;
+            font-size: clamp(48px, 5vw, 72px);
+            line-height: 1;
+            color: transparent;
+            -webkit-text-stroke: 2px var(--green);
+            letter-spacing: -.03em;
+            margin-bottom: 20px;
+            transition: color .3s, -webkit-text-stroke .3s;
+        }
+
+        .zero-card:hover .zero-no {
+            color: var(--green);
+            -webkit-text-stroke: 2px transparent;
+        }
+
+        .zero-title {
+            font-weight: 700;
+            font-size: 20px;
+            letter-spacing: -.01em;
+            margin-bottom: 12px;
+        }
+
+        .zero-body {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* ═══════════════════════════════════════
+           PROCESS — how it actually works
+        ═══════════════════════════════════════ */
+        #process {
+            padding: 140px 60px;
+            background: var(--bg-2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .process-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(160px);
+            pointer-events: none;
+            z-index: 0;
+            background: rgba(168, 255, 87, .05);
+            width: 700px;
+            height: 700px;
+            bottom: -300px;
+            right: -200px;
+        }
+
+        .process-inner {
+            max-width: 1300px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .process-top {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: start;
+            margin-bottom: 80px;
+        }
+
+        .process-headline {
+            font-weight: 800;
+            font-size: clamp(36px, 4.5vw, 64px);
+            line-height: 1.0;
+            letter-spacing: -.03em;
+            margin-top: 8px;
+        }
+
+        .process-headline em {
+            font-style: italic;
+            font-weight: 400;
+            color: var(--green);
+        }
+
+        .process-sub {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.75;
+            margin-top: 16px;
+        }
+
+        /* Horizontal steps */
+        .process-steps {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0;
+            position: relative;
+        }
+
+        .process-steps::before {
+            content: "";
+            position: absolute;
+            top: 42px;
+            left: calc(12.5%);
+            right: calc(12.5%);
+            height: 1px;
+            background: linear-gradient(to right, var(--green), var(--green-dim), transparent);
+            z-index: 0;
+        }
+
+        .ps-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+            position: relative;
+            z-index: 1;
+            cursor: none;
+        }
+
+        .ps-circle {
+            width: 84px;
+            height: 84px;
+            border-radius: 50%;
+            background: var(--bg-2);
+            border: 1px solid var(--border-bright);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+            transition: background .3s, transform .4s cubic-bezier(.34, 1.56, .64, 1);
+            position: relative;
+        }
+
+        .ps-step:hover .ps-circle {
+            background: var(--green-glow);
+            transform: scale(1.1);
+        }
+
+        .ps-circle-inner {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: var(--bg-3);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ps-circle-inner svg {
+            width: 22px;
+            height: 22px;
+            color: var(--green);
+        }
+
+        .ps-num {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--green);
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            font-weight: 700;
+            color: #080808;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ps-title {
+            font-weight: 700;
+            font-size: 15px;
+            margin-bottom: 8px;
+            letter-spacing: -.01em;
+        }
+
+        .ps-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.65;
+        }
+
+        /* ═══════════════════════════════════════
+           EARNINGS — profit calculator visual
+        ═══════════════════════════════════════ */
+        #earnings {
+            padding: 140px 60px;
+            background: var(--bg);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        #earnings::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -50%;
+            width: 200%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--green), transparent);
+            animation: scanLine 4s linear infinite;
+        }
+
+        @keyframes scanLine {
+            from {
+                transform: translateX(-50%)
+            }
+
+            to {
+                transform: translateX(50%)
+            }
+        }
+
+        .earn-inner {
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .earn-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 100px;
+            align-items: center;
+        }
+
+        .earn-headline {
+            font-weight: 800;
+            font-size: clamp(36px, 4.5vw, 64px);
+            line-height: 1.0;
+            letter-spacing: -.03em;
+            margin-bottom: 24px;
+        }
+
+        .earn-headline em {
+            font-style: italic;
+            font-weight: 400;
+            color: var(--green);
+        }
+
+        .earn-body {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 16px;
+        }
+
+        .earn-callout {
+            margin-top: 28px;
+            padding: 28px 32px;
+            background: var(--surface);
+            border: 1px solid var(--border-bright);
+            border-left: 3px solid var(--green);
+            border-radius: 16px;
+        }
+
+        .earn-callout-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            letter-spacing: .14em;
+            color: var(--green);
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .earn-callout p {
+            font-size: 14px;
+            line-height: 1.8;
+            color: var(--text-secondary);
+        }
+
+        .earn-callout strong {
+            color: var(--text-primary);
+        }
+
+        /* Concept calculator visual */
+        .earn-calculator {
+            background: var(--bg-3);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            overflow: hidden;
+        }
+
+        .ec-header {
+            padding: 24px 32px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .ec-title {
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            letter-spacing: .1em;
+            color: var(--green);
+            text-transform: uppercase;
+        }
+
+        .ec-tag {
+            padding: 6px 14px;
+            background: var(--green);
+            border-radius: 50px;
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            font-weight: 700;
+            color: #080808;
+            letter-spacing: .06em;
+        }
+
+        .ec-rows {
+            padding: 8px 0;
+        }
+
+        .ec-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 32px;
+            border-bottom: 1px solid var(--border);
+            transition: background .2s;
+        }
+
+        .ec-row:last-child {
+            border-bottom: none;
+        }
+
+        .ec-row:hover {
+            background: var(--surface);
+        }
+
+        .ec-row-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .ec-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--green);
+            border-radius: 50%;
+            opacity: .5;
+        }
+
+        .ec-row:hover .ec-dot {
+            opacity: 1;
+        }
+
+        .ec-concept {
+            font-size: 14px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .ec-amount {
+            font-family: 'Space Mono', monospace;
+            font-weight: 700;
+            font-size: 15px;
+            color: var(--green);
+        }
+
+        .ec-footer {
+            padding: 24px 32px;
+            background: rgba(168, 255, 87, 0.06);
+            border-top: 1px solid var(--border-bright);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .ec-total-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            letter-spacing: .1em;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .ec-total-amount {
+            font-weight: 900;
+            font-size: 32px;
+            letter-spacing: -.03em;
+            color: var(--green);
+            line-height: 1;
+        }
+
+        .ec-total-sub {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        /* ═══════════════════════════════════════
+           ELIGIBILITY — partner requirements
+        ═══════════════════════════════════════ */
+        #eligibility {
+            padding: 140px 60px;
+            background: var(--bg-2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .elig-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(160px);
+            pointer-events: none;
+            z-index: 0;
+            background: rgba(168, 255, 87, .05);
+            width: 600px;
+            height: 600px;
+            top: -100px;
+            left: -200px;
+        }
+
+        .elig-inner {
+            max-width: 1300px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .elig-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: start;
+            margin-top: 64px;
+        }
+
+        .elig-headline {
+            font-weight: 800;
+            font-size: clamp(36px, 4vw, 56px);
+            line-height: 1.05;
+            letter-spacing: -.025em;
+            margin-bottom: 24px;
+        }
+
+        .elig-headline em {
+            font-style: italic;
+            font-weight: 400;
+            color: var(--green);
+        }
+
+        .elig-sub {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 32px;
+        }
+
+        .elig-reqs {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .elig-req {
+            display: grid;
+            grid-template-columns: 52px 1fr;
+            gap: 20px;
+            align-items: start;
+            padding: 24px 28px;
+            background: var(--bg-3);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            cursor: none;
+            transition: border-color .3s, transform .4s cubic-bezier(.34, 1.56, .64, 1);
+        }
+
+        .elig-req:hover {
+            border-color: var(--border-bright);
+            transform: translateX(8px);
+        }
+
+        .elig-req-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 14px;
+            background: var(--green-glow);
+            border: 1px solid var(--border-bright);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: transform .35s cubic-bezier(.34, 1.56, .64, 1);
+        }
+
+        .elig-req:hover .elig-req-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .elig-req-icon svg {
+            width: 22px;
+            height: 22px;
+            color: var(--green);
+        }
+
+        .elig-req-title {
+            font-weight: 700;
+            font-size: 16px;
+            margin-bottom: 6px;
+            letter-spacing: -.01em;
+        }
+
+        .elig-req-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.65;
+        }
+
+        /* ─── IMAGE PLACEHOLDER ──────────────────────────
+           Add a right-column image beside the eligibility list:
+           <img src="https://mykitchen.websblog.in/wp-content/uploads/2026/04/growth-hack-restaurant.jpg"
+                alt="Restaurant partner kitchen"
+                style="width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:24px;border:1px solid var(--border);">
+        ────────────────────────────────────────────────── */
+        .elig-visual {
+            aspect-ratio: 4/5;
+            border-radius: 24px;
+            background: var(--bg-3);
+            border: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            position: relative;
+            overflow: hidden;
+            sticky: top 40px;
+        }
+
+        .elig-visual::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at 50% 40%, rgba(168, 255, 87, 0.06), transparent 70%);
+        }
+
+        .ev-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 22px;
+            background: var(--green-glow);
+            border: 1px solid var(--border-bright);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .ev-icon svg {
+            width: 38px;
+            height: 38px;
+            color: var(--green);
+        }
+
+        .elig-visual span {
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            letter-spacing: .1em;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ═══════════════════════════════════════
+           SUPPORT — what partners get
+        ═══════════════════════════════════════ */
+        #support {
+            padding: 140px 60px;
+            background: var(--bg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .support-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(140px);
+            pointer-events: none;
+            z-index: 0;
+            background: rgba(168, 255, 87, .05);
+            width: 600px;
+            height: 600px;
+            top: -100px;
+            right: -100px;
+        }
+
+        .support-inner {
+            max-width: 1300px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .support-header {
+            margin-bottom: 72px;
+        }
+
+        .support-headline {
+            font-weight: 800;
+            font-size: clamp(36px, 4.5vw, 64px);
+            line-height: 1.0;
+            letter-spacing: -.03em;
+            margin-top: 8px;
+        }
+
+        .support-headline em {
+            font-style: italic;
+            font-weight: 400;
+            color: var(--green);
+        }
+
+        .support-mosaic {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 14px;
+        }
+
+        .supt {
+            border-radius: 20px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 32px 34px;
+            cursor: none;
+            position: relative;
+            overflow: hidden;
+            transition: transform .45s cubic-bezier(.34, 1.56, .64, 1), border-color .3s, box-shadow .3s;
+        }
+
+        .supt:hover {
+            transform: translateY(-7px);
+            border-color: var(--border-bright);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, .25), 0 0 30px var(--green-glow);
+        }
+
+        .supt::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(168, 255, 87, .03) 50%, transparent);
+            transform: translateX(-100%);
+            transition: transform .6s;
+            pointer-events: none;
+        }
+
+        .supt:hover::before {
+            transform: translateX(100%);
+        }
+
+        .supt::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(to right, var(--green), transparent);
+        }
+
+        .su-1 {
+            grid-column: span 3
+        }
+
+        .su-2 {
+            grid-column: span 3
+        }
+
+        .su-3 {
+            grid-column: span 3
+        }
+
+        .su-4 {
+            grid-column: span 3
+        }
+
+        .su-5 {
+            grid-column: span 4
+        }
+
+        .su-6 {
+            grid-column: span 4
+        }
+
+        .su-7 {
+            grid-column: span 4
+        }
+
+        .supt-icon {
+            width: 46px;
+            height: 46px;
+            background: var(--green-glow);
+            border: 1px solid var(--border-bright);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 18px;
+            transition: transform .35s cubic-bezier(.34, 1.56, .64, 1);
+        }
+
+        .supt:hover .supt-icon {
+            transform: scale(1.15) rotate(8deg);
+        }
+
+        .supt-icon svg {
+            width: 20px;
+            height: 20px;
+            color: var(--green);
+        }
+
+        .supt-name {
+            font-weight: 700;
+            font-size: 15px;
+            letter-spacing: -.01em;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            line-height: 1.2;
+        }
+
+        .supt-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* ═══════════════════════════════════════
+           TESTIMONIALS
+        ═══════════════════════════════════════ */
+        #testimonials {
+            padding: 140px 60px;
+            background: var(--bg-2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .test-inner {
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .test-header {
+            margin-bottom: 72px;
+        }
+
+        .test-headline {
+            font-weight: 800;
+            font-size: clamp(36px, 4.5vw, 64px);
+            line-height: 1.0;
+            letter-spacing: -.03em;
+            margin-top: 8px;
+        }
+
+        .test-headline em {
+            font-style: italic;
+            font-weight: 400;
+            color: var(--green);
+        }
+
+        .test-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .test-card {
+            padding: 36px 32px;
+            background: var(--bg-3);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            cursor: none;
+            position: relative;
+            overflow: hidden;
+            transition: transform .45s cubic-bezier(.34, 1.56, .64, 1), border-color .3s;
+        }
+
+        .test-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--border-bright);
+        }
+
+        .test-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(to right, var(--green), transparent);
+        }
+
+        .test-quote-mark {
+            font-family: Georgia, serif;
+            font-size: 60px;
+            line-height: 1;
+            color: var(--green);
+            opacity: .15;
+            margin-bottom: 8px;
+            font-weight: 900;
+        }
+
+        .test-text {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 24px;
+            font-style: italic;
+        }
+
+        .test-divider {
+            width: 32px;
+            height: 1px;
+            background: var(--border-bright);
+            margin-bottom: 20px;
+        }
+
+        .test-author {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .test-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--green-glow);
+            border: 1px solid var(--border-bright);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-weight: 700;
+            font-size: 16px;
+            color: var(--green);
+        }
+
+        /* ─── AVATAR IMAGE ──────────────────────────────
+           Optionally replace each .test-avatar with:
+           <img src="https://mykitchen.websblog.in/wp-content/uploads/2026/04/testimonial-[name].jpg"
+                style="width:44px;height:44px;border-radius:50%;object-fit:cover;">
+        ──────────────────────────────────────────────── */
+        .test-name {
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .test-brand {
+            font-size: 12px;
+            color: var(--green);
+            font-family: 'Space Mono', monospace;
+            letter-spacing: .04em;
+        }
+
+        .test-stars {
+            display: flex;
+            gap: 3px;
+            margin-bottom: 16px;
+        }
+
+        .test-stars svg {
+            width: 14px;
+            height: 14px;
+            fill: var(--green);
+        }
+
+        /* ═══════════════════════════════════════
+           MARKET SIZE — opportunity section
+        ═══════════════════════════════════════ */
+        #market {
+            padding: 120px 60px;
+            background: var(--bg);
+            border-top: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .market-inner {
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .market-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .market-headline {
+            font-weight: 800;
+            font-size: clamp(36px, 4vw, 56px);
+            line-height: 1.05;
+            letter-spacing: -.025em;
+            margin-bottom: 28px;
+        }
+
+        .market-headline em {
+            font-style: italic;
+            font-weight: 400;
+            color: var(--green);
+        }
+
+        .market-body {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 16px;
+        }
+
+        /* ─── IMAGE PLACEHOLDER ──────────────────────────
+           Replace .market-visual with:
+           <img src="https://mykitchen.websblog.in/wp-content/uploads/2026/04/growth-hack-market.jpg"
+                alt="Cloud kitchen market size infographic"
+                style="width:100%;border-radius:24px;border:1px solid var(--border);">
+           Recommended: market size chart/infographic image
+        ────────────────────────────────────────────────── */
+        .market-visual {
+            aspect-ratio: 5/4;
+            border-radius: 24px;
+            background: var(--bg-3);
+            border: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .market-visual::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at 50% 50%, rgba(168, 255, 87, 0.06), transparent 70%);
+        }
+
+        .mv-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 22px;
+            background: var(--green-glow);
+            border: 1px solid var(--border-bright);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .mv-icon svg {
+            width: 38px;
+            height: 38px;
+            color: var(--green);
+        }
+
+        .market-visual span {
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            letter-spacing: .1em;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            position: relative;
+            z-index: 1;
+        }
+
+        .market-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin-top: 28px;
+        }
+
+        .mstat {
+            padding: 24px 28px;
+            background: var(--bg-3);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            position: relative;
+            overflow: hidden;
+            transition: border-color .3s, transform .4s cubic-bezier(.34, 1.56, .64, 1);
+            cursor: none;
+        }
+
+        .mstat:hover {
+            border-color: var(--border-bright);
+            transform: translateY(-5px);
+        }
+
+        .mstat::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(to right, var(--green), transparent);
+        }
+
+        .mstat-num {
+            font-weight: 800;
+            font-size: 36px;
+            letter-spacing: -.03em;
+            color: var(--green);
+            line-height: 1;
+        }
+
+        .mstat-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        /* ═══════════════════════════════════════
+           CTA STRIP
+        ═══════════════════════════════════════ */
+        #cta-strip {
+            padding: 100px 60px;
+            background: var(--bg-2);
+        }
+
+        .cta-inner {
+            max-width: 1300px;
+            margin: 0 auto;
+            background: var(--bg-3);
+            border: 1px solid var(--border-bright);
+            border-radius: 32px;
+            padding: 0;
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            min-height: 360px;
+            /* ─── CTA BG IMAGE ─────────────────────────────────
+               Add a background to the left or right panel:
+               .cta-left background-image: url('https://mykitchen.websblog.in/wp-content/uploads/2026/04/growth-hack-cta.jpg');
+               background-size:cover; background-blend-mode:overlay;
+            ────────────────────────────────────────────────── */
+        }
+
+        .cta-left {
+            padding: 72px 64px;
+            background: var(--green);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .cta-left::before {
+            content: "";
+            position: absolute;
+            bottom: -80px;
+            right: -60px;
+            width: 280px;
+            height: 280px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.07);
+        }
+
+        .cta-left::after {
+            content: "";
+            position: absolute;
+            top: -40px;
+            left: -40px;
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.04);
+        }
+
+        .cta-hustler-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            letter-spacing: .14em;
+            color: rgba(8, 8, 8, .5);
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+
+        .cta-headline {
+            font-weight: 900;
+            font-size: clamp(32px, 3.5vw, 52px);
+            line-height: .98;
+            letter-spacing: -.035em;
+            color: #080808;
+            position: relative;
+            z-index: 1;
+            margin-bottom: 8px;
+        }
+
+        .cta-headline em {
+            font-style: italic;
+            font-weight: 400;
+        }
+
+        .cta-left-sub {
+            font-size: 15px;
+            color: rgba(8, 8, 8, .65);
+            position: relative;
+            z-index: 1;
+            margin-top: 12px;
+            line-height: 1.6;
+        }
+
+        .cta-right {
+            padding: 72px 64px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .cta-right p {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.75;
+            margin-bottom: 8px;
+        }
+
+        .cta-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: var(--green);
+            color: #080808;
+            font-weight: 700;
+            font-size: 14px;
+            letter-spacing: .06em;
+            padding: 18px 36px;
+            border-radius: 50px;
+            text-decoration: none;
+            border: none;
+            cursor: none;
+            transition: transform .2s, box-shadow .3s;
+            white-space: nowrap;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .2), transparent);
+            transform: translateX(-100%);
+            transition: transform .5s;
+        }
+
+        .btn-primary:hover::after {
+            transform: translateX(100%);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px var(--green-glow-strong);
+        }
+
+        .btn-primary svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        .btn-ghost {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: transparent;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 500;
+            padding: 18px 24px;
+            border-radius: 50px;
+            text-decoration: none;
+            border: 1px solid var(--border);
+            cursor: none;
+            transition: color .2s, border-color .2s, transform .2s;
+            white-space: nowrap;
+        }
+
+        .btn-ghost:hover {
+            color: var(--text-primary);
+            border-color: var(--text-muted);
+            transform: translateY(-2px);
+        }
+
+        .contact-detail {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Space Mono', monospace;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .contact-detail svg {
+            width: 14px;
+            height: 14px;
+            color: var(--green);
+            flex-shrink: 0;
+        }
+
+        /* ═══════════════════════════════════════
+           RESPONSIVE
+        ═══════════════════════════════════════ */
+        @media(max-width:1100px) {
+            #hero {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-right {
+                display: none;
+            }
+
+            .hero-slice {
+                display: none;
+            }
+
+            .hero-left {
+                padding: 120px 60px 160px;
+            }
+
+            .hero-stat-strip {
+                right: 0;
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .concept-grid,
+            .earn-grid,
+            .elig-grid,
+            .market-grid,
+            .process-top {
+                grid-template-columns: 1fr;
+            }
+
+            .zero-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .test-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .su-1,
+            .su-2,
+            .su-3,
+            .su-4 {
+                grid-column: span 6;
+            }
+
+            .su-5,
+            .su-6,
+            .su-7 {
+                grid-column: span 4;
+            }
+
+            .process-steps {
+                grid-template-columns: 1fr 1fr;
+                gap: 40px;
+            }
+
+            .process-steps::before {
+                display: none;
+            }
+
+            .cta-inner {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media(max-width:800px) {
+
+            #hero,
+            #concept,
+            #zero-extras,
+            #process,
+            #earnings,
+            #eligibility,
+            #support,
+            #testimonials,
+            #market,
+            #cta-strip {
+                padding: 80px 24px;
+            }
+
+            .hero-left {
+                padding: 100px 24px 140px;
+            }
+
+            .hero-stat-strip {
+                grid-template-columns: 1fr 1fr 1fr;
+                left: 0;
+            }
+
+            .zero-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .test-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .su-1,
+            .su-2,
+            .su-3,
+            .su-4,
+            .su-5,
+            .su-6,
+            .su-7 {
+                grid-column: 1/-1;
+            }
+
+            .process-steps {
+                grid-template-columns: 1fr;
+            }
+
+            .cta-left,
+            .cta-right {
+                padding: 48px 32px;
+            }
+
+            .hero-cta-row {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .market-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="cursor"></div>
+    <div id="cursor-ring"></div>
+    <canvas id="particles"></canvas>
+
+    <!-- ══════════════════════════════════════════
+         HERO — diagonal split
+    ══════════════════════════════════════════ -->
+    <section id="hero">
+        <div class="hero-orb"></div>
+        <div class="hero-bg-word">HACK</div>
+        <div class="hero-slice"></div>
+
+        <div class="hero-left">
+            <div class="hero-label">Hustlers Hospitality</div>
+            <h1 class="hero-title">
+                <span class="word"><span>Growth</span></span>&nbsp;<span class="word"><span>Hack</span></span>
+            </h1>
+            <div class="hero-title-accent">Guide.</div>
+            <p class="hero-desc">
+                <strong>Same kitchen. Same staff. Same rent.</strong><br>
+                Multiple cloud kitchen brands running simultaneously — generating incremental revenue from your
+                already-invested real estate, equipment and manpower.
+            </p>
+            <div class="hero-cta-row">
+                <a href="#cta-strip" class="btn-primary">
+                    Become a Partner
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7" />
+                    </svg>
+                </a>
+                <a href="#process" class="btn-ghost">How It Works</a>
+            </div>
+        </div>
+
+        <div class="hero-right">
+            <!-- ══════════════════════════════════
+                 IMAGE PLACEMENT — HERO RIGHT PANEL
+                 Replace this .hero-right-placeholder with:
+                 <img src="https://mykitchen.websblog.in/wp-content/uploads/2026/04/growth-hack-hero.jpg"
+                      alt="Kitchen in action"
+                      style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center left;">
+                 Recommended: overhead/dramatic kitchen shot, busy prep scene
+            ═══════════════════════════════════════ -->
+            <div class="hero-right-placeholder">
+                <div class="ph-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+                        <polyline points="9 22 9 12 15 12 15 22" />
+                    </svg>
+                </div>
+                <span>Hero Kitchen Image</span>
+            </div>
+        </div>
+
+        <div class="hero-stat-strip">
+            <div class="hss-item">
+                <div class="hss-num">30<span style="color:var(--green);font-size:.7em">+</span></div>
+                <div class="hss-label">Internet Restaurants</div>
+            </div>
+            <div class="hss-item">
+                <div class="hss-num">5<span style="color:var(--green);font-size:.7em">+</span></div>
+                <div class="hss-label">Plug & Play Kitchens</div>
+            </div>
+            <div class="hss-item">
+                <div class="hss-num">30</div>
+                <div class="hss-label">Days to Launch</div>
+            </div>
+        </div>
+
+        <div class="scroll-hint">
+            <div class="scroll-line"></div><span>Scroll</span>
+        </div>
+    </section>
+
+    <!-- MARQUEE -->
+    <div class="marquee-section">
+        <div class="marquee-track">
+            <div class="marquee-item">
+                <div class="dot"></div>Same Kitchen
+            </div>
+            <div class="marquee-item accent">
+                <div class="dot"></div>Multiple Brands
+            </div>
+            <div class="marquee-item">
+                <div class="dot"></div>No Extra Rent
+            </div>
+            <div class="marquee-item accent">
+                <div class="dot"></div>No Extra Staff
+            </div>
+            <div class="marquee-item">
+                <div class="dot"></div>No Extra Equipment
+            </div>
+            <div class="marquee-item accent">
+                <div class="dot"></div>Live in 30 Days
+            </div>
+            <div class="marquee-item">
+                <div class="dot"></div>Zomato · Swiggy · Dunzo
+            </div>
+            <div class="marquee-item accent">
+                <div class="dot"></div>₹20K–25K Per Brand/Month
+            </div>
+            <div class="marquee-item">
+                <div class="dot"></div>Exclusive Territory Rights
+            </div>
+            <div class="marquee-item accent">
+                <div class="dot"></div>Hustlers Hospitality
+            </div>
+            <div class="marquee-item">
+                <div class="dot"></div>Same Kitchen
+            </div>
+            <div class="marquee-item accent">
+                <div class="dot"></div>Multiple Brands
+            </div>
+            <div class="marquee-item">
+                <div class="dot"></div>No Extra Rent
+            </div>
+            <div class="marquee-item accent">
+                <div class="dot"></div>No Extra Staff
+            </div>
+            <div class="marquee-item">
+                <div class="dot"></div>No Extra Equipment
+            </div>
+            <div class="marquee-item accent">
+                <div class="dot"></div>Live in 30 Days
+            </div>
+            <div class="marquee-item">
+                <div class="dot"></div>Zomato · Swiggy · Dunzo
+            </div>
+            <div class="marquee-item accent">
+                <div class="dot"></div>₹20K–25K Per Brand/Month
+            </div>
+            <div class="marquee-item">
+                <div class="dot"></div>Exclusive Territory Rights
+            </div>
+            <div class="marquee-item accent">
+                <div class="dot"></div>Hustlers Hospitality
+            </div>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         CONCEPT
+    ══════════════════════════════════════════ -->
+    <section id="concept">
+        <div class="concept-orb"></div>
+        <div class="concept-inner">
+            <div class="concept-grid">
+                <div class="reveal-left">
+                    <div class="section-tag">What Is Growth Hack</div>
+                    <h2 class="concept-headline">
+                        A compelling plan to earn<br>
+                        <em>incremental profit</em>
+                    </h2>
+                    <p class="concept-body">A new line of business venture using your already-invested real estate,
+                        kitchen equipment, and manpower. Choose restaurant concepts and cuisines that work with the
+                        equipment you already have — we handle everything else.</p>
+                    <p class="concept-body">We've spent years researching and testing how to maximise the profitability
+                        of delivery-only brands through right menu placement, combo deals, offers, review management,
+                        creative packaging, and CPC ads.</p>
+                    <p class="concept-body">With our in-house brands and recipe standardisation, we intend to help
+                        thousands of struggling restaurant businesses nationwide profit from online ordering.</p>
+                    <div class="concept-highlight-box reveal d4">
+                        <div class="chb-label">The Core Idea</div>
+                        <div class="chb-text">Plug our brands into your kitchen. Get started in 30 days. Generate
+                            profits from space you already pay for.</div>
+                    </div>
+                </div>
+                <div class="reveal-right">
+                    <!-- ══════════════════════════════════
+                         IMAGE PLACEMENT — CONCEPT VISUAL
+                         Replace .concept-visual with:
+                         <img src="https://mykitchen.websblog.in/wp-content/uploads/2026/04/growth-hack-multibrand.jpg"
+                              alt="Multiple cloud kitchen brands from one kitchen"
+                              style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:24px;border:1px solid var(--border);">
+                         Recommended: flat lay of multiple food brands / packaging from one kitchen
+                    ═══════════════════════════════════════ -->
+                    <div class="concept-visual">
+                        <div class="cv-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <rect x="2" y="7" width="20" height="14" rx="2" />
+                                <path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2" />
+                                <line x1="12" y1="12" x2="12" y2="16" />
+                                <line x1="10" y1="14" x2="14" y2="14" />
+                            </svg>
+                        </div>
+                        <span>Multi-Brand Concept Visual</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         ZERO EXTRAS — the 3 No cards
+    ══════════════════════════════════════════ -->
+    <section id="zero-extras">
+        <div class="zero-inner">
+            <div class="zero-header reveal">
+                <div class="section-tag">Why Partner With Us</div>
+                <h2 class="zero-headline">Three zeros.<br><em>Unlimited upside.</em></h2>
+            </div>
+            <div class="zero-grid">
+                <div class="zero-card reveal d1">
+                    <div class="zero-no">No<br>Rent</div>
+                    <div class="zero-title">No Extra Rent</div>
+                    <div class="zero-body">You already pay rent for your kitchen space. The Growth Hack model operates
+                        within your existing lease — no new premises, no new overhead. Every rupee of cloud kitchen
+                        revenue is almost pure increment.</div>
+                </div>
+                <div class="zero-card reveal d2">
+                    <div class="zero-no">No<br>Staff</div>
+                    <div class="zero-title">No Extra Salary</div>
+                    <div class="zero-body">Your existing team handles the additional brands with the same manpower and
+                        downtime. Your chefs won't need a raise for running cloud kitchen brands — nor will you need to
+                        hire anyone new to get started.</div>
+                </div>
+                <div class="zero-card reveal d3">
+                    <div class="zero-no">No<br>Equip.</div>
+                    <div class="zero-title">No Extra Equipment</div>
+                    <div class="zero-body">We map our brand concepts to cuisines that fit what you already have in your
+                        kitchen. You can literally use the same equipment, the same utensils, the same cold storage to
+                        run multiple delivery brands.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         PROCESS
+    ══════════════════════════════════════════ -->
+    <section id="process">
+        <div class="process-orb"></div>
+        <div class="process-inner">
+            <div class="process-top reveal">
+                <div>
+                    <div class="section-tag">How It Works</div>
+                    <h2 class="process-headline">Up &amp; running<br><em>in 30 days.</em></h2>
+                </div>
+                <p class="process-sub">From our first conversation to your first delivery order on Zomato and Swiggy —
+                    our onboarding process is structured, fast, and fully supported at every step.</p>
+            </div>
+
+            <div class="process-steps">
+                <div class="ps-step reveal d1">
+                    <div class="ps-circle">
+                        <div class="ps-circle-inner">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
+                                <circle cx="9" cy="7" r="4" />
+                                <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" />
+                            </svg>
+                        </div>
+                        <div class="ps-num">01</div>
+                    </div>
+                    <div class="ps-title">Apply &amp; Qualify</div>
+                    <div class="ps-desc">Tell us about your kitchen — space, equipment, staff capacity, and current
+                        volumes. We confirm whether you qualify as a Growth Hack partner.</div>
+                </div>
+                <div class="ps-step reveal d2">
+                    <div class="ps-circle">
+                        <div class="ps-circle-inner">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path
+                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                        </div>
+                        <div class="ps-num">02</div>
+                    </div>
+                    <div class="ps-title">Select Concepts</div>
+                    <div class="ps-desc">Choose the restaurant concepts and cuisines compatible with your existing
+                        equipment. We provide SOPs, kitchen sticky notes, and full staff training.</div>
+                </div>
+                <div class="ps-step reveal d3">
+                    <div class="ps-circle">
+                        <div class="ps-circle-inner">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M13 10V3L4 14h7v7l9-11h-7z" />
+                            </svg>
+                        </div>
+                        <div class="ps-num">03</div>
+                    </div>
+                    <div class="ps-title">Aggregator Onboarding</div>
+                    <div class="ps-desc">We handle your listings on Zomato, Swiggy, and Dunzo — with optimised menus,
+                        photos, pricing, and launch offers from day one.</div>
+                </div>
+                <div class="ps-step reveal d4">
+                    <div class="ps-circle">
+                        <div class="ps-circle-inner">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path
+                                    d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                            </svg>
+                        </div>
+                        <div class="ps-num">04</div>
+                    </div>
+                    <div class="ps-title">Grow &amp; Scale</div>
+                    <div class="ps-desc">Orders start flowing. We manage ongoing campaigns, ratings, review strategy,
+                        and combos to grow your monthly earnings across all brands.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         EARNINGS
+    ══════════════════════════════════════════ -->
+    <section id="earnings">
+        <div class="earn-inner">
+            <div class="earn-grid">
+                <div class="reveal-left">
+                    <div class="section-tag">Earning Potential</div>
+                    <h2 class="earn-headline">Minimum investment.<br><em>Maximum return.</em></h2>
+                    <p class="earn-body">Unlike traditional franchise agreements, becoming a Hustlers Hospitality
+                        partner requires no heavy upfront fees. To ensure partners are serious, we charge a one-time
+                        setup and onboarding fee per food concept category.</p>
+                    <p class="earn-body">The amount of profits you earn depends on how many Hustlers Hospitality
+                        concepts you sign up for. Each concept earns you, on average, between ₹20,000 to ₹25,000 per
+                        month.</p>
+                    <p class="earn-body">Because you already pay for rent, equipment, and staff salaries regardless —
+                        these costs are already covered. Only additional food costs and aggregator commissions apply to
+                        the new brands.</p>
+                    <div class="earn-callout reveal d3">
+                        <div class="earn-callout-label">How We Calculate</div>
+                        <p>We only count <strong>additional food costs + delivery commissions</strong> against new brand
+                            revenue. Rent, equipment, and salaries are pre-sunk — making each cloud kitchen brand nearly
+                            pure incremental profit.</p>
+                    </div>
+                </div>
+                <div class="reveal-right">
+                    <div class="earn-calculator">
+                        <div class="ec-header">
+                            <div class="ec-title">Monthly Earning Estimate</div>
+                            <div class="ec-tag">Per Partner</div>
+                        </div>
+                        <div class="ec-rows">
+                            <div class="ec-row">
+                                <div class="ec-row-left">
+                                    <div class="ec-dot"></div>
+                                    <div class="ec-concept">Concept #1 — Biryani Brand</div>
+                                </div>
+                                <div class="ec-amount">₹22,000</div>
+                            </div>
+                            <div class="ec-row">
+                                <div class="ec-row-left">
+                                    <div class="ec-dot"></div>
+                                    <div class="ec-concept">Concept #2 — Burger Brand</div>
+                                </div>
+                                <div class="ec-amount">₹21,500</div>
+                            </div>
+                            <div class="ec-row">
+                                <div class="ec-row-left">
+                                    <div class="ec-dot"></div>
+                                    <div class="ec-concept">Concept #3 — Chinese Brand</div>
+                                </div>
+                                <div class="ec-amount">₹20,000</div>
+                            </div>
+                            <div class="ec-row">
+                                <div class="ec-row-left">
+                                    <div class="ec-dot"></div>
+                                    <div class="ec-concept">Concept #4 — Snacks Brand</div>
+                                </div>
+                                <div class="ec-amount">₹23,000</div>
+                            </div>
+                        </div>
+                        <div class="ec-footer">
+                            <div>
+                                <div class="ec-total-label">Monthly Increment (4 Concepts)</div>
+                                <div class="ec-total-sub">On top of your existing business revenue</div>
+                            </div>
+                            <div>
+                                <div class="ec-total-amount">₹86,500<span
+                                        style="font-size:18px;font-weight:400;color:var(--text-muted)">/mo</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         ELIGIBILITY — Partner Requirements
+    ══════════════════════════════════════════ -->
+    <section id="eligibility">
+        <div class="elig-orb"></div>
+        <div class="elig-inner">
+            <div class="reveal">
+                <div class="section-tag">Eligibility</div>
+                <h2
+                    style="font-weight:800;font-size:clamp(36px,4vw,58px);line-height:1.05;letter-spacing:-.025em;margin-top:8px;">
+                    You're eligible<br>if you have — <em
+                        style="font-style:italic;font-weight:400;color:var(--green);">this.</em>
+                </h2>
+            </div>
+            <div class="elig-grid">
+                <div>
+                    <p class="elig-sub">We're not looking for investors or franchisees — we're looking for existing
+                        restaurant operators who are ready to unlock the idle potential of their kitchen. Here's all you
+                        need.</p>
+                    <div class="elig-reqs">
+                        <div class="elig-req reveal d1">
+                            <div class="elig-req-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="1.5">
+                                    <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+                                    <polyline points="9 22 9 12 15 12 15 22" />
+                                </svg></div>
+                            <div>
+                                <div class="elig-req-title">Under-Utilised Kitchen Space with Equipment</div>
+                                <div class="elig-req-desc">You have a commercial kitchen that isn't running at full
+                                    capacity — downtime when your staff isn't as busy as you'd like. Cloud kitchen
+                                    brands fill that gap.</div>
+                            </div>
+                        </div>
+                        <div class="elig-req reveal d2">
+                            <div class="elig-req-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="1.5">
+                                    <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
+                                    <circle cx="9" cy="7" r="4" />
+                                </svg></div>
+                            <div>
+                                <div class="elig-req-title">Manpower — Chefs &amp; Helpers</div>
+                                <div class="elig-req-desc">Existing kitchen staff who can handle additional brand
+                                    orders. We provide thorough training and simple SOPs — so they don't need to learn
+                                    complex new skills.</div>
+                            </div>
+                        </div>
+                        <div class="elig-req reveal d3">
+                            <div class="elig-req-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="1.5">
+                                    <path
+                                        d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                                </svg></div>
+                            <div>
+                                <div class="elig-req-title">A "Never Quit" Mindset</div>
+                                <div class="elig-req-desc">More than infrastructure, we need a partner who is committed,
+                                    execution-oriented, and hungry to grow. The right attitude is the most important
+                                    ingredient.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="reveal-right">
+                    <!-- ══════════════════════════════════
+                         IMAGE PLACEMENT — ELIGIBILITY VISUAL
+                         Replace .elig-visual with:
+                         <img src="https://mykitchen.websblog.in/wp-content/uploads/2026/04/growth-hack-kitchen-partner.jpg"
+                              alt="Restaurant kitchen partner"
+                              style="width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:24px;border:1px solid var(--border);">
+                         Recommended: portrait of restaurant owner in their kitchen
+                    ═══════════════════════════════════════ -->
+                    <div class="elig-visual">
+                        <div class="ev-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path
+                                    d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
+                            </svg>
+                        </div>
+                        <span>Restaurant Owner Portrait</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         SUPPORT — what partners get
+    ══════════════════════════════════════════ -->
+    <section id="support">
+        <div class="support-orb"></div>
+        <div class="support-inner">
+            <div class="support-header reveal">
+                <div class="section-tag">Partner Support</div>
+                <h2 class="support-headline">Everything included.<br><em>Nothing left to chance.</em></h2>
+            </div>
+            <div class="support-mosaic">
+                <div class="supt su-1 reveal d1">
+                    <div class="supt-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5">
+                            <circle cx="12" cy="12" r="10" />
+                            <path d="M12 8v4l3 3" />
+                        </svg></div>
+                    <div class="supt-name">Exclusive Territory Rights</div>
+                    <div class="supt-desc">5km radius exclusivity — Hustlers cannot appoint any other Growth Hack
+                        partner in your territory.</div>
+                </div>
+                <div class="supt su-2 reveal d2">
+                    <div class="supt-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5">
+                            <path d="M13 10V3L4 14h7v7l9-11h-7z" />
+                        </svg></div>
+                    <div class="supt-name">Immediate Orders</div>
+                    <div class="supt-desc">Listings go live on Zomato, Swiggy &amp; Dunzo with immediate order
+                        generation from day one of launch.</div>
+                </div>
+                <div class="supt su-3 reveal d3">
+                    <div class="supt-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5">
+                            <path
+                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg></div>
+                    <div class="supt-name">SOPs &amp; Kitchen Notes</div>
+                    <div class="supt-desc">Standard operating procedures and kitchen sticky notes for every brand —
+                        simple enough for any chef to follow.</div>
+                </div>
+                <div class="supt su-4 reveal d4">
+                    <div class="supt-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5">
+                            <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
+                            <circle cx="9" cy="7" r="4" />
+                            <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" />
+                        </svg></div>
+                    <div class="supt-name">Staff Training</div>
+                    <div class="supt-desc">Thorough on-site staff training for all brand concepts before going live —
+                        covering food prep, plating, and packaging.</div>
+                </div>
+                <div class="supt su-5 reveal d2">
+                    <div class="supt-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5">
+                            <path d="M20 7H4a2 2 0 00-2 2v6a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2z" />
+                            <path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16" />
+                        </svg></div>
+                    <div class="supt-name">Raw Material Vendor Support</div>
+                    <div class="supt-desc">Access to our supplier network for raw material sourcing — quality
+                        ingredients at better rates through our established vendor relationships.</div>
+                </div>
+                <div class="supt su-6 reveal d3">
+                    <div class="supt-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5">
+                            <rect x="3" y="3" width="18" height="18" rx="2" />
+                            <circle cx="8.5" cy="8.5" r="1.5" />
+                            <polyline points="21 15 16 10 5 21" />
+                        </svg></div>
+                    <div class="supt-name">Branded Packaging</div>
+                    <div class="supt-desc">Professional, branded packaging for every concept — designed to stand out in
+                        delivery bags and enhance the customer experience.</div>
+                </div>
+                <div class="supt su-7 reveal d4">
+                    <div class="supt-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5">
+                            <circle cx="12" cy="12" r="10" />
+                            <path
+                                d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85" />
+                        </svg></div>
+                    <div class="supt-name">Digital Marketing &amp; POS Integration</div>
+                    <div class="supt-desc">CPC ads, rating &amp; review management, offers strategy, combo planning, and
+                        full POS system integration — all handled by our team to maximise orders and conversion.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         TESTIMONIALS
+    ══════════════════════════════════════════ -->
+    <section id="testimonials">
+        <div class="test-inner">
+            <div class="test-header reveal">
+                <div class="section-tag">Happy Partners</div>
+                <h2 class="test-headline">Results that<br><em>speak for themselves.</em></h2>
+            </div>
+            <div class="test-grid">
+                <div class="test-card reveal d1">
+                    <div class="test-stars">
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                        </svg>
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                        </svg>
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                        </svg>
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                        </svg>
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                        </svg>
+                    </div>
+                    <div class="test-quote-mark">"</div>
+                    <div class="test-text">Same kitchen, same machinery, same location but having multiple brands
+                        running from there is always a bonus to have an extra source of income. So blessed and lucky to
+                        meet Hustlers Hospitality.</div>
+                    <div class="test-divider"></div>
+                    <div class="test-author">
+                        <!-- Replace .test-avatar with an actual photo if available -->
+                        <div class="test-avatar">V</div>
+                        <div>
+                            <div class="test-name">Vinit Trivedi</div>
+                            <div class="test-brand">Milkoso</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="test-card reveal d2">
+                    <div class="test-stars">
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                        </svg>
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                        </svg>
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                        </svg>
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                        </svg>
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                        </svg>
+                    </div>
+                    <div class="test-quote-mark">"</div>
+                    <div class="test-text">Growth Hack Model is the best for restaurant owners facing fewer orders and
+                        crowd pull. I was facing the same issue until I found this opportunity — now I have a stable
+                        business and a decent amount of online orders to run a successful restaurant.</div>
+                    <div class="test-divider"></div>
+                    <div class="test-author">
+                        <div class="test-avatar">M</div>
+                        <div>
+                            <div class="test-name">Mohammad Omar</div>
+                            <div class="test-brand">Yummy Foods</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="test-card reveal d3">
+                    <div class="test-stars">
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                        </svg>
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                        </svg>
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                        </svg>
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                        </svg>
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                        </svg>
+                    </div>
+                    <div class="test-quote-mark">"</div>
+                    <div class="test-text">Many companies only help with initial listing, but Hustlers helped with
+                        marketing of brands. I've been running cloud kitchens successfully using my same kitchen and
+                        staff — after 4 months, getting almost 80+ orders daily.</div>
+                    <div class="test-divider"></div>
+                    <div class="test-author">
+                        <div class="test-avatar">M</div>
+                        <div>
+                            <div class="test-name">Mohit Mittal</div>
+                            <div class="test-brand">Kitchen Magician</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         MARKET SIZE
+    ══════════════════════════════════════════ -->
+    <section id="market">
+        <div class="market-inner">
+            <div class="market-grid">
+                <div class="reveal-left">
+                    <div class="section-tag">Market Opportunity</div>
+                    <h2 class="market-headline">The biggest share of<br><em>online food delivery.</em></h2>
+                    <p class="market-body">Cloud Kitchens own the biggest share of the online food delivery market in
+                        India — and it's still growing. There has never been a better time to plug into this system.</p>
+                    <p class="market-body">Quickly start up multiple cloud kitchen brands from your currently operating
+                        kitchen or restaurant with our turnkey, multi-brand cloud restaurant solutions.</p>
+                    <div class="market-stats">
+                        <div class="mstat reveal d1">
+                            <div class="mstat-num">₹1T+</div>
+                            <div class="mstat-label">India Food Delivery Market</div>
+                        </div>
+                        <div class="mstat reveal d2">
+                            <div class="mstat-num">40%</div>
+                            <div class="mstat-label">Cloud Kitchen Market Share</div>
+                        </div>
+                        <div class="mstat reveal d3">
+                            <div class="mstat-num">28%</div>
+                            <div class="mstat-label">Annual Growth Rate</div>
+                        </div>
+                        <div class="mstat reveal d4">
+                            <div class="mstat-num">30+</div>
+                            <div class="mstat-label">Active Internet Restaurants</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="reveal-right">
+                    <!-- ══════════════════════════════════
+                         IMAGE PLACEMENT — MARKET SIZE VISUAL
+                         Replace .market-visual with:
+                         <img src="https://mykitchen.websblog.in/wp-content/uploads/2026/04/growth-hack-market.jpg"
+                              alt="Food delivery market size infographic"
+                              style="width:100%;aspect-ratio:5/4;object-fit:cover;border-radius:24px;border:1px solid var(--border);">
+                         Recommended: market size chart / food service opportunity graphic
+                    ═══════════════════════════════════════ -->
+                    <div class="market-visual">
+                        <div class="mv-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path
+                                    d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                            </svg>
+                        </div>
+                        <span>Market Size Infographic</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         CTA STRIP
+         BG IMAGE SLOT: add to .cta-left in CSS above
+         → background-image: url('https://mykitchen.websblog.in/wp-content/uploads/2026/04/growth-hack-cta-bg.jpg');
+           background-size: cover; background-blend-mode: overlay;
+    ══════════════════════════════════════════ -->
+    <section id="cta-strip">
+        <div class="cta-inner reveal">
+            <div class="cta-left">
+                <div class="cta-hustler-label">Be a Hustler · Growth Hack Partner</div>
+                <h2 class="cta-headline">Ready to get<br><em>started?</em></h2>
+                <p class="cta-left-sub">Hustlers Hospitality is the fastest growing cloud kitchen company in India. We
+                    have limited availability in major cities — act quickly to get the brand concepts of your choice in
+                    your area.</p>
+            </div>
+            <div class="cta-right">
+                <p>If you feel you fit our requirements and are considering becoming a partner to generate incremental
+                    revenue from a new line of business, get in touch with us today.</p>
+                <div class="cta-buttons">
+                    <a href="#" class="btn-primary">
+                        Apply to Partner
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
+                    </a>
+                    <a href="tel:+918355842620" class="btn-ghost">WhatsApp +91 83558 42620</a>
+                </div>
+                <div class="contact-detail">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                        <polyline points="22,6 12,13 2,6" />
+                    </svg>
+                    krunal@hustlershospitality.com
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        /* CURSOR */
+        const cursor = document.getElementById('cursor');
+        const cursorRing = document.getElementById('cursor-ring');
+        let mx = 0, my = 0, rx = 0, ry = 0;
+        document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; cursor.style.left = mx + 'px'; cursor.style.top = my + 'px'; });
+        (function animateRing() { rx += (mx - rx) * .12; ry += (my - ry) * .12; cursorRing.style.left = rx + 'px'; cursorRing.style.top = ry + 'px'; requestAnimationFrame(animateRing); })();
+        document.querySelectorAll('a,button,.supt,.zero-card,.test-card,.elig-req,.mstat,.ps-step,.earn-calculator').forEach(el => {
+            el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+            el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+        });
+
+        /* PARTICLES */
+        const canvas = document.getElementById('particles');
+        const ctx = canvas.getContext('2d');
+        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        resizeCanvas(); window.addEventListener('resize', resizeCanvas);
+        const particles = [];
+        class Particle {
+            constructor() { this.reset(); }
+            reset() { this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height; this.size = Math.random() * 1.5 + .3; this.speedX = (Math.random() - .5) * .3; this.speedY = (Math.random() - .5) * .3; this.opacity = Math.random() * .4 + .05; this.green = Math.random() > .7; }
+            update() { this.x += this.speedX; this.y += this.speedY; if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) this.reset(); }
+            draw() { ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fillStyle = this.green ? `rgba(168,255,87,${this.opacity})` : `rgba(255,255,255,${this.opacity * .3})`; ctx.fill(); }
+        }
+        for (let i = 0; i < 55; i++)particles.push(new Particle());
+        (function animateParticles() { ctx.clearRect(0, 0, canvas.width, canvas.height); particles.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animateParticles); })();
+
+        /* REVEAL */
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+        }, { threshold: .08, rootMargin: '0px 0px -50px 0px' });
+        document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-up').forEach(el => revealObserver.observe(el));
+
+        /* CARD GLOW */
+        document.querySelectorAll('.supt,.zero-card,.test-card,.mstat').forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                const x = ((e.clientX - rect.left) / rect.width) * 100;
+                const y = ((e.clientY - rect.top) / rect.height) * 100;
+                card.style.background = `radial-gradient(circle at ${x}% ${y}%,rgba(168,255,87,0.06),var(--card-bg) 60%)`;
+            });
+            card.addEventListener('mouseleave', () => { card.style.background = ''; });
+        });
+
+        /* MAGNETIC BUTTONS */
+        document.querySelectorAll('.btn-primary').forEach(btn => {
+            btn.addEventListener('mousemove', e => {
+                const rect = btn.getBoundingClientRect();
+                const dx = (e.clientX - rect.left - rect.width / 2) * .3;
+                const dy = (e.clientY - rect.top - rect.height / 2) * .3;
+                btn.style.transform = `translate(${dx}px,${dy}px)`;
+            });
+            btn.addEventListener('mouseleave', () => { btn.style.transform = ''; });
+        });
+
+        /* COUNTER ANIMATION FOR HERO STATS */
+        function animateCounter(el, target, suffix, duration = 1800) {
+            let start = null;
+            const step = ts => {
+                if (!start) start = ts;
+                const prog = Math.min((ts - start) / duration, 1);
+                const eased = 1 - Math.pow(1 - prog, 4);
+                const cur = Math.floor(eased * target);
+                el.querySelector('.hss-num').innerHTML = cur + '<span style="color:var(--green);font-size:.7em">' + suffix + '</span>';
+                if (prog < 1) requestAnimationFrame(step);
+            };
+            requestAnimationFrame(step);
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,2476 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cafe Consulting Services in India — MyCloudKitchen</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Hubot+Sans:ital,wght@0,200..900;1,200..900&family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --green: #a8ff57;
+            --green-dim: #6bc930;
+            --green-glow: rgba(168, 255, 87, .18);
+            --green-glow-strong: rgba(168, 255, 87, .35);
+            --bg: #080808;
+            --bg-2: #0f0f0f;
+            --bg-3: #161616;
+            --surface: rgba(255, 255, 255, .04);
+            --surface-hover: rgba(255, 255, 255, .07);
+            --border: rgba(255, 255, 255, .08);
+            --border-bright: rgba(168, 255, 87, .25);
+            --text-primary: #f0f0f0;
+            --text-secondary: #b8b0b0;
+            --text-muted: #6a6a6a;
+            --card-bg: rgba(20, 20, 20, .9);
+            --shadow: 0 32px 80px rgba(0, 0, 0, .6);
+        }
+
+        [data-theme="light"] {
+            --bg: #f4f2ed;
+            --bg-2: #ede9e2;
+            --bg-3: #e5e0d8;
+            --surface: rgba(0, 0, 0, .04);
+            --surface-hover: rgba(0, 0, 0, .07);
+            --border: rgba(0, 0, 0, .08);
+            --border-bright: rgba(100, 180, 30, .3);
+            --text-primary: #111;
+            --text-secondary: #555;
+            --text-muted: #7d7a7a;
+            --card-bg: rgba(240, 237, 230, .9);
+            --shadow: 0 32px 80px rgba(0, 0, 0, .12);
+            --green: #5a9e10;
+            --green-dim: #4a8a0c;
+            --green-glow: rgba(90, 158, 16, .12);
+            --green-glow-strong: rgba(90, 158, 16, .22);
+            /*
+    HERO BG IMAGE (light mode):
+    --hero-bg-image: url('YOUR_LIGHT_HERO_IMAGE_URL');
+  */
+            --hero-bg-image: none;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            font-family: 'Hubot Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Noise texture overlay */
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            opacity: .025;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            background-size: 256px;
+        }
+
+        /* ─── REVEAL ANIMATIONS ─── */
+        .reveal,
+        .reveal-left,
+        .reveal-right,
+        .reveal-scale {
+            opacity: 0;
+            transition: opacity .9s cubic-bezier(.16, 1, .3, 1), transform .9s cubic-bezier(.16, 1, .3, 1);
+        }
+
+        .reveal {
+            transform: translateY(50px);
+        }
+
+        .reveal-left {
+            transform: translateX(-60px);
+        }
+
+        .reveal-right {
+            transform: translateX(60px);
+        }
+
+        .reveal-scale {
+            transform: scale(.88);
+        }
+
+        .reveal.visible,
+        .reveal-left.visible,
+        .reveal-right.visible,
+        .reveal-scale.visible {
+            opacity: 1;
+            transform: none;
+        }
+
+        .d1 {
+            transition-delay: .1s
+        }
+
+        .d2 {
+            transition-delay: .2s
+        }
+
+        .d3 {
+            transition-delay: .3s
+        }
+
+        .d4 {
+            transition-delay: .4s
+        }
+
+        .d5 {
+            transition-delay: .5s
+        }
+
+        .section-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            letter-spacing: .14em;
+            color: var(--green);
+            text-transform: uppercase;
+            margin-bottom: 24px;
+        }
+
+        .section-tag::before {
+            content: "";
+            width: 20px;
+            height: 1px;
+            background: currentColor;
+        }
+
+        /* ═══════════════════════════════════
+   HERO
+═══════════════════════════════════ */
+        #cafe-hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 70px 60px 100px;
+            position: relative;
+            overflow: hidden;
+            background: var(--bg);
+
+
+        }
+
+        /* Decorative grid lines */
+        #cafe-hero::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background-image:
+                linear-gradient(rgba(168, 255, 87, .03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(168, 255, 87, .03) 1px, transparent 1px);
+            background-size: 80px 80px;
+            mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 20%, transparent 100%);
+        }
+
+        .hero-orb-1 {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(130px);
+            pointer-events: none;
+            z-index: 0;
+            background: rgba(168, 255, 87, .08);
+            width: 700px;
+            height: 700px;
+            top: -200px;
+            right: -100px;
+            animation: orbFloat 12s ease-in-out infinite alternate;
+        }
+
+        .hero-orb-2 {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(90px);
+            pointer-events: none;
+            z-index: 0;
+            background: rgba(168, 255, 87, .04);
+            width: 450px;
+            height: 450px;
+            bottom: 0;
+            left: -100px;
+            animation: orbFloat2 15s ease-in-out infinite alternate;
+        }
+
+        @keyframes orbFloat {
+            from {
+                transform: translate(0, 0) scale(1)
+            }
+
+            to {
+                transform: translate(-40px, 30px) scale(1.1)
+            }
+        }
+
+        @keyframes orbFloat2 {
+            from {
+                transform: translate(0, 0)
+            }
+
+            to {
+                transform: translate(30px, -40px)
+            }
+        }
+
+        /* Large decorative BG word */
+        .hero-bg-word {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-weight: 900;
+            font-size: clamp(100px, 18vw, 200px);
+            letter-spacing: -.04em;
+            line-height: 1;
+            color: transparent;
+            -webkit-text-stroke: 1px var(--border);
+            user-select: none;
+            pointer-events: none;
+            z-index: 1;
+            white-space: nowrap;
+            opacity: .3;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 3;
+            max-width: 820px;
+        }
+
+        .hero-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            letter-spacing: .14em;
+            color: var(--green);
+            text-transform: uppercase;
+            margin-bottom: 28px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp .8s .3s forwards;
+        }
+
+        .hero-label::before {
+            content: "";
+            width: 24px;
+            height: 1px;
+            background: var(--green);
+        }
+
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+
+        .hero-title {
+            font-weight: 800;
+            font-size: clamp(48px, 6.5vw, 84px);
+            line-height: .95;
+            letter-spacing: -.03em;
+            color: var(--text-primary);
+            margin-bottom: 28px;
+        }
+
+        .hero-title .word {
+            display: inline-block;
+            overflow: hidden;
+        }
+
+        .hero-title .word span {
+            display: inline-block;
+            transform: translateY(110%);
+            animation: wordReveal .9s cubic-bezier(.16, 1, .3, 1) forwards;
+        }
+
+        .hero-title em {
+            font-style: italic;
+            font-weight: 400;
+            color: var(--green);
+        }
+
+        .hero-title .word:nth-child(1) span {
+            animation-delay: .4s
+        }
+
+        .hero-title .word:nth-child(2) span {
+            animation-delay: .52s
+        }
+
+        .hero-title .word:nth-child(3) span {
+            animation-delay: .64s
+        }
+
+        .hero-title .word:nth-child(4) span {
+            animation-delay: .76s
+        }
+
+        .hero-title .word:nth-child(5) span {
+            animation-delay: .88s
+        }
+
+        @keyframes wordReveal {
+            to {
+                transform: translateY(0)
+            }
+        }
+
+        .hero-body {
+            max-width: 540px;
+            font-size: 16px;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            margin-bottom: 44px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp .8s 1.1s forwards;
+        }
+
+        .hero-pills {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp .8s 1.3s forwards;
+        }
+
+        .hero-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 18px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: .04em;
+            color: var(--text-secondary);
+        }
+
+        .hero-pill .dot {
+            width: 5px;
+            height: 5px;
+            background: var(--green);
+            border-radius: 50%;
+        }
+
+        /* Floating badge top-right */
+        .hero-float-badge {
+            position: absolute;
+            top: 120px;
+            right: 80px;
+            z-index: 12;
+            background: var(--green);
+            padding: 12px 20px;
+            border-radius: 14px;
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            font-weight: 700;
+            color: #080808;
+            letter-spacing: .06em;
+            opacity: 0;
+            animation: badge2Entry .7s 1.6s cubic-bezier(.34, 1.56, .64, 1) forwards, badgeFloat2 8s 2.4s ease-in-out infinite;
+        }
+
+        .hero-float-badge-2 {
+            position: absolute;
+            bottom: 120px;
+            right: 100px;
+            z-index: 12;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-bright);
+            border-radius: 16px;
+            padding: 16px 20px;
+            opacity: 0;
+            animation: badge2Entry .7s 1.9s cubic-bezier(.34, 1.56, .64, 1) forwards, badgeFloat 6s 2.6s ease-in-out infinite;
+        }
+
+        @keyframes badge2Entry {
+            from {
+                opacity: 0;
+                transform: translateY(-15px) rotate(-6deg)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) rotate(-2deg)
+            }
+        }
+
+        @keyframes badgeFloat2 {
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(-2deg)
+            }
+
+            50% {
+                transform: translateY(-10px) rotate(2deg)
+            }
+        }
+
+        @keyframes badgeFloat {
+
+            0%,
+            100% {
+                transform: translateY(0)
+            }
+
+            50% {
+                transform: translateY(-8px)
+            }
+        }
+
+        .hfb2-num {
+            font-weight: 800;
+            font-size: 26px;
+            color: var(--green);
+            line-height: 1;
+        }
+
+        .hfb2-label {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-top: 3px;
+        }
+
+        .scroll-hint {
+            position: absolute;
+            bottom: 40px;
+            left: 60px;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            opacity: 0;
+            animation: fadeIn 1s 2s forwards;
+        }
+
+        .scroll-line {
+            width: 1px;
+            height: 60px;
+            background: linear-gradient(to bottom, var(--green), transparent);
+            animation: scrollLine 2s ease-in-out infinite;
+        }
+
+        @keyframes scrollLine {
+
+            0%,
+            100% {
+                opacity: .3;
+                transform: scaleY(1)
+            }
+
+            50% {
+                opacity: 1;
+                transform: scaleY(1.3)
+            }
+        }
+
+        .scroll-hint span {
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            letter-spacing: .12em;
+            color: var(--text-muted);
+            writing-mode: vertical-rl;
+            text-transform: uppercase;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1
+            }
+        }
+
+        /* ═══════════════════════════════════
+   MARQUEE
+═══════════════════════════════════ */
+        .marquee-section {
+            overflow: hidden;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            background: var(--bg-2);
+        }
+
+        .marquee-track {
+            display: flex;
+            width: max-content;
+            animation: marqueeScroll 28s linear infinite;
+            padding: 14px 0;
+        }
+
+        .marquee-item {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 0 28px;
+            white-space: nowrap;
+            font-weight: 600;
+            font-size: 12px;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+
+        .marquee-item .dot {
+            width: 5px;
+            height: 5px;
+            background: var(--green);
+            border-radius: 50%;
+        }
+
+        .marquee-item.accent {
+            color: var(--text-secondary);
+        }
+
+        @keyframes marqueeScroll {
+            from {
+                transform: translateX(0)
+            }
+
+            to {
+                transform: translateX(-50%)
+            }
+        }
+
+        /* ═══════════════════════════════════
+   WHY SECTION (Intro truth statement)
+═══════════════════════════════════ */
+        #cafe-truth {
+            padding: 120px 60px;
+            background: var(--bg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .truth-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(160px);
+            pointer-events: none;
+            z-index: 0;
+            background: rgba(168, 255, 87, .05);
+            width: 600px;
+            height: 600px;
+            top: -200px;
+            left: -100px;
+        }
+
+        .truth-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .truth-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 100px;
+            align-items: center;
+        }
+
+        .truth-headline {
+            font-weight: 800;
+            font-size: clamp(38px, 4.5vw, 62px);
+            line-height: 1.0;
+            letter-spacing: -.025em;
+            margin-bottom: 28px;
+        }
+
+        .truth-headline em {
+            font-style: italic;
+            font-weight: 400;
+            color: var(--green);
+            display: block;
+        }
+
+        .truth-body {
+            font-size: 15px;
+            line-height: 1.85;
+            color: var(--text-secondary);
+            max-width: 480px;
+            margin-bottom: 18px;
+        }
+
+        .truth-quote {
+            margin-top: 32px;
+            padding: 28px 28px 28px 32px;
+            background: var(--surface);
+            border: 1px solid var(--border-bright);
+            border-left: 3px solid var(--green);
+            border-radius: 16px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .truth-quote::before {
+            content: '"';
+            position: absolute;
+            top: -10px;
+            right: 20px;
+            font-size: 80px;
+            font-weight: 900;
+            color: var(--green);
+            opacity: .08;
+            line-height: 1;
+            font-family: Georgia, serif;
+        }
+
+        .truth-quote-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            letter-spacing: .14em;
+            color: var(--green);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .truth-quote-text {
+            font-size: 14px;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        .truth-right {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .truth-stat-card {
+            padding: 30px 32px;
+            background: var(--bg-3);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+            transition: border-color .3s, transform .4s cubic-bezier(.34, 1.56, .64, 1);
+            cursor: default;
+        }
+
+        .truth-stat-card:hover {
+            border-color: var(--border-bright);
+            transform: translateY(-5px);
+        }
+
+        .truth-stat-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(to right, var(--green), transparent);
+        }
+
+        .truth-stat-num {
+            font-weight: 800;
+            font-size: 44px;
+            letter-spacing: -.03em;
+            color: var(--green);
+            line-height: 1;
+        }
+
+        .truth-stat-label {
+            font-size: 14px;
+            color: var(--text-primary);
+            font-weight: 600;
+            margin-top: 3px;
+        }
+
+        .truth-stat-sub {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .truth-stat-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+
+        /* ═══════════════════════════════════
+   SERVICES GRID — 8 Services
+═══════════════════════════════════ */
+        #cafe-services {
+            padding: 120px 60px;
+            background: var(--bg-2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .svc-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(140px);
+            pointer-events: none;
+            z-index: 0;
+            background: rgba(168, 255, 87, .05);
+            width: 600px;
+            height: 600px;
+            top: -200px;
+            right: -100px;
+        }
+
+        .svc-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .svc-head {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            margin-bottom: 72px;
+            gap: 40px;
+        }
+
+        .svc-headline {
+            font-weight: 800;
+            font-size: clamp(40px, 5vw, 68px);
+            line-height: 1;
+            letter-spacing: -.03em;
+        }
+
+        .svc-headline em {
+            font-style: italic;
+            font-weight: 400;
+            color: var(--green);
+        }
+
+        .svc-sub {
+            font-size: 14px;
+            color: var(--text-secondary);
+            max-width: 280px;
+            line-height: 1.7;
+        }
+
+        /* Service tiles mosaic */
+        .svc-mosaic {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 14px;
+        }
+
+        .stile {
+            border-radius: 20px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 28px 28px;
+            cursor: default;
+            position: relative;
+            overflow: hidden;
+            transition: transform .45s cubic-bezier(.34, 1.56, .64, 1), border-color .3s, box-shadow .3s;
+        }
+
+        .stile:hover {
+            transform: translateY(-7px);
+            border-color: var(--border-bright);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, .3), 0 0 28px var(--green-glow);
+        }
+
+        .stile::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(168, 255, 87, .03) 50%, transparent);
+            transform: translateX(-100%);
+            transition: transform .6s;
+            pointer-events: none;
+        }
+
+        .stile:hover::before {
+            transform: translateX(100%);
+        }
+
+        .st-4 {
+            grid-column: span 4
+        }
+
+        .st-3 {
+            grid-column: span 3
+        }
+
+        .st-6 {
+            grid-column: span 6
+        }
+
+        .st-8 {
+            grid-column: span 8
+        }
+
+        .st-12 {
+            grid-column: span 12
+        }
+
+        .stile-num {
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: .12em;
+            color: var(--green);
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .stile-num::before {
+            content: "";
+            width: 14px;
+            height: 1px;
+            background: var(--green);
+        }
+
+        .stile-icon {
+            width: 42px;
+            height: 42px;
+            background: var(--green-glow);
+            border: 1px solid var(--border-bright);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+            transition: transform .35s cubic-bezier(.34, 1.56, .64, 1);
+        }
+
+        .stile:hover .stile-icon {
+            transform: scale(1.15) rotate(8deg);
+        }
+
+        .stile-icon svg {
+            width: 19px;
+            height: 19px;
+            color: var(--green);
+        }
+
+        .stile-name {
+            font-weight: 700;
+            font-size: 15px;
+            letter-spacing: -.01em;
+            color: var(--text-primary);
+            margin-bottom: 7px;
+            line-height: 1.25;
+        }
+
+        .stile-desc {
+            font-size: 12.5px;
+            color: var(--text-secondary);
+            line-height: 1.65;
+        }
+
+        .stile-list {
+            margin-top: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .stile-list li {
+            list-style: none;
+            font-size: 11.5px;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .stile-list li::before {
+            content: "";
+            width: 3px;
+            height: 3px;
+            background: var(--green);
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        /* Featured wide tile for Launch Strategy */
+        .stile-feature {
+            grid-column: span 12;
+            background: var(--bg-3);
+            border: 1px solid var(--border-bright);
+            border-radius: 24px;
+            padding: 0;
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 340px 1fr;
+            min-height: 200px;
+        }
+
+        .stf-left {
+            padding: 44px 48px;
+            background: var(--green);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stf-left::before {
+            content: "";
+            position: absolute;
+            bottom: -60px;
+            left: -40px;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, .07);
+        }
+
+        .stf-num {
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: .12em;
+            color: rgba(8, 8, 8, .55);
+            margin-bottom: 12px;
+        }
+
+        .stf-name {
+            font-weight: 800;
+            font-size: clamp(22px, 2.2vw, 32px);
+            line-height: 1.05;
+            letter-spacing: -.02em;
+            color: #080808;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stf-name em {
+            font-style: italic;
+            font-weight: 400;
+        }
+
+        .stf-right {
+            padding: 44px 48px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 14px;
+        }
+
+        .stf-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.75;
+            max-width: 520px;
+        }
+
+        .stf-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .stf-tag {
+            padding: 5px 13px;
+            background: var(--surface);
+            border: 1px solid var(--border-bright);
+            border-radius: 50px;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--green);
+            letter-spacing: .04em;
+        }
+
+        /* ═══════════════════════════════════
+   STAFF TRAINING — Visual list
+═══════════════════════════════════ */
+        #cafe-staff {
+            padding: 120px 60px;
+            background: var(--bg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .staff-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(160px);
+            pointer-events: none;
+            z-index: 0;
+            background: rgba(168, 255, 87, .05);
+            width: 600px;
+            height: 600px;
+            bottom: -200px;
+            right: -100px;
+        }
+
+        .staff-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .staff-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: start;
+            margin-top: 64px;
+        }
+
+        .staff-headline {
+            font-weight: 800;
+            font-size: clamp(36px, 4vw, 56px);
+            line-height: 1.0;
+            letter-spacing: -.025em;
+            margin-bottom: 24px;
+        }
+
+        .staff-headline em {
+            font-style: italic;
+            font-weight: 400;
+            color: var(--green);
+        }
+
+        .staff-body {
+            font-size: 15px;
+            line-height: 1.85;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+
+        .staff-roles {
+            margin-top: 36px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .staff-role-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 18px 22px;
+            background: var(--bg-3);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            transition: border-color .3s, transform .35s cubic-bezier(.34, 1.56, .64, 1);
+            cursor: default;
+        }
+
+        .staff-role-item:hover {
+            border-color: var(--border-bright);
+            transform: translateX(6px);
+        }
+
+        .staff-role-icon {
+            width: 40px;
+            height: 40px;
+            flex-shrink: 0;
+            background: var(--green-glow);
+            border: 1px solid var(--border-bright);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .staff-role-title {
+            font-weight: 700;
+            font-size: 14px;
+            color: var(--text-primary);
+        }
+
+        .staff-role-sub {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        /* RIGHT: hybrid model box */
+        .staff-hybrid {
+            padding: 0;
+            border-radius: 24px;
+            overflow: hidden;
+            border: 1px solid var(--border-bright);
+            background: var(--bg-3);
+        }
+
+        .hybrid-top {
+            padding: 36px 36px 28px;
+            /* ─────────────────────────────────────────────────────
+     HYBRID MODEL IMAGE (right column top)
+     Replace this gradient with:
+       background-image: url('YOUR-HYBRID-CAFE-DELIVERY-IMAGE.jpg');
+       background-size: cover;background-position: center;
+     Recommended: split visual of dine-in + delivery scene
+  ───────────────────────────────────────────────────── */
+            background: linear-gradient(135deg, rgba(168, 255, 87, .06) 0%, transparent 60%);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .hybrid-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            letter-spacing: .14em;
+            color: var(--green);
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .hybrid-title {
+            font-weight: 800;
+            font-size: 22px;
+            letter-spacing: -.015em;
+            margin-bottom: 10px;
+        }
+
+        .hybrid-desc {
+            font-size: 13px;
+            line-height: 1.75;
+            color: var(--text-secondary);
+        }
+
+        .hybrid-streams {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0;
+            border-top: 1px solid var(--border);
+        }
+
+        .hybrid-stream {
+            padding: 24px 20px;
+            border-right: 1px solid var(--border);
+            text-align: center;
+            transition: background .25s;
+        }
+
+        .hybrid-stream:last-child {
+            border-right: none;
+        }
+
+        .hybrid-stream:hover {
+            background: var(--surface-hover);
+        }
+
+        .hs-icon {
+            font-size: 22px;
+            margin-bottom: 8px;
+        }
+
+        .hs-label {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: .04em;
+            color: var(--text-primary);
+            margin-bottom: 2px;
+        }
+
+        .hs-sub {
+            font-size: 10px;
+            color: var(--text-muted);
+        }
+
+        /* ═══════════════════════════════════
+   WHO IS THIS FOR
+═══════════════════════════════════ */
+        #cafe-who {
+            padding: 100px 60px;
+            background: var(--bg-2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .who-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .who-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 14px;
+            margin-top: 60px;
+        }
+
+        .who-card {
+            padding: 28px 22px;
+            background: var(--bg-3);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            cursor: default;
+            position: relative;
+            overflow: hidden;
+            transition: transform .45s cubic-bezier(.34, 1.56, .64, 1), border-color .3s;
+        }
+
+        .who-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--border-bright);
+        }
+
+        .who-card::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(to right, var(--green), transparent);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform .4s;
+        }
+
+        .who-card:hover::after {
+            transform: scaleX(1);
+        }
+
+        .who-icon {
+            font-size: 26px;
+            margin-bottom: 14px;
+        }
+
+        .who-title {
+            font-weight: 700;
+            font-size: 13px;
+            letter-spacing: -.005em;
+            line-height: 1.3;
+            color: var(--text-primary);
+        }
+
+        /* ═══════════════════════════════════
+   CITIES — Pan India
+═══════════════════════════════════ */
+        #cafe-cities {
+            padding: 100px 60px;
+            background: var(--bg);
+            position: relative;
+            overflow: hidden;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        #cafe-cities::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -50%;
+            width: 200%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--green), transparent);
+            animation: scanLine 4s linear infinite;
+        }
+
+        @keyframes scanLine {
+            from {
+                transform: translateX(-50%)
+            }
+
+            to {
+                transform: translateX(50%)
+            }
+        }
+
+        .cities-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cities-flex {
+            display: flex;
+            gap: 80px;
+            align-items: flex-start;
+            margin-top: 56px;
+            flex-wrap: wrap;
+        }
+
+        .cities-left {
+            flex: 1;
+            min-width: 280px;
+        }
+
+        .cities-region-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            letter-spacing: .14em;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .cities-region-label::before {
+            content: "";
+            flex: 1;
+            max-width: 16px;
+            height: 1px;
+            background: var(--text-muted);
+        }
+
+        .cities-tiles {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 9px;
+            margin-bottom: 32px;
+        }
+
+        .city-tile {
+            padding: 9px 16px;
+            background: var(--bg-3);
+            border: 1px solid var(--border);
+            border-radius: 50px;
+            font-size: 12.5px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            letter-spacing: .02em;
+            transition: border-color .3s, color .3s, transform .3s;
+            cursor: default;
+        }
+
+        .city-tile:hover {
+            border-color: var(--border-bright);
+            color: var(--green);
+            transform: translateY(-3px);
+        }
+
+        .city-tile.intl {
+            border-color: var(--border-bright);
+            color: var(--green);
+        }
+
+        .cities-note {
+            padding: 16px 20px;
+            background: var(--surface);
+            border: 1px solid var(--border-bright);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 4px;
+        }
+
+        .cities-note-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--green);
+            border-radius: 50%;
+            flex-shrink: 0;
+            box-shadow: 0 0 8px var(--green-glow-strong);
+            animation: pulseDot 2s ease-in-out infinite;
+        }
+
+        @keyframes pulseDot {
+
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 1
+            }
+
+            50% {
+                transform: scale(1.4);
+                opacity: .7
+            }
+        }
+
+        .cities-note span {
+            font-size: 12.5px;
+            color: var(--text-secondary);
+        }
+
+        .cities-note strong {
+            color: var(--text-primary);
+        }
+
+        /* Map placeholder */
+        .cities-map-wrap {
+            width: 400px;
+            min-width: 280px;
+            aspect-ratio: 3/4;
+            background: var(--bg-3);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            overflow: hidden;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        /*
+─────────────────────────────────────────────────────────────
+INDIA MAP IMAGE
+Replace the placeholder div inside .cities-map-wrap with:
+  <img
+    src="YOUR-INDIA-MAP-IMAGE.png"
+    alt="Pan India Coverage"
+    style="width:100%;height:100%;object-fit:cover;object-position:center;"
+  >
+Recommended: Dark India map with city dots in #a8ff57
+─────────────────────────────────────────────────────────────
+*/
+        .cities-map-placeholder {
+            width: 100%;
+            height: 100%;
+            min-height: 320px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            background: radial-gradient(ellipse at 50% 50%, rgba(168, 255, 87, .04) 0%, transparent 70%);
+        }
+
+        .cities-map-placeholder .ph-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 16px;
+            background: var(--green-glow);
+            border: 1px solid var(--border-bright);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .cities-map-placeholder .ph-icon svg {
+            width: 24px;
+            height: 24px;
+            color: var(--green);
+        }
+
+        .cities-map-placeholder span {
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            letter-spacing: .1em;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .cities-map-wrap::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 25%;
+            background: linear-gradient(to top, var(--bg-3), transparent);
+            pointer-events: none;
+        }
+
+        /* ═══════════════════════════════════
+   RESULTS STATS BAR
+═══════════════════════════════════ */
+        #cafe-results {
+            background: var(--bg-2);
+            border-top: 1px solid var(--border);
+        }
+
+        .results-row {
+            max-width: 1280px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+        }
+
+        .result-cell {
+            padding: 44px 36px;
+            border-right: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+            transition: background .25s;
+            cursor: default;
+        }
+
+        .result-cell:last-child {
+            border-right: none;
+        }
+
+        .result-cell:hover {
+            background: var(--surface-hover);
+        }
+
+        .result-cell::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--green);
+            transition: width .4s;
+        }
+
+        .result-cell:hover::after {
+            width: 100%;
+        }
+
+        .result-icon {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .result-lbl {
+            font-size: 12.5px;
+            color: var(--text-secondary);
+            font-weight: 600;
+            line-height: 1.4;
+        }
+
+        /* ═══════════════════════════════════
+   CTA
+═══════════════════════════════════ */
+        #cafe-cta {
+            padding: 100px 60px;
+            background: var(--bg);
+        }
+
+        .cta-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+            background: var(--bg-3);
+            border: 1px solid var(--border);
+            border-radius: 32px;
+            padding: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 60px;
+            position: relative;
+            overflow: hidden;
+
+            /*
+  ─────────────────────────────────────────────────────────────
+  CTA BACKGROUND IMAGE
+  Replace / combine with:
+    background-image: url('YOUR-CAFE-AMBIANCE-IMAGE.jpg');
+    background-size: cover; background-position: center;
+    background-blend-mode: overlay;
+  Recommended: Warm, blurred cafe bokeh image
+  ─────────────────────────────────────────────────────────────
+  */
+        }
+
+        .cta-inner::before {
+            content: "";
+            position: absolute;
+            top: -100px;
+            right: -100px;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(ellipse, var(--green-glow), transparent 70%);
+            pointer-events: none;
+        }
+
+        .cta-text {
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-headline {
+            font-weight: 800;
+            font-size: clamp(30px, 3.2vw, 50px);
+            line-height: 1.05;
+            letter-spacing: -.025em;
+            margin-top: 14px;
+        }
+
+        .cta-headline em {
+            font-style: italic;
+            font-weight: 400;
+            color: var(--green);
+        }
+
+        .cta-body {
+            font-size: 14.5px;
+            color: var(--text-secondary);
+            line-height: 1.75;
+            margin-top: 14px;
+            max-width: 460px;
+        }
+
+        .cta-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            align-items: center;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--green);
+            color: #080808;
+            font-weight: 700;
+            font-size: 13.5px;
+            letter-spacing: .06em;
+            padding: 15px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: transform .2s, box-shadow .3s;
+            white-space: nowrap;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .2), transparent);
+            transform: translateX(-100%);
+            transition: transform .5s;
+        }
+
+        .btn-primary:hover::after {
+            transform: translateX(100%);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px var(--green-glow-strong);
+        }
+
+        .btn-primary svg {
+            width: 13px;
+            height: 13px;
+        }
+
+        .btn-ghost {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: transparent;
+            color: var(--text-secondary);
+            font-size: 13.5px;
+            font-weight: 500;
+            padding: 15px 22px;
+            border-radius: 50px;
+            text-decoration: none;
+            border: 1px solid var(--border);
+            cursor: pointer;
+            transition: color .2s, border-color .2s, transform .2s;
+            white-space: nowrap;
+        }
+
+        .btn-ghost:hover {
+            color: var(--text-primary);
+            border-color: var(--text-muted);
+            transform: translateY(-2px);
+        }
+
+        /* ═══════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════ */
+        @media(max-width:1100px) {
+
+            .truth-grid,
+            .staff-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .who-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .results-row {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .result-cell {
+                border-bottom: 1px solid var(--border);
+            }
+
+            .stile-feature {
+                grid-template-columns: 1fr;
+            }
+
+            .cities-map-wrap {
+                width: 100%;
+            }
+
+            .st-4 {
+                grid-column: span 6;
+            }
+
+            .st-3 {
+                grid-column: span 6;
+            }
+        }
+
+        @media(max-width:800px) {
+            #cafe-hero {
+                padding: 20px 24px 80px;
+            }
+
+            #cafe-truth,
+            #cafe-services,
+            #cafe-staff,
+            #cafe-who,
+            #cafe-cities,
+            #cafe-cta {
+                padding: 72px 24px;
+            }
+
+            .hero-float-badge,
+            .hero-float-badge-2 {
+                display: none;
+            }
+
+            .st-4,
+            .st-3,
+            .st-6,
+            .st-8,
+            .st-12 {
+                grid-column: 1/-1;
+            }
+
+            .who-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .results-row {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .cta-inner {
+                flex-direction: column;
+                padding: 48px 28px;
+            }
+
+            .svc-head {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .cities-flex {
+                flex-direction: column;
+            }
+
+            .cities-map-wrap {
+                width: 100%;
+            }
+
+            .hybrid-streams {
+                grid-template-columns: 1fr;
+            }
+
+            .truth-stat-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ══════════════════════════════════════════
+     HERO
+══════════════════════════════════════════ -->
+    <section id="cafe-hero">
+        <div class="hero-orb-1"></div>
+        <div class="hero-orb-2"></div>
+        <div class="hero-bg-word">CAFE</div>
+
+        <div class="hero-float-badge">☕ Trendy · Profitable · Scalable</div>
+        <div class="hero-float-badge-2">
+            <div class="hfb2-num">360°</div>
+            <div class="hfb2-label">End-to-End Setup</div>
+        </div>
+
+        <!--
+  ─────────────────────────────────────────────────────────────────
+  HERO SECTION IMAGE
+  To add a full-bleed hero cafe image, add to #cafe-hero in CSS:
+    background-image: url('YOUR-CAFE-HERO.jpg');
+    background-size: cover;
+    background-position: center;
+  Recommended: A premium, moody dark-toned cafe interior
+  or top-down coffee art photo with negative space on left
+  ─────────────────────────────────────────────────────────────────
+  -->
+
+        <div class="hero-content">
+            <div class="hero-label">Cafe Consulting Services · India</div>
+            <h1 class="hero-title">
+                <span class="word"><span>Build</span></span>
+                <span class="word"><span>Trendy,</span></span>
+                <br>
+                <span class="word"><span><em>Profitable</em></span></span>
+                <span class="word"><span>&</span></span>
+                <br>
+                <span class="word"><span>Experience-Driven</span></span>
+                <br>
+                <span class="word"><span>Cafe Brands.</span></span>
+            </h1>
+            <p class="hero-body">Today's cafes are more than coffee — they're lifestyle brands, social media
+                destinations, and high-margin food businesses. We build yours from concept to first customer.</p>
+            <div class="hero-pills">
+                <div class="hero-pill">
+                    <div class="dot"></div>Concept & Design
+                </div>
+                <div class="hero-pill">
+                    <div class="dot"></div>Menu Engineering
+                </div>
+                <div class="hero-pill">
+                    <div class="dot"></div>Staff Training
+                </div>
+                <div class="hero-pill">
+                    <div class="dot"></div>Pan India
+                </div>
+                <div class="hero-pill">
+                    <div class="dot"></div>Dubai & Global
+                </div>
+            </div>
+        </div>
+
+        <div class="scroll-hint">
+            <div class="scroll-line"></div><span>Scroll</span>
+        </div>
+    </section>
+
+
+    <!-- MARQUEE -->
+    <div class="marquee-section">
+        <div class="marquee-track">
+            <div class="marquee-item">
+                <div class="dot"></div>Concept & Theme Planning
+            </div>
+            <div class="marquee-item accent">
+                <div class="dot"></div>Interior Design
+            </div>
+            <div class="marquee-item">
+                <div class="dot"></div>Menu Engineering
+            </div>
+            <div class="marquee-item accent">
+                <div class="dot"></div>Barista Training
+            </div>
+            <div class="marquee-item">
+                <div class="dot"></div>Instagram-Worthy Cafes
+            </div>
+            <div class="marquee-item accent">
+                <div class="dot"></div>SOP Systems
+            </div>
+            <div class="marquee-item">
+                <div class="dot"></div>Zomato & Swiggy Integration
+            </div>
+            <div class="marquee-item accent">
+                <div class="dot"></div>High-Margin Menus
+            </div>
+            <div class="marquee-item">
+                <div class="dot"></div>Concept & Theme Planning
+            </div>
+            <div class="marquee-item accent">
+                <div class="dot"></div>Interior Design
+            </div>
+            <div class="marquee-item">
+                <div class="dot"></div>Menu Engineering
+            </div>
+            <div class="marquee-item accent">
+                <div class="dot"></div>Barista Training
+            </div>
+            <div class="marquee-item">
+                <div class="dot"></div>Instagram-Worthy Cafes
+            </div>
+            <div class="marquee-item accent">
+                <div class="dot"></div>SOP Systems
+            </div>
+            <div class="marquee-item">
+                <div class="dot"></div>Zomato & Swiggy Integration
+            </div>
+            <div class="marquee-item accent">
+                <div class="dot"></div>High-Margin Menus
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ══════════════════════════════════════════
+     TRUTH / INTRO
+══════════════════════════════════════════ -->
+    <section id="cafe-truth">
+        <div class="truth-orb"></div>
+        <div class="truth-inner">
+            <div class="truth-grid">
+                <div class="reveal-left">
+                    <div class="section-tag">Our Belief</div>
+                    <h2 class="truth-headline">Great food.<br>Strong systems.<br><em>Memorable experience.</em></h2>
+                    <p class="truth-body">There is no major difference between a cloud kitchen, QSR, or cafe — the core
+                        is always the same. Whether food is delivered to a doorstep or served on a beautifully designed
+                        cafe table — what matters is consistency, quality, and brand experience.</p>
+                    <p class="truth-body">A well-planned cafe is more than a business — it becomes a lifestyle brand, a
+                        social media destination, and a scalable asset.</p>
+                    <div class="truth-quote reveal d3">
+                        <div class="truth-quote-label">Core Philosophy</div>
+                        <p class="truth-quote-text">We combine food expertise + operational systems + design aesthetics
+                            to create cafes that are both profitable and visually compelling — built to scale.</p>
+                    </div>
+                </div>
+
+                <div class="truth-right reveal-right">
+                    <div class="truth-stat-row">
+                        <div class="truth-stat-card reveal d1">
+                            <div class="truth-stat-num">100+</div>
+                            <div class="truth-stat-label">Kitchens Consulted</div>
+                            <div class="truth-stat-sub">Pan-India & growing</div>
+                        </div>
+                        <div class="truth-stat-card reveal d2">
+                            <div class="truth-stat-num">2012</div>
+                            <div class="truth-stat-label">Year Founded</div>
+                            <div class="truth-stat-sub">Over a decade of expertise</div>
+                        </div>
+                    </div>
+                    <div class="truth-stat-card reveal d3">
+                        <div class="truth-stat-num">15+</div>
+                        <div class="truth-stat-label">Cities We Serve</div>
+                        <div class="truth-stat-sub">Pan India + Dubai & international markets</div>
+                    </div>
+                    <div class="truth-stat-card reveal d4">
+                        <div class="truth-stat-num">360°</div>
+                        <div class="truth-stat-label">End-to-End Cafe Consulting</div>
+                        <div class="truth-stat-sub">Concept to launch — one partner, zero loose ends</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════
+     SERVICES — 8 Verticals
+══════════════════════════════════════════ -->
+    <section id="cafe-services">
+        <div class="svc-orb"></div>
+        <div class="svc-inner">
+            <div class="svc-head reveal">
+                <div>
+                    <div class="section-tag">What We Do</div>
+                    <h2 class="svc-headline">Our Cafe<br>Consulting<br><em>Approach.</em></h2>
+                </div>
+                <p class="svc-sub">8 complete service verticals — from concept to launch and beyond.</p>
+            </div>
+
+            <div class="svc-mosaic">
+
+                <!-- 01 -->
+                <div class="stile st-4 reveal d1">
+                    <div class="stile-num">01</div>
+                    <div class="stile-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M12 2l4 4-4 4-4-4 4-4z" />
+                            <path d="M2 12l4-4 4 4-4 4-4-4z" />
+                            <path d="M22 12l-4-4-4 4 4 4 4-4z" />
+                            <path d="M12 22l-4-4 4-4 4 4-4 4z" />
+                        </svg>
+                    </div>
+                    <div class="stile-name">Concept, Theme & Brand Planning</div>
+                    <div class="stile-desc">Unique cafe concepts with mood boards, theme storytelling, and
+                        Instagram-worthy visual identity.</div>
+                    <ul class="stile-list">
+                        <li>Modern, minimal, rustic & luxury themes</li>
+                        <li>Color palettes & ambiance design</li>
+                        <li>Brand identity & visual language</li>
+                    </ul>
+                </div>
+
+                <!-- 02 -->
+                <div class="stile st-4 reveal d2">
+                    <div class="stile-num">02</div>
+                    <div class="stile-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <rect x="3" y="3" width="18" height="18" rx="2" />
+                            <path d="M3 9h18M9 21V9" />
+                        </svg>
+                    </div>
+                    <div class="stile-name">Interior Design & Layout Planning</div>
+                    <div class="stile-desc">Space utilization, seating flow, and kitchen-to-service coordination —
+                        aesthetic meets operational efficiency.</div>
+                    <ul class="stile-list">
+                        <li>Customer movement optimization</li>
+                        <li>Lighting, furniture & decor planning</li>
+                        <li>Seating flow & space utilization</li>
+                    </ul>
+                </div>
+
+                <!-- 03 -->
+                <div class="stile st-4 reveal d3">
+                    <div class="stile-num">03</div>
+                    <div class="stile-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M3 7h18M3 12h18M3 17h12" />
+                            <circle cx="19" cy="17" r="3" />
+                        </svg>
+                    </div>
+                    <div class="stile-name">Kitchen Planning & Setup</div>
+                    <div class="stile-desc">Complete kitchen layout, equipment planning, vendor sourcing, and back-end
+                        operations built for speed and consistency.</div>
+                    <ul class="stile-list">
+                        <li>Complete kitchen layout design</li>
+                        <li>Equipment planning & sourcing</li>
+                        <li>Workflow optimization</li>
+                    </ul>
+                </div>
+
+                <!-- 04 -->
+                <div class="stile st-6 reveal d1">
+                    <div class="stile-num">04</div>
+                    <div class="stile-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path
+                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                    </div>
+                    <div class="stile-name">Menu Planning, Engineering & Plating</div>
+                    <div class="stile-desc">Cafe-style menu creation for food and beverages, engineered for high
+                        margins, consistency, and Instagram appeal. Every dish designed for both taste and visual
+                        impact.</div>
+                    <ul class="stile-list">
+                        <li>High-margin item engineering</li>
+                        <li>Recipe standardization</li>
+                        <li>Plating & presentation aesthetics</li>
+                        <li>Delivery-friendly menu design</li>
+                    </ul>
+                </div>
+
+                <!-- 05 -->
+                <div class="stile st-6 reveal d2">
+                    <div class="stile-num">05</div>
+                    <div class="stile-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M20 7H4a2 2 0 00-2 2v10a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2z" />
+                            <path d="M16 3l-4-1-4 1" />
+                        </svg>
+                    </div>
+                    <div class="stile-name">Crockery, Packaging & Brand Detailing</div>
+                    <div class="stile-desc">Theme-aligned crockery selection, packaging design for takeaway and
+                        delivery, and brand detailing across every customer touchpoint — creating a cohesive, premium
+                        experience from first sip to last bite.</div>
+                    <ul class="stile-list">
+                        <li>Crockery selection aligned with theme</li>
+                        <li>Packaging design for takeaway & delivery</li>
+                        <li>Brand detailing across touchpoints</li>
+                    </ul>
+                </div>
+
+                <!-- 07 SOP — full width feature tile -->
+                <div class="stile-feature reveal d1">
+                    <div class="stf-left">
+                        <div class="stf-num">07 — Systems</div>
+                        <div class="stf-name">SOP Development<br><em>& Operations.</em></div>
+                    </div>
+                    <div class="stf-right">
+                        <p class="stf-desc">Bulletproof daily operations SOPs from opening to closing, service flow &
+                            guest handling, inventory & cost control systems, and quality assurance frameworks — all
+                            built to scale across locations and franchise models.</p>
+                        <div class="stf-tags">
+                            <span class="stf-tag">Opening to Closing SOPs</span>
+                            <span class="stf-tag">Guest Handling Protocols</span>
+                            <span class="stf-tag">Inventory & Cost Control</span>
+                            <span class="stf-tag">Quality Assurance</span>
+                            <span class="stf-tag">Franchise-Ready Systems</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 08 Pre-Launch -->
+                <div class="stile st-12 reveal d2" style="background:var(--bg-3);">
+                    <div class="stile-num">08</div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:32px;align-items:start;">
+                        <div>
+                            <div class="stile-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <path d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                </svg>
+                            </div>
+                            <div class="stile-name">Pre-Launch & Go-To-Market Strategy</div>
+                            <div class="stile-desc">Soft launch planning, initial marketing strategy, influencer & local
+                                buzz creation to give your cafe a powerful opening.</div>
+                        </div>
+                        <div style="padding-top:4px;">
+                            <div class="stile-num" style="margin-bottom:10px;">Soft Launch</div>
+                            <div class="stile-desc">Controlled pre-launch to test operations, gather feedback, and build
+                                anticipation before full public opening.</div>
+                        </div>
+                        <div style="padding-top:4px;">
+                            <div class="stile-num" style="margin-bottom:10px;">Influencer Strategy</div>
+                            <div class="stile-desc">Local influencer partnerships and social media buzz creation to
+                                ensure maximum visibility at launch.</div>
+                        </div>
+                        <div style="padding-top:4px;">
+                            <div class="stile-num" style="margin-bottom:10px;">Aggregator Onboarding</div>
+                            <div class="stile-desc">Zomato & Swiggy listing, optimization and campaign planning from day
+                                one to unlock delivery revenue.</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════
+     STAFF TRAINING + HYBRID MODEL
+══════════════════════════════════════════ -->
+    <section id="cafe-staff">
+        <div class="staff-orb"></div>
+        <div class="staff-inner">
+            <div class="reveal">
+                <div class="section-tag">Training & Operations</div>
+                <h2
+                    style="font-weight:800;font-size:clamp(34px,4vw,54px);line-height:1.05;letter-spacing:-.025em;margin-top:8px;">
+                    We build your <em style="font-style:italic;font-weight:400;color:var(--green);">complete team.</em>
+                </h2>
+            </div>
+            <div class="staff-grid">
+                <div class="reveal-left">
+                    <h3 class="staff-headline">Staff Hiring<br>&amp; <em>Training</em></h3>
+                    <p class="staff-body">A great cafe runs on great people. We help you hire and train every role —
+                        from the kitchen to the counter — ensuring consistent service and smooth daily operations.</p>
+                    <div class="staff-roles">
+                        <div class="staff-role-item reveal d1">
+                            <div class="staff-role-icon">👨‍🍳</div>
+                            <div>
+                                <div class="staff-role-title">Chefs & Kitchen Staff</div>
+                                <div class="staff-role-sub">Recipe execution, food safety & consistency training</div>
+                            </div>
+                        </div>
+                        <div class="staff-role-item reveal d2">
+                            <div class="staff-role-icon">☕</div>
+                            <div>
+                                <div class="staff-role-title">Barista Training</div>
+                                <div class="staff-role-sub">Coffee skills, consistency & specialty beverage techniques
+                                </div>
+                            </div>
+                        </div>
+                        <div class="staff-role-item reveal d3">
+                            <div class="staff-role-icon">🧑‍💼</div>
+                            <div>
+                                <div class="staff-role-title">Floor Managers & Supervisors</div>
+                                <div class="staff-role-sub">Operations oversight, team coordination & guest satisfaction
+                                </div>
+                            </div>
+                        </div>
+                        <div class="staff-role-item reveal d4">
+                            <div class="staff-role-icon">🍽️</div>
+                            <div>
+                                <div class="staff-role-title">Stewards & Service Staff</div>
+                                <div class="staff-role-sub">Table service, guest handling & experience delivery</div>
+                            </div>
+                        </div>
+                        <div class="staff-role-item reveal d5">
+                            <div class="staff-role-icon">💰</div>
+                            <div>
+                                <div class="staff-role-title">Cash Counter & POS Management</div>
+                                <div class="staff-role-sub">Billing accuracy, POS systems & daily reporting</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="reveal-right">
+                    <div class="staff-hybrid">
+                        <div class="hybrid-top">
+                            <div class="hybrid-label">Optional Add-on</div>
+                            <div class="hybrid-title">Cafe + Cloud Kitchen<br>Hybrid Model</div>
+                            <p class="hybrid-desc">We help cafes integrate with Zomato and Swiggy — so your cafe earns
+                                revenue from all three streams simultaneously, maximizing every square foot of your
+                                kitchen.</p>
+                        </div>
+
+                        <!--
+          ──────────────────────────────────────────────
+          HYBRID MODEL VISUAL IMAGE
+          Place inside .hybrid-top or above .hybrid-streams:
+            <img src="YOUR-HYBRID-IMAGE.jpg" alt="Hybrid Model"
+              style="width:100%;height:180px;object-fit:cover;border-radius:12px;margin-top:20px;">
+          Recommended: Split scene showing cafe + delivery bag
+          ──────────────────────────────────────────────
+          -->
+
+                        <div class="hybrid-streams">
+                            <div class="hybrid-stream">
+                                <div class="hs-icon">🪑</div>
+                                <div class="hs-label">Dine-In</div>
+                                <div class="hs-sub">Cafe customers</div>
+                            </div>
+                            <div class="hybrid-stream">
+                                <div class="hs-icon">📦</div>
+                                <div class="hs-label">Takeaway</div>
+                                <div class="hs-sub">Walk-in orders</div>
+                            </div>
+                            <div class="hybrid-stream">
+                                <div class="hs-icon">🛵</div>
+                                <div class="hs-label">Delivery</div>
+                                <div class="hs-sub">Zomato & Swiggy</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════
+     WHO IS THIS FOR
+══════════════════════════════════════════ -->
+    <section id="cafe-who">
+        <div class="who-inner">
+            <div class="reveal">
+                <div class="section-tag">Ideal For</div>
+                <h2
+                    style="font-weight:800;font-size:clamp(34px,4vw,54px);line-height:1.05;letter-spacing:-.025em;margin-top:8px;">
+                    Who should opt for <em style="font-style:italic;font-weight:400;color:var(--green);">cafe
+                        consulting?</em>
+                </h2>
+            </div>
+            <div class="who-grid">
+                <div class="who-card reveal d1">
+                    <div class="who-icon">🚀</div>
+                    <div class="who-title">Entrepreneurs starting a new cafe</div>
+                </div>
+                <div class="who-card reveal d2">
+                    <div class="who-icon">🔄</div>
+                    <div class="who-title">Existing cafe owners looking to upgrade</div>
+                </div>
+                <div class="who-card reveal d3">
+                    <div class="who-icon">☁️</div>
+                    <div class="who-title">Cloud kitchen brands expanding into dine-in</div>
+                </div>
+                <div class="who-card reveal d4">
+                    <div class="who-icon">💼</div>
+                    <div class="who-title">Investors building lifestyle F&B brands</div>
+                </div>
+                <div class="who-card reveal d5">
+                    <div class="who-icon">📈</div>
+                    <div class="who-title">Franchise-focused cafe concepts</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════
+     RESULTS STATS
+══════════════════════════════════════════ -->
+    <section id="cafe-results">
+        <div class="results-row">
+            <div class="result-cell reveal d1">
+                <div class="result-icon">☕</div>
+                <div class="result-lbl">Visually stunning, Instagram-worthy cafe</div>
+            </div>
+            <div class="result-cell reveal d2">
+                <div class="result-icon">💰</div>
+                <div class="result-lbl">High-margin, well-engineered menu</div>
+            </div>
+            <div class="result-cell reveal d3">
+                <div class="result-icon">👥</div>
+                <div class="result-lbl">Fully trained staff & smooth operations</div>
+            </div>
+            <div class="result-cell reveal d4">
+                <div class="result-icon">📈</div>
+                <div class="result-lbl">Strong customer experience & repeat visits</div>
+            </div>
+            <div class="result-cell reveal d5">
+                <div class="result-icon">🚀</div>
+                <div class="result-lbl">Scalable cafe brand ready for expansion</div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════
+     CITIES
+══════════════════════════════════════════ -->
+    <section id="cafe-cities">
+        <div class="cities-inner">
+            <div class="reveal">
+                <div class="section-tag">Our Reach</div>
+                <h2
+                    style="font-weight:800;font-size:clamp(34px,4vw,56px);line-height:1.05;letter-spacing:-.025em;margin-top:8px;">
+                    Pan-India &amp; <em style="font-style:italic;font-weight:400;color:var(--green);">Global Reach.</em>
+                </h2>
+            </div>
+
+            <div class="cities-flex">
+                <div class="cities-left">
+                    <div class="cities-region-label">India — 15 Cities</div>
+                    <div class="cities-tiles">
+                        <span class="city-tile">Mumbai</span>
+                        <span class="city-tile">Pune</span>
+                        <span class="city-tile">Delhi NCR</span>
+                        <span class="city-tile">Bangalore</span>
+                        <span class="city-tile">Hyderabad</span>
+                        <span class="city-tile">Chennai</span>
+                        <span class="city-tile">Ahmedabad</span>
+                        <span class="city-tile">Kolkata</span>
+                        <span class="city-tile">Jaipur</span>
+                        <span class="city-tile">Goa</span>
+                        <span class="city-tile">Chandigarh</span>
+                        <span class="city-tile">Indore</span>
+                        <span class="city-tile">Surat</span>
+                        <span class="city-tile">Lucknow</span>
+                        <span class="city-tile">Nagpur</span>
+                    </div>
+
+                    <div class="cities-region-label">International</div>
+                    <div class="cities-tiles">
+                        <span class="city-tile intl">Dubai, UAE</span>
+                        <span class="city-tile intl">Global Markets</span>
+                    </div>
+
+                    <div class="cities-note reveal d2">
+                        <div class="cities-note-dot"></div>
+                        <span>International consulting available for <strong>Indian F&B expansion</strong> into Dubai,
+                            UAE & global markets.</span>
+                    </div>
+                </div>
+
+                <div class="cities-map-wrap reveal-right">
+                    <!--
+        ──────────────────────────────────────────────────────
+        INDIA MAP IMAGE
+        Replace this placeholder div with:
+          <img
+            src="YOUR-INDIA-MAP-IMAGE.png"
+            alt="MyCloudKitchen Pan-India Cafe Consulting Coverage"
+            style="width:100%;height:100%;object-fit:cover;object-position:center;"
+          >
+        Recommended: Dark India map with city dots in #a8ff57
+        ──────────────────────────────────────────────────────
+        -->
+                    <div class="cities-map-placeholder">
+                        <div class="ph-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
+                                <circle cx="12" cy="10" r="3" />
+                            </svg>
+                        </div>
+                        <span>India Coverage Map</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════
+     CTA
+══════════════════════════════════════════ -->
+    <section id="cafe-cta">
+        <div class="cta-inner reveal">
+            <div class="cta-text">
+                <div class="section-tag">Work With Us</div>
+                <h2 class="cta-headline">Build a cafe people<br>love, visit, and <em>remember.</em></h2>
+                <p class="cta-body">Connect with MyCloudKitchen Consulting and let's create your next iconic cafe brand
+                    — from concept to your first packed weekend.</p>
+            </div>
+            <div class="cta-actions">
+                <a href="#" class="btn-primary">
+                    Get a Free Consult
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7" />
+                    </svg>
+                </a>
+                <a href="tel:+919022453555" class="btn-ghost">Call +91-9022453555</a>
+            </div>
+        </div>
+    </section>
+
+
+    <script>
+        /* ── PARTICLE CANVAS ── */
+        const canvas = document.createElement('canvas');
+        canvas.style.cssText = 'position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.35';
+        document.body.prepend(canvas);
+        const ctx = canvas.getContext('2d');
+        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        resizeCanvas(); window.addEventListener('resize', resizeCanvas);
+        class Particle {
+            constructor() { this.reset(); }
+            reset() {
+                this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 1.4 + .3; this.speedX = (Math.random() - .5) * .25; this.speedY = (Math.random() - .5) * .25;
+                this.opacity = Math.random() * .35 + .05; this.green = Math.random() > .72;
+            }
+            update() { this.x += this.speedX; this.y += this.speedY; if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) this.reset(); }
+            draw() {
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = this.green ? `rgba(168,255,87,${this.opacity})` : `rgba(255,255,255,${this.opacity * .25})`;
+                ctx.fill();
+            }
+        }
+        const particles = [];
+        for (let i = 0; i < 60; i++) particles.push(new Particle());
+        (function animP() { ctx.clearRect(0, 0, canvas.width, canvas.height); particles.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animP); })();
+
+        /* ── REVEAL ON SCROLL ── */
+        const revealObs = new IntersectionObserver(entries => {
+            entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+        }, { threshold: .1, rootMargin: '0px 0px -50px 0px' });
+        document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale').forEach(el => revealObs.observe(el));
+
+        /* ── CARD GLOW ── */
+        document.querySelectorAll('.stile,.why-card,.truth-stat-card,.who-card,.staff-role-item').forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const r = card.getBoundingClientRect();
+                const x = ((e.clientX - r.left) / r.width) * 100;
+                const y = ((e.clientY - r.top) / r.height) * 100;
+                card.style.background = `radial-gradient(circle at ${x}% ${y}%,rgba(168,255,87,.06),var(--card-bg) 60%)`;
+            });
+            card.addEventListener('mouseleave', () => { card.style.background = ''; });
+        });
+
+        /* ── MAGNETIC BUTTONS ── */
+        document.querySelectorAll('.btn-primary').forEach(btn => {
+            btn.addEventListener('mousemove', e => {
+                const r = btn.getBoundingClientRect();
+                const dx = (e.clientX - r.left - r.width / 2) * .28;
+                const dy = (e.clientY - r.top - r.height / 2) * .28;
+                btn.style.transform = `translate(${dx}px,${dy}px)`;
+            });
+            btn.addEventListener('mouseleave', () => { btn.style.transform = ''; });
+        });
+    </script>
+</body>
+
+</html>

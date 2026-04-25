@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="light">
 
 <head>
     <meta charset="UTF-8">
@@ -254,16 +254,14 @@
             padding: 0 60px 100px;
             position: relative;
             overflow: hidden;
-            background: var(--bg)
+            background: var(--bg);
+            background-image: url(https://mykitchen.websblog.in/wp-content/uploads/2026/04/menueng.png);
+            background-size: 48%;
+            background-repeat: no-repeat;
+            background-position: right;
         }
 
-        /* ─── IMAGE PLACEMENT ───────────────────────────────────────────
-           Hero background right-side illustration:
-           Replace the .hero-visual-block with:
-           <img src="/images/menu-hero.png" alt="Menu Engineering"
-                style="position:absolute;right:0;top:0;height:100%;width:44%;object-fit:cover;object-position:left center;opacity:.7;z-index:1;">
-           Recommended: a flat-lay of food dishes or menu design on dark bg
-        ──────────────────────────────────────────────────────────────── */
+
         .hero-visual-block {
             position: absolute;
             right: 0;
@@ -305,19 +303,20 @@
 
         .hv-card-2 {
             width: 200px;
-            height: 130px;
-            top: 30px;
-            right: -20px;
+            height: 117px;
+            bottom: -109px;
+            left: -227px;
             transform: rotate(6deg);
             animation: cardFloat2 8s ease-in-out infinite;
-            border-color: var(--border-bright)
+            border-color: var(--border-bright);
+            position: absolute;
         }
 
         .hv-card-3 {
-            width: 160px;
-            height: 100px;
-            bottom: 40px;
-            left: -10px;
+            width: 155px;
+            height: 86px;
+            bottom: -73px;
+            right: -123px;
             transform: rotate(-5deg);
             animation: cardFloat3 7s ease-in-out infinite
         }
@@ -395,7 +394,7 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 6px;
-            height: 100%
+            height: 90%
         }
 
         .hv-matrix-cell {
@@ -660,8 +659,8 @@
 
         .hero-float-badge {
             position: absolute;
-            top: 130px;
-            right: 80px;
+            top: 70px;
+            right: 598px;
             z-index: 12;
             background: var(--green);
             padding: 14px 22px;
@@ -1797,7 +1796,13 @@
             justify-content: space-between;
             gap: 60px;
             position: relative;
-            overflow: hidden
+            overflow: hidden;
+            background-image: url(https://mykitchen.websblog.in/wp-content/uploads/2026/04/menueng.png);
+            background-size: cover;
+            background-repeat: no-repeat;
+            /* background-position: 61% 0%; */
+            background-blend-mode: overlay;
+            background-position: center;
         }
 
         .cta-inner::before {
@@ -2040,14 +2045,7 @@
     </button>
 
 
-    <!-- ══════════════════════════════════════════
-         HERO
-         BG IMAGE PLACEMENT:
-         Replace .hero-visual-block inner content with:
-         <img src="/images/menu-hero-dish.png" alt="Menu Engineering"
-              style="width:100%;height:100%;object-fit:contain;object-position:center;">
-         Recommended: Overhead shot of restaurant dishes / plated food, dark bg
-    ══════════════════════════════════════════ -->
+
     <section id="menu-hero">
         <div class="hero-orb-1"></div>
         <div class="hero-orb-2"></div>
@@ -2056,24 +2054,8 @@
         <!-- Floating illustration (replace with image) -->
         <div class="hero-visual-block">
             <div class="hero-visual-inner">
-                <div class="hv-card hv-card-main">
-                    <div class="hv-label">Menu Items — Margin View</div>
-                    <div class="hv-dish-row"><span class="hv-dish-name">Chicken Biryani</span><span
-                            class="hv-dish-price">₹249</span></div>
-                    <div class="hv-dish-row"><span class="hv-dish-name">Paneer Butter Masala</span><span
-                            class="hv-dish-price">₹199</span></div>
-                    <div class="hv-dish-row"><span class="hv-dish-name">Loaded Burger Combo</span><span
-                            class="hv-dish-price">₹299</span></div>
-                </div>
-                <div class="hv-card hv-card-2">
-                    <div class="hv-label">Matrix</div>
-                    <div class="hv-matrix-grid">
-                        <div class="hv-matrix-cell hvm-star">⭐ Stars</div>
-                        <div class="hv-matrix-cell hvm-puzzle">🧠 Puzzles</div>
-                        <div class="hv-matrix-cell hvm-plow">⚠️ Plows</div>
-                        <div class="hv-matrix-cell hvm-dog">❌ Dogs</div>
-                    </div>
-                </div>
+
+
                 <div class="hv-card hv-card-3">
                     <div class="hvc3-row"><span class="hvc3-label">Food Cost</span><span class="hvc3-val">31%</span>
                     </div>
@@ -2083,10 +2065,7 @@
         </div>
 
         <div class="hero-float-badge">Revenue Engine</div>
-        <div class="hero-float-badge-2">
-            <div class="hfb2-num">₹199–₹299</div>
-            <div class="hfb2-label">Optimized Price Points</div>
-        </div>
+
 
         <div class="hero-content">
             <div class="hero-label">Menu Planning & Engineering</div>
@@ -2189,7 +2168,8 @@
                     <h2 class="wi-headline">Menu Engineering<br><em>& Why It Matters.</em></h2>
                     <p class="wi-body">Menu engineering is the <strong>science of analyzing your dishes</strong> based
                         on two core dimensions: <strong>Profitability</strong> (food cost vs. selling price) and
-                        <strong>Popularity</strong> (order frequency & demand).</p>
+                        <strong>Popularity</strong> (order frequency & demand).
+                    </p>
                     <p class="wi-body">A menu is not just a list of dishes — it's your <strong>primary revenue
                             engine</strong>. We engineer menus that maximize average order value (AOV), contribution
                         margins, and repeat customer rates.</p>
@@ -2284,7 +2264,7 @@
                             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" />
                             <path d="M12 6v6l4 2" />
                         </svg></div>
-                    <!-- IMAGE: <img src="/images/food-costing.png" alt="Food Costing" style="width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:10px;margin-bottom:16px;opacity:.7;"> -->
+                    <!-- IMAGE: <img src="https://mykitchen.websblog.in/wp-content/uploads/2026/04/food-costing.png" alt="Food Costing" style="width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:10px;margin-bottom:16px;opacity:.7;"> -->
                     <div class="stile-name">Food Costing & Profit Optimization</div>
                     <div class="stile-desc">Every dish engineered for maximum profit — from raw material to plate.</div>
                     <ul class="stile-list">
@@ -2303,7 +2283,7 @@
                             <path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z" />
                             <line x1="7" y1="7" x2="7.01" y2="7" />
                         </svg></div>
-                    <!-- IMAGE: <img src="/images/pricing-strategy.png" alt="Pricing Strategy" style="width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:10px;margin-bottom:16px;opacity:.7;"> -->
+                    <!-- IMAGE: <img src="https://mykitchen.websblog.in/wp-content/uploads/2026/04/pricing-strategy.png" alt="Pricing Strategy" style="width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:10px;margin-bottom:16px;opacity:.7;"> -->
                     <div class="stile-name">Smart Pricing Strategy — Zomato & Swiggy Optimized</div>
                     <div class="stile-desc">Pricing designed specifically for the platform algorithms and customer
                         psychology.</div>

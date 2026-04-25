@@ -1,0 +1,2160 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy — My Cloud Kitchen</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Hubot+Sans:ital,wght@0,200..900;1,200..900&family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --green: #a8ff57;
+            --green-dim: #6bc930;
+            --green-glow: rgba(168, 255, 87, 0.18);
+            --green-glow-strong: rgba(168, 255, 87, 0.35);
+            --bg: #080808;
+            --bg-2: #0f0f0f;
+            --bg-3: #161616;
+            --surface: rgba(255, 255, 255, 0.04);
+            --surface-hover: rgba(255, 255, 255, 0.07);
+            --border: rgba(255, 255, 255, 0.08);
+            --border-bright: rgba(168, 255, 87, 0.25);
+            --text-primary: #f0f0f0;
+            --text-secondary: #888;
+            --text-muted: #444;
+            --card-bg: rgba(20, 20, 20, 0.85);
+            --shadow: 0 32px 80px rgba(0, 0, 0, 0.6);
+        }
+
+        [data-theme="light"] {
+            --bg: #f4f2ed;
+            --bg-2: #ede9e2;
+            --bg-3: #e5e0d8;
+            --surface: rgba(0, 0, 0, 0.04);
+            --surface-hover: rgba(0, 0, 0, 0.07);
+            --border: rgba(0, 0, 0, 0.08);
+            --border-bright: rgba(100, 180, 30, 0.3);
+            --text-primary: #111;
+            --text-secondary: #555;
+            --text-muted: #aaa;
+            --card-bg: rgba(240, 237, 230, 0.9);
+            --shadow: 0 32px 80px rgba(0, 0, 0, 0.12);
+            --green: #5a9e10;
+            --green-dim: #4a8a0c;
+            --green-glow: rgba(90, 158, 16, 0.12);
+            --green-glow-strong: rgba(90, 158, 16, 0.22);
+        }
+
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scrollbar-width: thin;
+            scrollbar-color: var(--green-dim) var(--bg-3);
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-3);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--green-dim);
+            border-radius: 10px;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+            transition: background 0.4s ease, color 0.4s ease;
+            overflow-x: hidden;
+        }
+
+        /* ─── AMBIENT BG ─── */
+        .ambient {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .ambient-blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.07;
+            animation: blobDrift 18s ease-in-out infinite;
+        }
+
+        .ambient-blob:nth-child(1) {
+            width: 600px;
+            height: 600px;
+            background: var(--green);
+            top: -200px;
+            right: -150px;
+            animation-delay: 0s;
+        }
+
+        .ambient-blob:nth-child(2) {
+            width: 400px;
+            height: 400px;
+            background: var(--green-dim);
+            bottom: 10%;
+            left: -100px;
+            animation-delay: -8s;
+        }
+
+        .ambient-blob:nth-child(3) {
+            width: 300px;
+            height: 300px;
+            background: var(--green);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation-delay: -4s;
+        }
+
+        @keyframes blobDrift {
+
+            0%,
+            100% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            33% {
+                transform: translate(30px, -20px) scale(1.05);
+            }
+
+            66% {
+                transform: translate(-20px, 30px) scale(0.95);
+            }
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.4;
+        }
+
+        /* ─── NAVBAR ─── */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            height: 70px;
+            background: rgba(8, 8, 8, 0.7);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-bottom: 1px solid var(--border);
+            transition: background 0.4s ease, border-color 0.4s ease;
+        }
+
+        [data-theme="light"] nav {
+            background: rgba(244, 242, 237, 0.75);
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 1.2rem;
+            color: var(--text-primary);
+            transition: color 0.3s;
+        }
+
+        .nav-logo-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--green), var(--green-dim));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            box-shadow: 0 0 16px var(--green-glow-strong);
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .nav-back-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 18px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 50px;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+        }
+
+        .nav-back-btn:hover {
+            background: var(--surface-hover);
+            color: var(--text-primary);
+            border-color: var(--border-bright);
+        }
+
+        .theme-toggle {
+            width: 40px;
+            height: 40px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            position: absolute;
+            top: 16px;
+            right: 40px;
+        }
+
+        .theme-toggle:hover {
+            background: var(--green-glow);
+            border-color: var(--border-bright);
+            transform: rotate(20deg);
+        }
+
+        /* ─── HERO ─── */
+        .page-hero {
+            position: relative;
+            z-index: 2;
+            padding: 85px 40px 80px;
+            text-align: center;
+            max-width: 860px;
+            margin: 0 auto;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 16px;
+            background: var(--green-glow);
+            border: 1px solid var(--border-bright);
+            border-radius: 50px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--green);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 28px;
+            animation: fadeSlideUp 0.6s ease both;
+        }
+
+        .hero-badge::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: var(--green);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--green);
+            animation: pulse 2s ease infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.5;
+                transform: scale(0.8);
+            }
+        }
+
+        .page-title {
+            font-family: 'Hubot Sans', sans-serif;
+            font-size: clamp(2.4rem, 5vw, 4rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            animation: fadeSlideUp 0.6s ease 0.1s both;
+        }
+
+        .page-title span {
+            background: linear-gradient(135deg, var(--green), var(--green-dim));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-subtitle {
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+            max-width: 560px;
+            margin: 0 auto 32px;
+            line-height: 1.7;
+            animation: fadeSlideUp 0.6s ease 0.2s both;
+        }
+
+        .hero-meta {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 24px;
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            animation: fadeSlideUp 0.6s ease 0.3s both;
+            flex-wrap: wrap;
+        }
+
+        .hero-meta span {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .hero-meta span strong {
+            color: var(--text-secondary);
+        }
+
+        @keyframes fadeSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(24px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ─── DIVIDER ─── */
+        .divider {
+            width: 100%;
+            max-width: 860px;
+            margin: 0 auto;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border-bright), transparent);
+            position: relative;
+            z-index: 2;
+        }
+
+        /* ─── LAYOUT ─── */
+        .content-wrapper {
+            position: relative;
+            z-index: 2;
+            max-width: 1250px;
+            margin: 0 auto;
+            padding: 60px 0px 120px;
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 48px;
+            align-items: start;
+        }
+
+        /* ─── SIDEBAR ─── */
+        .sidebar {
+            position: sticky;
+            top: 90px;
+        }
+
+        .sidebar-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+            padding-left: 16px;
+        }
+
+        .sidebar-nav {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .sidebar-nav li a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 16px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            transition: all 0.25s ease;
+            border: 1px solid transparent;
+            position: relative;
+        }
+
+        .sidebar-nav li a .nav-num {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            min-width: 18px;
+        }
+
+        .sidebar-nav li a:hover,
+        .sidebar-nav li a.active {
+            background: var(--green-glow);
+            border-color: var(--border-bright);
+            color: var(--green);
+        }
+
+        .sidebar-nav li a.active .nav-num {
+            color: var(--green);
+        }
+
+        .sidebar-nav li a.active::before {
+            content: '';
+            position: absolute;
+            left: -1px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 60%;
+            background: var(--green);
+            border-radius: 0 4px 4px 0;
+        }
+
+        .reading-progress-wrap {
+            margin-top: 32px;
+            padding: 16px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+        }
+
+        .reading-progress-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+        }
+
+        .reading-progress-label span:last-child {
+            color: var(--green);
+            font-weight: 600;
+        }
+
+        .reading-progress-bar {
+            height: 4px;
+            background: var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .reading-progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--green-dim), var(--green));
+            border-radius: 10px;
+            transition: width 0.15s ease;
+        }
+
+        /* ─── MAIN CONTENT ─── */
+        .main-content {
+            min-width: 0;
+        }
+
+        /* ─── SECTIONS ─── */
+        .tc-section {
+            margin-bottom: 12px;
+            animation: fadeSlideUp 0.5s ease both;
+        }
+
+        .tc-section-inner {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        .tc-section-inner:hover {
+            border-color: var(--border-bright);
+            box-shadow: 0 8px 40px var(--green-glow);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 28px 32px;
+            cursor: pointer;
+            user-select: none;
+            transition: background 0.2s ease;
+        }
+
+        .section-header:hover {
+            background: var(--surface-hover);
+        }
+
+        .section-icon {
+            width: 44px;
+            height: 44px;
+            background: var(--green-glow);
+            border: 1px solid var(--border-bright);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.15rem;
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+        }
+
+        .tc-section-inner:hover .section-icon {
+            background: var(--green-glow-strong);
+            box-shadow: 0 0 20px var(--green-glow);
+        }
+
+        .section-title-group {
+            flex: 1;
+        }
+
+        .section-number {
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--green);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .section-title {
+            font-family: 'Hubot Sans', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .section-chevron {
+            width: 28px;
+            height: 28px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .section-chevron svg {
+            transition: transform 0.3s ease;
+            stroke: var(--text-muted);
+        }
+
+        .tc-section.open .section-chevron {
+            background: var(--green-glow);
+            border-color: var(--border-bright);
+        }
+
+        .tc-section.open .section-chevron svg {
+            transform: rotate(180deg);
+            stroke: var(--green);
+        }
+
+        .section-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .tc-section.open .section-body {
+            max-height: 2400px;
+        }
+
+        .section-body-inner {
+            padding: 0 32px 32px;
+            border-top: 1px solid var(--border);
+        }
+
+        .section-body-inner p {
+            color: var(--text-secondary);
+            font-size: 0.93rem;
+            line-height: 1.8;
+            margin-bottom: 16px;
+        }
+
+        .section-body-inner p:last-child {
+            margin-bottom: 0;
+        }
+
+        .section-body-inner ul,
+        .section-body-inner ol {
+            padding-left: 0;
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .section-body-inner ul li,
+        .section-body-inner ol li {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            color: var(--text-secondary);
+            font-size: 0.92rem;
+            line-height: 1.7;
+        }
+
+        .section-body-inner ul li::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: var(--green);
+            border-radius: 50%;
+            flex-shrink: 0;
+            margin-top: 8px;
+            box-shadow: 0 0 6px var(--green-glow-strong);
+        }
+
+        .section-body-inner ol {
+            counter-reset: item;
+        }
+
+        .section-body-inner ol li {
+            counter-increment: item;
+        }
+
+        .section-body-inner ol li::before {
+            content: counter(item);
+            min-width: 22px;
+            height: 22px;
+            background: var(--green-glow);
+            border: 1px solid var(--border-bright);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--green);
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .highlight-box {
+            background: var(--green-glow);
+            border: 1px solid var(--border-bright);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin: 16px 0;
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        .highlight-box-icon {
+            font-size: 1rem;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .highlight-box p {
+            color: var(--text-primary) !important;
+            margin: 0 !important;
+            font-size: 0.88rem !important;
+        }
+
+        .warn-box {
+            background: rgba(255, 160, 50, 0.06);
+            border: 1px solid rgba(255, 160, 50, 0.2);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin: 16px 0;
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        .warn-box p {
+            color: rgba(255, 200, 100, 0.85) !important;
+            margin: 0 !important;
+            font-size: 0.88rem !important;
+        }
+
+        .info-box {
+            background: rgba(87, 170, 255, 0.06);
+            border: 1px solid rgba(87, 170, 255, 0.2);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin: 16px 0;
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        .info-box p {
+            color: rgba(140, 200, 255, 0.9) !important;
+            margin: 0 !important;
+            font-size: 0.88rem !important;
+        }
+
+        .section-body-inner a {
+            color: var(--green);
+            text-decoration: none;
+            border-bottom: 1px solid var(--border-bright);
+            transition: border-color 0.2s;
+        }
+
+        .section-body-inner a:hover {
+            border-color: var(--green);
+        }
+
+        strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        /* ─── DATA TABLE ─── */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 0.88rem;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .data-table th {
+            background: var(--green-glow);
+            color: var(--green);
+            font-weight: 600;
+            font-size: 0.75rem;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-bright);
+        }
+
+        .data-table td {
+            padding: 12px 16px;
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+            line-height: 1.6;
+        }
+
+        .data-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .data-table tr:hover td {
+            background: var(--surface);
+        }
+
+        /* ─── RIGHTS GRID ─── */
+        .rights-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin: 16px 0;
+        }
+
+        .right-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 14px 16px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .right-item:hover {
+            border-color: var(--border-bright);
+            background: var(--green-glow);
+        }
+
+        .right-item-icon {
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .right-item-text strong {
+            display: block;
+            font-size: 0.82rem;
+            font-weight: 600;
+            margin-bottom: 3px;
+            color: var(--text-primary);
+        }
+
+        .right-item-text span {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* ─── COOKIE BADGE ─── */
+        .cookie-type {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 3px 10px;
+            border-radius: 50px;
+            font-size: 0.72rem;
+            font-weight: 600;
+        }
+
+        .cookie-required {
+            background: var(--green-glow);
+            border: 1px solid var(--border-bright);
+            color: var(--green);
+        }
+
+        .cookie-optional {
+            background: rgba(255, 160, 50, 0.08);
+            border: 1px solid rgba(255, 160, 50, 0.2);
+            color: rgba(255, 200, 100, 0.85);
+        }
+
+        /* ─── CONTACT CARD ─── */
+        .contact-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-bright);
+            border-radius: 24px;
+            padding: 48px 40px;
+            text-align: center;
+            margin-top: 40px;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        .contact-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at 50% 0%, var(--green-glow-strong), transparent 70%);
+            pointer-events: none;
+        }
+
+        .contact-card-icon {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, var(--green-glow-strong), var(--green-glow));
+            border: 1px solid var(--border-bright);
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            margin: 0 auto 24px;
+            box-shadow: 0 0 30px var(--green-glow);
+        }
+
+        .contact-card h3 {
+            font-family: 'Hubot Sans', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 12px;
+            position: relative;
+        }
+
+        .contact-card p {
+            color: var(--text-secondary);
+            font-size: 0.93rem;
+            margin-bottom: 28px;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            position: relative;
+        }
+
+        .contact-links {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+            position: relative;
+        }
+
+        .contact-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .contact-btn-primary {
+            background: linear-gradient(135deg, var(--green), var(--green-dim));
+            color: #080808;
+            box-shadow: 0 8px 24px var(--green-glow-strong);
+        }
+
+        .contact-btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px var(--green-glow-strong);
+        }
+
+        .contact-btn-secondary {
+            background: var(--surface);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .contact-btn-secondary:hover {
+            background: var(--surface-hover);
+            border-color: var(--border-bright);
+            transform: translateY(-2px);
+        }
+
+        /* ─── CONTROLS BAR ─── */
+        .controls-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .controls-bar-left {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+        }
+
+        .controls-bar-left strong {
+            color: var(--green);
+            font-size: 0.88rem;
+        }
+
+        .toggle-all-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 50px;
+            color: var(--text-secondary);
+            font-size: 0.82rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .toggle-all-btn:hover {
+            background: var(--green-glow);
+            border-color: var(--border-bright);
+            color: var(--green);
+        }
+
+        /* ─── FOOTER ─── */
+        footer {
+            position: relative;
+            z-index: 2;
+            border-top: 1px solid var(--border);
+            padding: 32px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        footer p {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+        }
+
+        footer p a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        footer p a:hover {
+            color: var(--green);
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .footer-links a {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: var(--green);
+        }
+
+        /* ─── TOP PROGRESS ─── */
+        .top-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--green-dim), var(--green));
+            z-index: 200;
+            width: 0%;
+            transition: width 0.1s linear;
+            box-shadow: 0 0 10px var(--green-glow-strong);
+        }
+
+        /* ─── BACK TO TOP ─── */
+        .back-to-top {
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            width: 44px;
+            height: 44px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-bright);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 50;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(16px);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 4px 24px var(--green-glow);
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .back-to-top:hover {
+            background: var(--green-glow-strong);
+            transform: translateY(-3px);
+        }
+
+        .back-to-top svg {
+            stroke: var(--green);
+        }
+
+        /* ─── RESPONSIVE ─── */
+        @media (max-width: 900px) {
+            .content-wrapper {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                position: static;
+                display: none;
+            }
+
+            .rights-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            nav {
+                padding: 0 20px;
+            }
+
+            .page-hero {
+                padding: 130px 24px 60px;
+            }
+
+            .content-wrapper {
+                padding: 40px 20px 80px;
+            }
+
+            .section-header {
+                padding: 22px 22px;
+            }
+
+            .section-body-inner {
+                padding: 0 22px 24px;
+            }
+
+            .contact-card {
+                padding: 36px 24px;
+            }
+
+            footer {
+                padding: 24px 20px;
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .data-table {
+                font-size: 0.8rem;
+            }
+
+            .data-table th,
+            .data-table td {
+                padding: 10px 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Ambient Background -->
+    <div class="ambient">
+        <div class="ambient-blob"></div>
+        <div class="ambient-blob"></div>
+        <div class="ambient-blob"></div>
+    </div>
+
+    <!-- Top Reading Progress -->
+    <div class="top-progress" id="topProgress"></div>
+
+    <!-- Theme Toggle -->
+    <button class="theme-toggle" id="themeToggle" title="Toggle theme">🌙</button>
+
+    <!-- Hero -->
+    <header class="page-hero">
+        <div class="hero-badge">Legal Document</div>
+        <h1 class="page-title">Privacy<br><span>Policy</span></h1>
+        <p class="page-subtitle">We are committed to protecting your personal information and your right to privacy.
+            This policy explains how we collect, use, and safeguard your data.</p>
+        <div class="hero-meta">
+            <span>📅 <strong>Effective:</strong> June 1, 2025</span>
+            <span>🔄 <strong>Last Updated:</strong> June 14, 2025</span>
+            <span>⏱ <strong>Read Time:</strong> ~10 minutes</span>
+        </div>
+    </header>
+
+    <div class="divider"></div>
+
+    <!-- Main Layout -->
+    <div class="content-wrapper">
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <p class="sidebar-label">Quick Navigation</p>
+            <ul class="sidebar-nav" id="sidebarNav">
+                <li><a href="#s1" data-target="s1"><span class="nav-num">01</span> Overview</a></li>
+                <li><a href="#s2" data-target="s2"><span class="nav-num">02</span> Information We Collect</a></li>
+                <li><a href="#s3" data-target="s3"><span class="nav-num">03</span> How We Use Your Data</a></li>
+                <li><a href="#s4" data-target="s4"><span class="nav-num">04</span> Data Sharing</a></li>
+                <li><a href="#s5" data-target="s5"><span class="nav-num">05</span> Cookies & Tracking</a></li>
+                <li><a href="#s6" data-target="s6"><span class="nav-num">06</span> Data Retention</a></li>
+                <li><a href="#s7" data-target="s7"><span class="nav-num">07</span> Data Security</a></li>
+                <li><a href="#s8" data-target="s8"><span class="nav-num">08</span> Your Rights</a></li>
+                <li><a href="#s9" data-target="s9"><span class="nav-num">09</span> Children's Privacy</a></li>
+                <li><a href="#s10" data-target="s10"><span class="nav-num">10</span> Third-Party Links</a></li>
+                <li><a href="#s11" data-target="s11"><span class="nav-num">11</span> International Transfers</a></li>
+                <li><a href="#s12" data-target="s12"><span class="nav-num">12</span> Marketing & Communications</a></li>
+                <li><a href="#s13" data-target="s13"><span class="nav-num">13</span> Policy Updates</a></li>
+                <li><a href="#s14" data-target="s14"><span class="nav-num">14</span> Contact & DPO</a></li>
+            </ul>
+
+            <div class="reading-progress-wrap">
+                <div class="reading-progress-label">
+                    <span>Reading Progress</span>
+                    <span id="progressPct">0%</span>
+                </div>
+                <div class="reading-progress-bar">
+                    <div class="reading-progress-fill" id="progressFill"></div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+
+            <div class="controls-bar">
+                <p class="controls-bar-left"><strong>14 sections</strong> · Click any section to expand</p>
+                <button class="toggle-all-btn" id="toggleAllBtn">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                    Expand All
+                </button>
+            </div>
+
+            <!-- Section 1 — Overview -->
+            <div class="tc-section open" id="s1">
+                <div class="tc-section-inner">
+                    <div class="section-header" onclick="toggleSection('s1')">
+                        <div class="section-icon">🛡️</div>
+                        <div class="section-title-group">
+                            <div class="section-number">Section 01</div>
+                            <div class="section-title">Overview & Commitment</div>
+                        </div>
+                        <div class="section-chevron">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2.5"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="section-body">
+                        <div class="section-body-inner">
+                            <p>Welcome to <strong>My Cloud Kitchen's Privacy Policy</strong>. We operate the website at
+                                <a href="https://my-cloud-kitchen.onrender.com/">my-cloud-kitchen.onrender.com</a> and
+                                are deeply committed to safeguarding the privacy and personal information of everyone
+                                who interacts with our platform.
+                            </p>
+                            <div class="highlight-box">
+                                <div class="highlight-box-icon">🔒</div>
+                                <p>This Privacy Policy explains what personal data we collect, why we collect it, how we
+                                    use it, and what rights you have over your information. We never sell your personal
+                                    data to third parties — ever.</p>
+                            </div>
+                            <p>This policy applies to all personal information collected through our website, mobile
+                                application, customer service interactions, and any other services offered by My Cloud
+                                Kitchen. By using our services, you acknowledge and agree to the practices described in
+                                this policy.</p>
+                            <p>We comply with applicable data protection laws including India's <strong>Digital Personal
+                                    Data Protection Act (DPDP Act), 2023</strong> and other relevant regulations. This
+                                policy is reviewed and updated regularly to reflect any changes in our practices or
+                                applicable law.</p>
+                            <p>If you have any concerns about how we handle your data, please contact our Data
+                                Protection Officer at <a
+                                    href="mailto:privacy@mycloudkitchen.com">privacy@mycloudkitchen.com</a> at any
+                                time.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 2 — Information We Collect -->
+            <div class="tc-section" id="s2">
+                <div class="tc-section-inner">
+                    <div class="section-header" onclick="toggleSection('s2')">
+                        <div class="section-icon">📥</div>
+                        <div class="section-title-group">
+                            <div class="section-number">Section 02</div>
+                            <div class="section-title">Information We Collect</div>
+                        </div>
+                        <div class="section-chevron">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2.5"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="section-body">
+                        <div class="section-body-inner">
+                            <p>We collect information in three main ways: information you provide directly, information
+                                collected automatically, and information from third parties.</p>
+                            <p><strong>Information You Provide Directly:</strong></p>
+                            <ul>
+                                <li>Full name and contact details (email address, phone number)</li>
+                                <li>Delivery address and location data</li>
+                                <li>Account credentials (username, encrypted password)</li>
+                                <li>Payment information (processed via secure third-party gateways)</li>
+                                <li>Order history, preferences, and dietary requirements</li>
+                                <li>Reviews, feedback, and communications you submit</li>
+                                <li>Profile photo and any optional profile information</li>
+                            </ul>
+                            <p><strong>Information Collected Automatically:</strong></p>
+                            <ul>
+                                <li>IP address and approximate geolocation</li>
+                                <li>Browser type, version, and operating system</li>
+                                <li>Device identifiers and mobile device type</li>
+                                <li>Pages visited, time spent, and clickstream data</li>
+                                <li>Referring website or source of traffic</li>
+                                <li>Session duration and interaction patterns</li>
+                            </ul>
+                            <div class="info-box">
+                                <div class="highlight-box-icon">ℹ️</div>
+                                <p>We collect only the minimum data necessary to provide our services effectively. You
+                                    may use certain features of our platform without providing all information, though
+                                    this may limit the services available to you.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 3 — How We Use Your Data -->
+            <div class="tc-section" id="s3">
+                <div class="tc-section-inner">
+                    <div class="section-header" onclick="toggleSection('s3')">
+                        <div class="section-icon">⚙️</div>
+                        <div class="section-title-group">
+                            <div class="section-number">Section 03</div>
+                            <div class="section-title">How We Use Your Data</div>
+                        </div>
+                        <div class="section-chevron">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2.5"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="section-body">
+                        <div class="section-body-inner">
+                            <p>We use your personal data only for legitimate purposes that are necessary to deliver our
+                                services and improve your experience. Here is a breakdown of how we use the data we
+                                collect:</p>
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Purpose</th>
+                                        <th>Legal Basis</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Processing and fulfilling your food orders</td>
+                                        <td>Contract performance</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Managing your account and authentication</td>
+                                        <td>Contract performance</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Sending order confirmations and delivery updates</td>
+                                        <td>Contract performance</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Processing payments and preventing fraud</td>
+                                        <td>Legal obligation & legitimate interest</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Improving our platform, menu, and services</td>
+                                        <td>Legitimate interest</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Personalising your experience and recommendations</td>
+                                        <td>Consent / Legitimate interest</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Sending promotional offers and newsletters</td>
+                                        <td>Consent</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Complying with legal and regulatory obligations</td>
+                                        <td>Legal obligation</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Resolving disputes and enforcing our terms</td>
+                                        <td>Legitimate interest</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <p>We will never use your data in ways that are incompatible with the purposes listed
+                                above without obtaining your explicit consent first.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 4 — Data Sharing -->
+            <div class="tc-section" id="s4">
+                <div class="tc-section-inner">
+                    <div class="section-header" onclick="toggleSection('s4')">
+                        <div class="section-icon">🤝</div>
+                        <div class="section-title-group">
+                            <div class="section-number">Section 04</div>
+                            <div class="section-title">Data Sharing & Disclosure</div>
+                        </div>
+                        <div class="section-chevron">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2.5"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="section-body">
+                        <div class="section-body-inner">
+                            <p>We do not sell, rent, or trade your personal information to third parties. We share your
+                                data only in the limited circumstances described below, and always with appropriate
+                                safeguards in place.</p>
+                            <p><strong>We may share your data with:</strong></p>
+                            <ul>
+                                <li><strong>Delivery partners</strong> — Your name, address, and contact number are
+                                    shared with our delivery personnel solely to fulfil your order</li>
+                                <li><strong>Payment processors</strong> — Secure third-party gateways such as Razorpay,
+                                    PayU, or Stripe process your payment information under their own strict privacy
+                                    standards</li>
+                                <li><strong>Cloud & IT service providers</strong> — Hosting, database, and
+                                    infrastructure providers who process data on our behalf under data processing
+                                    agreements</li>
+                                <li><strong>Analytics providers</strong> — Aggregated, anonymised data may be shared
+                                    with analytics services to help us improve our platform</li>
+                                <li><strong>Legal authorities</strong> — When required by law, court order, or
+                                    governmental authority, or to protect the rights and safety of our users and
+                                    business</li>
+                                <li><strong>Business successors</strong> — In the event of a merger, acquisition, or
+                                    asset sale, your data may be transferred as part of the transaction, subject to
+                                    continued privacy protections</li>
+                            </ul>
+                            <div class="highlight-box">
+                                <div class="highlight-box-icon">✅</div>
+                                <p>All third parties who receive your data are contractually required to handle it
+                                    securely and only for the specified purpose. They are prohibited from using your
+                                    data for their own marketing.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 5 — Cookies -->
+            <div class="tc-section" id="s5">
+                <div class="tc-section-inner">
+                    <div class="section-header" onclick="toggleSection('s5')">
+                        <div class="section-icon">🍪</div>
+                        <div class="section-title-group">
+                            <div class="section-number">Section 05</div>
+                            <div class="section-title">Cookies & Tracking Technologies</div>
+                        </div>
+                        <div class="section-chevron">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2.5"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="section-body">
+                        <div class="section-body-inner">
+                            <p>We use cookies and similar tracking technologies to enhance your browsing experience,
+                                analyse site traffic, and personalise content. Cookies are small text files stored on
+                                your device.</p>
+                            <p><strong>Types of cookies we use:</strong></p>
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Cookie Type</th>
+                                        <th>Purpose</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Essential</strong></td>
+                                        <td>Login sessions, cart persistence, security tokens</td>
+                                        <td><span class="cookie-type cookie-required">Required</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Functional</strong></td>
+                                        <td>Remembering preferences, language, and theme settings</td>
+                                        <td><span class="cookie-type cookie-required">Required</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Analytics</strong></td>
+                                        <td>Understanding page performance and user behaviour</td>
+                                        <td><span class="cookie-type cookie-optional">Optional</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Marketing</strong></td>
+                                        <td>Personalised offers, retargeting, and ad measurement</td>
+                                        <td><span class="cookie-type cookie-optional">Optional</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <p>You can control cookies through your browser settings or our cookie preference centre.
+                                Disabling non-essential cookies will not affect core functionality, but may limit
+                                personalised features.</p>
+                            <div class="info-box">
+                                <div class="highlight-box-icon">ℹ️</div>
+                                <p>We also use local storage and session storage to maintain your cart and preferences
+                                    across pages. These are cleared when you log out or clear your browser data.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 6 — Data Retention -->
+            <div class="tc-section" id="s6">
+                <div class="tc-section-inner">
+                    <div class="section-header" onclick="toggleSection('s6')">
+                        <div class="section-icon">🗄️</div>
+                        <div class="section-title-group">
+                            <div class="section-number">Section 06</div>
+                            <div class="section-title">Data Retention</div>
+                        </div>
+                        <div class="section-chevron">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2.5"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="section-body">
+                        <div class="section-body-inner">
+                            <p>We retain your personal data only for as long as necessary to fulfil the purposes
+                                described in this policy, comply with legal obligations, resolve disputes, and enforce
+                                our agreements.</p>
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Data Type</th>
+                                        <th>Retention Period</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Account information</td>
+                                        <td>Duration of account + 2 years after deletion</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Order history & transactions</td>
+                                        <td>7 years (legal/tax compliance)</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Delivery addresses</td>
+                                        <td>Until removed from your account</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Payment records</td>
+                                        <td>7 years (financial regulations)</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Customer support communications</td>
+                                        <td>3 years from last interaction</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Marketing preferences</td>
+                                        <td>Until you unsubscribe or delete account</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Analytics data (anonymised)</td>
+                                        <td>26 months</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Security & audit logs</td>
+                                        <td>12 months</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <p>When data is no longer required, we securely delete or anonymise it. You may request
+                                earlier deletion of your account data at any time, subject to legal retention
+                                requirements.</p>
+                            <div class="highlight-box">
+                                <div class="highlight-box-icon">🗑️</div>
+                                <p>To request deletion of your personal data, contact us at <a
+                                        href="mailto:privacy@mycloudkitchen.com">privacy@mycloudkitchen.com</a> with
+                                    the subject line "Data Deletion Request". We will process your request within
+                                    <strong>30 days</strong>.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 7 — Data Security -->
+            <div class="tc-section" id="s7">
+                <div class="tc-section-inner">
+                    <div class="section-header" onclick="toggleSection('s7')">
+                        <div class="section-icon">🔐</div>
+                        <div class="section-title-group">
+                            <div class="section-number">Section 07</div>
+                            <div class="section-title">Data Security</div>
+                        </div>
+                        <div class="section-chevron">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2.5"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="section-body">
+                        <div class="section-body-inner">
+                            <p>Protecting your personal data is a top priority. We implement industry-standard
+                                technical and organisational security measures to prevent unauthorised access,
+                                disclosure, alteration, or destruction of your information.</p>
+                            <p><strong>Our security measures include:</strong></p>
+                            <ul>
+                                <li><strong>SSL/TLS encryption</strong> — All data transmitted between your device and
+                                    our servers is encrypted in transit</li>
+                                <li><strong>Password hashing</strong> — Passwords are stored using strong one-way
+                                    hashing algorithms (bcrypt) and are never stored in plain text</li>
+                                <li><strong>Access controls</strong> — Role-based access ensures only authorised
+                                    personnel can access your data</li>
+                                <li><strong>Regular security audits</strong> — We conduct periodic vulnerability
+                                    assessments and penetration testing</li>
+                                <li><strong>Two-factor authentication</strong> — Available for your account to add an
+                                    extra layer of protection</li>
+                                <li><strong>Secure payment processing</strong> — We use PCI-DSS compliant payment
+                                    gateways and do not store card numbers on our servers</li>
+                                <li><strong>Intrusion detection systems</strong> — Real-time monitoring for suspicious
+                                    activity and anomalies</li>
+                            </ul>
+                            <div class="warn-box">
+                                <div class="highlight-box-icon">⚠️</div>
+                                <p>No system is completely immune to security risks. In the unlikely event of a data
+                                    breach affecting your rights and freedoms, we will notify you and the relevant
+                                    authorities within <strong>72 hours</strong> of becoming aware.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 8 — Your Rights -->
+            <div class="tc-section" id="s8">
+                <div class="tc-section-inner">
+                    <div class="section-header" onclick="toggleSection('s8')">
+                        <div class="section-icon">⚖️</div>
+                        <div class="section-title-group">
+                            <div class="section-number">Section 08</div>
+                            <div class="section-title">Your Privacy Rights</div>
+                        </div>
+                        <div class="section-chevron">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2.5"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="section-body">
+                        <div class="section-body-inner">
+                            <p>You have significant rights over your personal data. Under applicable data protection
+                                law, you are entitled to the following:</p>
+                            <div class="rights-grid">
+                                <div class="right-item">
+                                    <div class="right-item-icon">👁️</div>
+                                    <div class="right-item-text">
+                                        <strong>Right to Access</strong>
+                                        <span>Request a copy of all personal data we hold about you</span>
+                                    </div>
+                                </div>
+                                <div class="right-item">
+                                    <div class="right-item-icon">✏️</div>
+                                    <div class="right-item-text">
+                                        <strong>Right to Rectification</strong>
+                                        <span>Correct any inaccurate or incomplete personal data</span>
+                                    </div>
+                                </div>
+                                <div class="right-item">
+                                    <div class="right-item-icon">🗑️</div>
+                                    <div class="right-item-text">
+                                        <strong>Right to Erasure</strong>
+                                        <span>Request deletion of your personal data ("right to be forgotten")</span>
+                                    </div>
+                                </div>
+                                <div class="right-item">
+                                    <div class="right-item-icon">⏸️</div>
+                                    <div class="right-item-text">
+                                        <strong>Right to Restriction</strong>
+                                        <span>Limit how we process your data in certain circumstances</span>
+                                    </div>
+                                </div>
+                                <div class="right-item">
+                                    <div class="right-item-icon">📦</div>
+                                    <div class="right-item-text">
+                                        <strong>Right to Portability</strong>
+                                        <span>Receive your data in a structured, machine-readable format</span>
+                                    </div>
+                                </div>
+                                <div class="right-item">
+                                    <div class="right-item-icon">🚫</div>
+                                    <div class="right-item-text">
+                                        <strong>Right to Object</strong>
+                                        <span>Object to processing of your data for marketing or profiling</span>
+                                    </div>
+                                </div>
+                                <div class="right-item">
+                                    <div class="right-item-icon">🤖</div>
+                                    <div class="right-item-text">
+                                        <strong>Automated Decisions</strong>
+                                        <span>Not be subject to solely automated decision-making that affects you</span>
+                                    </div>
+                                </div>
+                                <div class="right-item">
+                                    <div class="right-item-icon">↩️</div>
+                                    <div class="right-item-text">
+                                        <strong>Right to Withdraw Consent</strong>
+                                        <span>Withdraw consent at any time where processing is consent-based</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <p>To exercise any of these rights, contact us at <a
+                                    href="mailto:privacy@mycloudkitchen.com">privacy@mycloudkitchen.com</a>. We will
+                                respond to all valid requests within <strong>30 days</strong>. We may need to verify
+                                your identity before fulfilling a request.</p>
+                            <div class="highlight-box">
+                                <div class="highlight-box-icon">📋</div>
+                                <p>Most of your rights can be exercised directly through your account dashboard under
+                                    "Privacy Settings". For more complex requests, our privacy team is ready to assist.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 9 — Children's Privacy -->
+            <div class="tc-section" id="s9">
+                <div class="tc-section-inner">
+                    <div class="section-header" onclick="toggleSection('s9')">
+                        <div class="section-icon">👶</div>
+                        <div class="section-title-group">
+                            <div class="section-number">Section 09</div>
+                            <div class="section-title">Children's Privacy</div>
+                        </div>
+                        <div class="section-chevron">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2.5"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="section-body">
+                        <div class="section-body-inner">
+                            <p>My Cloud Kitchen's services are not directed to, and we do not knowingly collect
+                                personal information from, children under the age of <strong>13 years</strong>. Persons
+                                between the ages of 13 and 18 may only use our platform with verifiable parental or
+                                guardian consent.</p>
+                            <div class="warn-box">
+                                <div class="highlight-box-icon">⚠️</div>
+                                <p>If we discover that we have inadvertently collected personal data from a child under
+                                    13, we will take immediate steps to delete that information. If you believe your
+                                    child has provided us with personal data, please contact us immediately.</p>
+                            </div>
+                            <p>Parents and guardians are responsible for monitoring their children's online activities
+                                and use of our platform. If you are a parent or guardian and wish to review, delete, or
+                                restrict processing of your child's information, please contact us at <a
+                                    href="mailto:privacy@mycloudkitchen.com">privacy@mycloudkitchen.com</a>.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 10 — Third-Party Links -->
+            <div class="tc-section" id="s10">
+                <div class="tc-section-inner">
+                    <div class="section-header" onclick="toggleSection('s10')">
+                        <div class="section-icon">🔗</div>
+                        <div class="section-title-group">
+                            <div class="section-number">Section 10</div>
+                            <div class="section-title">Third-Party Links & Services</div>
+                        </div>
+                        <div class="section-chevron">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2.5"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="section-body">
+                        <div class="section-body-inner">
+                            <p>Our platform may contain links to third-party websites, applications, or services that
+                                are not owned or controlled by My Cloud Kitchen. These may include social media
+                                platforms, payment gateways, map services, and review sites.</p>
+                            <p>We have no control over, and assume no responsibility for, the privacy practices or
+                                content of these third-party services. We strongly encourage you to review the privacy
+                                policy of every third-party site you visit.</p>
+                            <p><strong>Third-party services commonly integrated with our platform include:</strong></p>
+                            <ul>
+                                <li><strong>Google Maps</strong> — For delivery address verification and route
+                                    planning (subject to Google's Privacy Policy)</li>
+                                <li><strong>Payment Gateways</strong> — Razorpay, PayU, or Stripe for secure payment
+                                    processing</li>
+                                <li><strong>Analytics Services</strong> — For anonymised usage data collection and
+                                    analysis</li>
+                                <li><strong>Customer Support Tools</strong> — For managing support tickets and chat
+                                    communications</li>
+                            </ul>
+                            <div class="info-box">
+                                <div class="highlight-box-icon">ℹ️</div>
+                                <p>Links to third-party sites do not constitute endorsement of those sites by My Cloud
+                                    Kitchen. We are not responsible for any data practices of these external parties.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 11 — International Transfers -->
+            <div class="tc-section" id="s11">
+                <div class="tc-section-inner">
+                    <div class="section-header" onclick="toggleSection('s11')">
+                        <div class="section-icon">🌏</div>
+                        <div class="section-title-group">
+                            <div class="section-number">Section 11</div>
+                            <div class="section-title">International Data Transfers</div>
+                        </div>
+                        <div class="section-chevron">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2.5"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="section-body">
+                        <div class="section-body-inner">
+                            <p>My Cloud Kitchen primarily stores and processes your data within <strong>India</strong>.
+                                However, some of our third-party service providers may be located in other countries,
+                                which may result in your data being transferred internationally.</p>
+                            <p>Whenever we transfer personal data outside India, we ensure that appropriate safeguards
+                                are in place, including:</p>
+                            <ul>
+                                <li>Data processing agreements with standard contractual clauses</li>
+                                <li>Transfers only to countries with adequate data protection standards</li>
+                                <li>Contractual requirements for third parties to maintain equivalent protections</li>
+                                <li>Compliance with applicable cross-border transfer regulations under the DPDP Act
+                                </li>
+                            </ul>
+                            <div class="highlight-box">
+                                <div class="highlight-box-icon">🌐</div>
+                                <p>By using our services and providing your personal data, you acknowledge and consent
+                                    to the transfer of your information to countries outside your country of residence,
+                                    subject to the safeguards described above.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 12 — Marketing -->
+            <div class="tc-section" id="s12">
+                <div class="tc-section-inner">
+                    <div class="section-header" onclick="toggleSection('s12')">
+                        <div class="section-icon">📣</div>
+                        <div class="section-title-group">
+                            <div class="section-number">Section 12</div>
+                            <div class="section-title">Marketing & Communications</div>
+                        </div>
+                        <div class="section-chevron">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2.5"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="section-body">
+                        <div class="section-body-inner">
+                            <p>With your consent, we may send you promotional communications about our offers, new menu
+                                items, discounts, and service updates. You have full control over the communications you
+                                receive from us.</p>
+                            <p><strong>Types of communications we may send:</strong></p>
+                            <ul>
+                                <li><strong>Transactional</strong> — Order confirmations, delivery updates, receipts
+                                    (cannot be opted out of while you have an active account)</li>
+                                <li><strong>Service notifications</strong> — Account security alerts, policy updates,
+                                    important platform changes</li>
+                                <li><strong>Promotional emails</strong> — Special offers, seasonal menus, discount
+                                    codes (requires explicit consent)</li>
+                                <li><strong>SMS notifications</strong> — Delivery tracking, OTP verification (required
+                                    for service), promotional SMS (optional)</li>
+                                <li><strong>Push notifications</strong> — Order updates and offers via our app
+                                    (controlled via device settings)</li>
+                            </ul>
+                            <div class="highlight-box">
+                                <div class="highlight-box-icon">📧</div>
+                                <p>You can unsubscribe from marketing emails at any time by clicking the "Unsubscribe"
+                                    link at the bottom of any email, or by updating your notification preferences in
+                                    your account settings. We will process your request within <strong>10 business
+                                        days</strong>.</p>
+                            </div>
+                            <p>Even after opting out of marketing communications, you will continue to receive
+                                essential transactional messages related to active orders and account security.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 13 — Policy Updates -->
+            <div class="tc-section" id="s13">
+                <div class="tc-section-inner">
+                    <div class="section-header" onclick="toggleSection('s13')">
+                        <div class="section-icon">🔄</div>
+                        <div class="section-title-group">
+                            <div class="section-number">Section 13</div>
+                            <div class="section-title">Policy Updates</div>
+                        </div>
+                        <div class="section-chevron">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2.5"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="section-body">
+                        <div class="section-body-inner">
+                            <p>We may update this Privacy Policy from time to time to reflect changes in our data
+                                practices, legal requirements, or business operations. When we make material changes,
+                                we will:</p>
+                            <ol>
+                                <li>Update the <strong>"Last Updated"</strong> date at the top of this policy</li>
+                                <li>Display a prominent banner notification on our website and app</li>
+                                <li>Send an email notification to all registered users for significant changes</li>
+                                <li>Where required by law, obtain your renewed consent for material changes</li>
+                            </ol>
+                            <p>We encourage you to review this Privacy Policy periodically. Your continued use of our
+                                services after the effective date of any changes constitutes acceptance of the revised
+                                policy.</p>
+                            <div class="highlight-box">
+                                <div class="highlight-box-icon">📬</div>
+                                <p>For major changes that significantly affect your rights, we will provide at least
+                                    <strong>30 days' notice</strong> before the changes take effect, giving you the
+                                    opportunity to review and, if necessary, close your account.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 14 — Contact & DPO -->
+            <div class="tc-section" id="s14">
+                <div class="tc-section-inner">
+                    <div class="section-header" onclick="toggleSection('s14')">
+                        <div class="section-icon">📞</div>
+                        <div class="section-title-group">
+                            <div class="section-number">Section 14</div>
+                            <div class="section-title">Contact Us & Data Protection</div>
+                        </div>
+                        <div class="section-chevron">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2.5"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="section-body">
+                        <div class="section-body-inner">
+                            <p>If you have any questions, concerns, or requests regarding this Privacy Policy or our
+                                data practices, please do not hesitate to contact us. We take all privacy enquiries
+                                seriously and will respond promptly.</p>
+                            <p><strong>Privacy & Data Protection Enquiries:</strong></p>
+                            <ul>
+                                <li><strong>Privacy Email:</strong> <a
+                                        href="mailto:privacy@mycloudkitchen.com">privacy@mycloudkitchen.com</a></li>
+                                <li><strong>Data Deletion Requests:</strong> <a
+                                        href="mailto:privacy@mycloudkitchen.com">privacy@mycloudkitchen.com</a> with
+                                    subject "Data Deletion Request"</li>
+                                <li><strong>General Support:</strong> <a
+                                        href="mailto:support@mycloudkitchen.com">support@mycloudkitchen.com</a></li>
+                                <li><strong>Legal & Compliance:</strong> <a
+                                        href="mailto:legal@mycloudkitchen.com">legal@mycloudkitchen.com</a></li>
+                                <li><strong>Phone:</strong> Available 9 AM – 9 PM IST, Monday to Saturday</li>
+                                <li><strong>Address:</strong> My Cloud Kitchen, India</li>
+                            </ul>
+                            <div class="highlight-box">
+                                <div class="highlight-box-icon">🕐</div>
+                                <p>We aim to respond to all privacy-related requests within <strong>30 days</strong>.
+                                    For complex requests, we may extend this by an additional 60 days and will notify
+                                    you if this is the case. We will always acknowledge receipt of your request within
+                                    <strong>5 business days</strong>.
+                                </p>
+                            </div>
+                            <p>If you are not satisfied with our response, you have the right to lodge a complaint with
+                                the appropriate data protection authority in your jurisdiction. In India, this would be
+                                the <strong>Data Protection Board of India</strong> once established under the DPDP
+                                Act, 2023.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Card -->
+            <div class="contact-card">
+                <div class="contact-card-icon">🛡️</div>
+                <h3>Your Privacy Matters</h3>
+                <p>Have a question about how we handle your data? Our privacy team is ready to help you understand
+                    your rights and our practices.</p>
+                <div class="contact-links">
+                    <a href="mailto:privacy@mycloudkitchen.com" class="contact-btn contact-btn-primary">
+                        🔒 Contact Privacy Team
+                    </a>
+                    <a href="terms.html" class="contact-btn contact-btn-secondary">
+                        📋 View Terms & Conditions
+                    </a>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2025 <a href="https://my-cloud-kitchen.onrender.com/">My Cloud Kitchen</a>. All rights reserved.</p>
+        <div class="footer-links">
+            <a href="terms.html">Terms & Conditions</a>
+            <a href="#">Cookie Policy</a>
+            <a href="#">Sitemap</a>
+        </div>
+    </footer>
+
+    <!-- Back to Top -->
+    <button class="back-to-top" id="backToTop" title="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round"
+            stroke-linejoin="round">
+            <polyline points="18 15 12 9 6 15"></polyline>
+        </svg>
+    </button>
+
+    <script>
+        /* ─── THEME TOGGLE ─── */
+        const html = document.documentElement;
+        const themeBtn = document.getElementById('themeToggle');
+        let isDark = true;
+
+        themeBtn.addEventListener('click', () => {
+            isDark = !isDark;
+            html.setAttribute('data-theme', isDark ? 'dark' : 'light');
+            themeBtn.textContent = isDark ? '🌙' : '☀️';
+        });
+
+        /* ─── ACCORDION ─── */
+        function toggleSection(id) {
+            const section = document.getElementById(id);
+            const isOpen = section.classList.contains('open');
+            section.classList.toggle('open', !isOpen);
+            updateToggleAllBtn();
+        }
+
+        /* ─── TOGGLE ALL ─── */
+        const toggleAllBtn = document.getElementById('toggleAllBtn');
+        let allOpen = true;
+
+        function updateToggleAllBtn() {
+            const sections = document.querySelectorAll('.tc-section');
+            const openCount = document.querySelectorAll('.tc-section.open').length;
+            allOpen = openCount === sections.length;
+            toggleAllBtn.innerHTML = allOpen
+                ? `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg> Collapse All`
+                : `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg> Expand All`;
+        }
+
+        toggleAllBtn.addEventListener('click', () => {
+            const sections = document.querySelectorAll('.tc-section');
+            const shouldOpen = !allOpen;
+            sections.forEach(s => s.classList.toggle('open', shouldOpen));
+            allOpen = shouldOpen;
+            updateToggleAllBtn();
+        });
+
+        updateToggleAllBtn();
+
+        /* ─── SCROLL PROGRESS ─── */
+        const topProgress = document.getElementById('topProgress');
+        const progressFill = document.getElementById('progressFill');
+        const progressPct = document.getElementById('progressPct');
+        const backToTop = document.getElementById('backToTop');
+
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const pct = Math.min(100, Math.round((scrollTop / docHeight) * 100));
+
+            topProgress.style.width = pct + '%';
+            progressFill.style.width = pct + '%';
+            progressPct.textContent = pct + '%';
+
+            backToTop.classList.toggle('visible', scrollTop > 400);
+            updateActiveSidebarLink();
+        });
+
+        /* ─── SIDEBAR ACTIVE STATE ─── */
+        function updateActiveSidebarLink() {
+            const sections = document.querySelectorAll('.tc-section');
+            const links = document.querySelectorAll('.sidebar-nav a');
+            let current = '';
+
+            sections.forEach(section => {
+                const rect = section.getBoundingClientRect();
+                if (rect.top <= 120) current = section.id;
+            });
+
+            links.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('data-target') === current) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        /* ─── SMOOTH SIDEBAR SCROLL ─── */
+        document.querySelectorAll('.sidebar-nav a').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('data-target');
+                const target = document.getElementById(targetId);
+                if (target) {
+                    if (!target.classList.contains('open')) target.classList.add('open');
+                    const offset = target.getBoundingClientRect().top + window.scrollY - 90;
+                    window.scrollTo({ top: offset, behavior: 'smooth' });
+                }
+            });
+        });
+
+        /* ─── SCROLL ANIMATIONS ─── */
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, i) => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationDelay = `${i * 0.05}s`;
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.08 });
+
+        document.querySelectorAll('.tc-section').forEach(el => {
+            if (!el.classList.contains('open')) {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(20px)';
+                el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            }
+            observer.observe(el);
+        });
+    </script>
+</body>
+
+</html>

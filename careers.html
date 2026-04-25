@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="light">
 
 <head>
     <meta charset="UTF-8">
@@ -30,6 +30,7 @@
             --text-muted: #9a9a9a;
             --card-bg: rgba(20, 20, 20, 0.85);
             --shadow: 0 32px 80px rgba(0, 0, 0, 0.6);
+            --office-image: url(https://mykitchen.websblog.in/wp-content/uploads/2026/04/fr5.png);
         }
 
         [data-theme="light"] {
@@ -49,6 +50,7 @@
             --green-dim: #4a8a0c;
             --green-glow: rgba(90, 158, 16, 0.12);
             --green-glow-strong: rgba(90, 158, 16, 0.22);
+            --office-image: url(https://mykitchen.websblog.in/wp-content/uploads/2026/04/HUSTLERS-TEAM.jpeg);
         }
 
         *,
@@ -268,7 +270,7 @@
         /* ===== IMAGE PLACEHOLDER: HERO BACKGROUND ===== */
         /* Replace the .hero-image-placeholder with an <img> or background-image */
         /* Recommended: A high-res cloud kitchen / food prep photo, right-aligned */
-        /* Size: ~700px wide, full height. Place at: /images/careers-hero.jpg */
+        /* Size: ~700px wide, full height. Place at: https://mykitchen.websblog.in/wp-content/uploads/2026/04/careers-hero.jpg */
         .hero-image-placeholder {
             position: absolute;
             top: 0;
@@ -279,7 +281,7 @@
             /* border-left: 1px solid var(--border); */
             overflow: hidden;
             z-index: 1;
-            background-image: url(/images/career.png);
+            background-image: url(https://mykitchen.websblog.in/wp-content/uploads/2026/04/career.png);
             background-size: cover;
             background-repeat: no-repeat;
             background-position: center;
@@ -801,7 +803,7 @@
         /* ===== IMAGE PLACEHOLDER: WHY WORK WITH US ===== */
         /* Replace with a team/office/kitchen photo */
         /* Recommended: Founder + team in a modern cloud kitchen setup */
-        /* Size: ~600x500px. Place at: /images/careers-team.jpg */
+        /* Size: ~600x500px. Place at: https://mykitchen.websblog.in/wp-content/uploads/2026/04/careers-team.jpg */
         .office-image-placeholder {
             width: 100%;
             aspect-ratio: 4/3;
@@ -813,10 +815,14 @@
             display: flex;
             align-items: center;
             justify-content: center;
+
+            background-image: var(--office-image);
+            background-size: cover;
+            background-position: top center;
         }
 
         .office-image-placeholder::before {
-            content: "[ TEAM / OFFICE IMAGE ]";
+            content: "";
             font-family: 'Space Mono', monospace;
             font-size: 11px;
             letter-spacing: .1em;
@@ -1327,7 +1333,7 @@
         /* ===== IMAGE PLACEHOLDER: FREELANCE SECTION ===== */
         /* Replace with a pan-India/globe photo or illustrated map */
         /* Recommended: India map with pin markers on cities, or drone shot of a city */
-        /* Size: ~1200x300px. Place at: /images/careers-map.jpg */
+        /* Size: ~1200x300px. Place at: https://mykitchen.websblog.in/wp-content/uploads/2026/04/careers-map.jpg */
         .freelance-map-placeholder {
             width: 100%;
             height: 200px;
@@ -1637,7 +1643,7 @@
 
     <!-- ===================================================
          HERO SECTION
-         IMAGE: /images/careers-hero.jpg — Right panel full-height
+         IMAGE: https://mykitchen.websblog.in/wp-content/uploads/2026/04/careers-hero.jpg — Right panel full-height
          Recommended: Energetic kitchen or founder's office photo
     =================================================== -->
     <section id="careers-hero">
@@ -1647,7 +1653,7 @@
         <!-- RIGHT PANEL IMAGE AREA -->
         <div class="hero-image-placeholder">
             <!-- REPLACE THIS DIV with:
-            <img src="/images/careers-hero.jpg" alt="My Cloud Kitchen team" style="width:100%;height:100%;object-fit:cover;" />
+            <img src="https://mykitchen.websblog.in/wp-content/uploads/2026/04/careers-hero.jpg" alt="My Cloud Kitchen team" style="width:100%;height:100%;object-fit:cover;" />
             -->
         </div>
 
@@ -1748,7 +1754,7 @@
 
     <!-- ===================================================
          WHY WORK WITH US
-         IMAGE: /images/careers-team.jpg — Right side team photo
+         IMAGE: https://mykitchen.websblog.in/wp-content/uploads/2026/04/careers-team.jpg — Right side team photo
          Recommended: Founder + team in modern kitchen/office setting
     =================================================== -->
     <section id="why-work">
@@ -1808,13 +1814,9 @@
             </div>
 
             <div class="why-work-right reveal-right">
-                <!-- ===== IMAGE PLACEHOLDER =====
-                     Replace .office-image-placeholder with:
-                     <img src="/images/careers-team.jpg" alt="MyCloudKitchen team at work"
-                          style="width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:24px;border:1px solid var(--border);" />
-                -->
+
                 <div class="office-image-placeholder"></div>
-                <div class="office-img-badge">Est. 2012 · 500+ Kitchens Launched</div>
+
             </div>
         </div>
     </section>
@@ -2211,7 +2213,7 @@
 
     <!-- ===================================================
          FREELANCE / PROJECT-BASED ROLES
-         IMAGE: /images/careers-map.jpg — Below the 3 cards
+         IMAGE: https://mykitchen.websblog.in/wp-content/uploads/2026/04/careers-map.jpg — Below the 3 cards
          Recommended: India map with cities highlighted, or aerial city shot
     =================================================== -->
     <section id="freelance-roles">
@@ -2294,7 +2296,7 @@
 
             <!-- ===== MAP IMAGE PLACEHOLDER =====
                  Replace .freelance-map-placeholder with:
-                 <img src="/images/careers-map.jpg" alt="Pan India presence"
+                 <img src="https://mykitchen.websblog.in/wp-content/uploads/2026/04/careers-map.jpg" alt="Pan India presence"
                       style="width:100%;height:200px;object-fit:cover;border-radius:20px;margin-top:24px;border:1px solid var(--border);" />
             -->
             <div class="freelance-map-placeholder reveal"></div>

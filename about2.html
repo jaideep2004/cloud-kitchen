@@ -1,0 +1,2734 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us — MyCloudKitchen Consulting</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Hubot+Sans:ital,wght@0,200..900;1,200..900&family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --green: #d98b5f;
+            --green-dim: #b46a42;
+            --green-glow: rgba(217, 139, 95, 0.16);
+            --green-glow-strong: rgba(217, 139, 95, 0.30);
+
+            --bg: #080706;
+            --bg-2: #100d0b;
+            --bg-3: #181411;
+
+            --surface: rgba(255, 255, 255, 0.04);
+            --surface-hover: rgba(255, 255, 255, 0.07);
+
+            --border: rgba(255, 255, 255, 0.08);
+            --border-bright: rgba(217, 139, 95, 0.24);
+
+            --text-primary: #f5f1ec;
+            --text-secondary: #d5c7bc;
+            --text-muted: #8e8177;
+
+            --card-bg: rgba(24, 20, 17, 0.86);
+
+            --shadow: 0 32px 80px rgba(0, 0, 0, 0.68);
+
+            --hero-bg-image: url(https://mykitchen.websblog.in/wp-content/uploads/2026/04/ab1.png);
+            --founder-photo: url(https://mykitchen.websblog.in/wp-content/uploads/2026/04/founder1.jpeg);
+        }
+
+        [data-theme="light"] {
+            --bg: #f6f1eb;
+            --bg-2: #ede5dc;
+            --bg-3: #e2d7ca;
+
+            --surface: rgba(0, 0, 0, 0.04);
+            --surface-hover: rgba(0, 0, 0, 0.07);
+
+            --border: rgba(0, 0, 0, 0.08);
+            --border-bright: rgba(180, 106, 66, 0.25);
+
+            --text-primary: #1a1511;
+            --text-secondary: #5d534b;
+            --text-muted: #85776e;
+
+            --card-bg: rgba(245, 240, 234, 0.9);
+
+            --shadow: 0 32px 80px rgba(0, 0, 0, 0.10);
+
+            --green: #b46a42;
+            --green-dim: #945432;
+            --green-glow: rgba(180, 106, 66, 0.12);
+            --green-glow-strong: rgba(180, 106, 66, 0.20);
+
+            --hero-bg-image: url(https://mykitchen.websblog.in/wp-content/uploads/2026/04/c1.png);
+            --founder-photo: url(https://mykitchen.websblog.in/wp-content/uploads/2026/04/founder2.jpeg);
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden
+        }
+
+        body {
+            font-family: 'Hubot Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            cursor: none;
+            line-height: 1.6;
+            transition: background .5s, color .5s
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            opacity: .03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            background-size: 256px
+        }
+
+        /* CURSOR */
+        #cursor {
+            width: 12px;
+            height: 12px;
+            background: var(--green);
+            border-radius: 50%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 9999;
+            mix-blend-mode: difference;
+            transform: translate(-50%, -50%);
+            transition: width .25s, height .25s
+        }
+
+        #cursor-ring {
+            width: 36px;
+            height: 36px;
+            border: 1px solid var(--green);
+            border-radius: 50%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            opacity: .5
+        }
+
+        body.cursor-hover #cursor {
+            width: 20px;
+            height: 20px
+        }
+
+        body.cursor-hover #cursor-ring {
+            width: 60px;
+            height: 60px;
+            opacity: .2
+        }
+
+        /* THEME TOGGLE */
+        #theme-toggle {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            z-index: 1000;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: none;
+            backdrop-filter: blur(12px);
+            transition: background .3s, transform .4s
+        }
+
+        #theme-toggle:hover {
+            background: var(--surface-hover);
+            transform: rotate(30deg)
+        }
+
+        #theme-toggle svg {
+            width: 18px;
+            height: 18px
+        }
+
+        #sun-icon {
+            display: none
+        }
+
+        [data-theme="light"] #sun-icon {
+            display: block
+        }
+
+        [data-theme="light"] #moon-icon {
+            display: none
+        }
+
+        canvas#particles {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            opacity: .4
+        }
+
+        /* REVEAL */
+        .reveal,
+        .reveal-left,
+        .reveal-right,
+        .reveal-scale {
+            opacity: 0;
+            transition: opacity .9s cubic-bezier(.16, 1, .3, 1), transform .9s cubic-bezier(.16, 1, .3, 1)
+        }
+
+        .reveal {
+            transform: translateY(50px)
+        }
+
+        .reveal-left {
+            transform: translateX(-60px)
+        }
+
+        .reveal-right {
+            transform: translateX(60px)
+        }
+
+        .reveal-scale {
+            transform: scale(.88)
+        }
+
+        .reveal.visible,
+        .reveal-left.visible,
+        .reveal-right.visible,
+        .reveal-scale.visible {
+            opacity: 1;
+            transform: none
+        }
+
+        .d1 {
+            transition-delay: .1s
+        }
+
+        .d2 {
+            transition-delay: .2s
+        }
+
+        .d3 {
+            transition-delay: .3s
+        }
+
+        .d4 {
+            transition-delay: .4s
+        }
+
+        .d5 {
+            transition-delay: .5s
+        }
+
+        .section-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            letter-spacing: .14em;
+            color: var(--green);
+            text-transform: uppercase;
+            margin-bottom: 28px
+        }
+
+        .section-tag::before {
+            content: "";
+            width: 20px;
+            height: 1px;
+            background: currentColor
+        }
+
+        /* ===== HERO ===== */
+        #about-hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 0 60px 100px;
+            position: relative;
+            overflow: hidden;
+            background: var(--bg);
+            background-image: var(--hero-bg-image);
+            background-repeat: no-repeat;
+            background-size: 44%;
+            background-position: right
+        }
+
+        .hero-orb-1 {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            pointer-events: none;
+            z-index: 0;
+            background: rgba(168, 255, 87, .09);
+            width: 700px;
+            height: 700px;
+            top: -200px;
+            right: -100px;
+            animation: orbFloat 12s ease-in-out infinite alternate
+        }
+
+        .hero-orb-2 {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            pointer-events: none;
+            z-index: 0;
+            background: rgba(168, 255, 87, .04);
+            width: 400px;
+            height: 400px;
+            bottom: 0;
+            left: -100px;
+            animation: orbFloat2 15s ease-in-out infinite alternate
+        }
+
+        [data-theme="light"] .hero-orb-1 {
+            background: rgba(90, 158, 16, .07)
+        }
+
+        [data-theme="light"] .hero-orb-2 {
+            background: rgba(90, 158, 16, .04)
+        }
+
+        @keyframes orbFloat {
+            from {
+                transform: translate(0, 0) scale(1)
+            }
+
+            to {
+                transform: translate(-40px, 30px) scale(1.1)
+            }
+        }
+
+        @keyframes orbFloat2 {
+            from {
+                transform: translate(0, 0)
+            }
+
+            to {
+                transform: translate(30px, -40px)
+            }
+        }
+
+        .hero-bg-word {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-weight: 900;
+            font-size: clamp(120px, 20vw, 240px);
+            letter-spacing: -.04em;
+            line-height: 1;
+            color: transparent;
+            -webkit-text-stroke: 1px var(--border);
+            user-select: none;
+            pointer-events: none;
+            z-index: 1;
+            white-space: nowrap;
+            opacity: .4
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 3;
+            max-width: 800px
+        }
+
+        .hero-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            letter-spacing: .14em;
+            color: var(--green);
+            text-transform: uppercase;
+            margin-bottom: 32px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp .8s .3s forwards
+        }
+
+        .hero-label::before {
+            content: "";
+            width: 24px;
+            height: 1px;
+            background: var(--green)
+        }
+
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+
+        .hero-title {
+            font-weight: 800;
+            font-size: clamp(52px, 7vw, 88px);
+            line-height: .95;
+            letter-spacing: -.03em;
+            color: var(--text-primary);
+            margin-bottom: 32px
+        }
+
+        .hero-title .word {
+            display: inline-block;
+            overflow: hidden
+        }
+
+        .hero-title .word span {
+            display: inline-block;
+            transform: translateY(110%);
+            animation: wordReveal .9s cubic-bezier(.16, 1, .3, 1) forwards
+        }
+
+        .hero-title em {
+            font-style: italic;
+            font-weight: 400;
+            color: var(--green)
+        }
+
+        .hero-title .word:nth-child(1) span {
+            animation-delay: .4s
+        }
+
+        .hero-title .word:nth-child(2) span {
+            animation-delay: .55s
+        }
+
+        .hero-title .word:nth-child(3) span {
+            animation-delay: .7s
+        }
+
+        .hero-title .word:nth-child(4) span {
+            animation-delay: .85s
+        }
+
+        @keyframes wordReveal {
+            to {
+                transform: translateY(0)
+            }
+        }
+
+        .hero-body {
+            max-width: 520px;
+            font-size: 17px;
+            line-height: 1.75;
+            color: var(--text-secondary);
+            margin-bottom: 48px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp .8s 1.1s forwards
+        }
+
+        .hero-pills {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp .8s 1.3s forwards
+        }
+
+        .hero-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 18px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: .04em;
+            color: var(--text-secondary)
+        }
+
+        .hero-pill .dot {
+            width: 6px;
+            height: 6px;
+            background: var(--green);
+            border-radius: 50%
+        }
+
+        .hero-float-badge {
+            position: absolute;
+            top: 130px;
+            right: 80px;
+            z-index: 12;
+            background: var(--green);
+            padding: 14px 22px;
+            border-radius: 16px;
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            font-weight: 700;
+            color: #080808;
+            letter-spacing: .06em;
+            opacity: 0;
+            animation: badge2Entry .7s 1.6s cubic-bezier(.34, 1.56, .64, 1) forwards, badgeFloat2 8s 2.4s ease-in-out infinite
+        }
+
+        @keyframes badge2Entry {
+            from {
+                opacity: 0;
+                transform: translateY(-15px) rotate(-6deg)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) rotate(-2deg)
+            }
+        }
+
+        @keyframes badgeFloat2 {
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(-2deg)
+            }
+
+            50% {
+                transform: translateY(-10px) rotate(2deg)
+            }
+        }
+
+        .hero-float-badge-2 {
+            position: absolute;
+            bottom: 120px;
+            right: 100px;
+            z-index: 12;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-bright);
+            border-radius: 16px;
+            padding: 16px 20px;
+            opacity: 0;
+            animation: badge2Entry .7s 1.9s cubic-bezier(.34, 1.56, .64, 1) forwards, badgeFloat 6s 2.6s ease-in-out infinite
+        }
+
+        @keyframes badgeFloat {
+
+            0%,
+            100% {
+                transform: translateY(0)
+            }
+
+            50% {
+                transform: translateY(-8px)
+            }
+        }
+
+        .hfb2-num {
+            font-weight: 800;
+            font-size: 28px;
+            color: var(--green);
+            line-height: 1
+        }
+
+        .hfb2-label {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-top: 4px
+        }
+
+        .scroll-hint {
+            position: absolute;
+            bottom: 40px;
+            left: 60px;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            opacity: 0;
+            animation: fadeIn 1s 2s forwards
+        }
+
+        .scroll-line {
+            width: 1px;
+            height: 60px;
+            background: linear-gradient(to bottom, var(--green), transparent);
+            animation: scrollLine 2s ease-in-out infinite
+        }
+
+        @keyframes scrollLine {
+
+            0%,
+            100% {
+                opacity: .3;
+                transform: scaleY(1)
+            }
+
+            50% {
+                opacity: 1;
+                transform: scaleY(1.3)
+            }
+        }
+
+        .scroll-hint span {
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            letter-spacing: .12em;
+            color: var(--text-muted);
+            writing-mode: vertical-rl;
+            text-transform: uppercase
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1
+            }
+        }
+
+        /* ===== MARQUEE ===== */
+        .marquee-section {
+            overflow: hidden;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            background: var(--bg-2)
+        }
+
+        .marquee-track {
+            display: flex;
+            width: max-content;
+            animation: marqueeScroll 25s linear infinite;
+            padding: 16px 0
+        }
+
+        .marquee-item {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            padding: 0 32px;
+            white-space: nowrap;
+            font-weight: 600;
+            font-size: 13px;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            color: var(--text-muted)
+        }
+
+        .marquee-item .dot {
+            width: 6px;
+            height: 6px;
+            background: var(--green);
+            border-radius: 50%
+        }
+
+        .marquee-item.accent {
+            color: var(--text-secondary)
+        }
+
+        @keyframes marqueeScroll {
+            from {
+                transform: translateX(0)
+            }
+
+            to {
+                transform: translateX(-50%)
+            }
+        }
+
+        /* ===== WHO WE ARE ===== */
+        #who-we-are {
+            padding: 140px 60px;
+            background: var(--bg)
+        }
+
+        .wwa-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: start;
+            max-width: 1300px;
+            margin: 0 auto
+        }
+
+        .wwa-tagline {
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            letter-spacing: .1em;
+            color: var(--green);
+            text-transform: uppercase;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 10px
+        }
+
+        .wwa-tagline::before {
+            content: "";
+            width: 24px;
+            height: 1px;
+            background: var(--green)
+        }
+
+        .wwa-headline {
+            font-weight: 800;
+            font-size: clamp(36px, 4.5vw, 60px);
+            line-height: 1.0;
+            letter-spacing: -.025em;
+            margin-bottom: 32px
+        }
+
+        .wwa-headline em {
+            font-style: italic;
+            font-weight: 400;
+            color: var(--green);
+            display: block
+        }
+
+        .wwa-body {
+            font-size: 15px;
+            line-height: 1.85;
+            color: var(--text-secondary);
+            max-width: 500px;
+            margin-bottom: 20px
+        }
+
+        .wwa-mission-box {
+            margin-top: 28px;
+            padding: 28px 28px 28px 32px;
+            background: var(--surface);
+            border: 1px solid var(--border-bright);
+            border-left: 3px solid var(--green);
+            border-radius: 16px;
+            position: relative;
+            overflow: hidden
+        }
+
+        .wwa-mission-box::before {
+            content: '"';
+            position: absolute;
+            top: -10px;
+            right: 20px;
+            font-size: 80px;
+            font-weight: 900;
+            color: var(--green);
+            opacity: .08;
+            line-height: 1;
+            font-family: Georgia, serif
+        }
+
+        .wwa-mission-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            letter-spacing: .14em;
+            color: var(--green);
+            text-transform: uppercase;
+            margin-bottom: 10px
+        }
+
+        .wwa-mission-text {
+            font-size: 14px;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            font-style: italic
+        }
+
+        .wwa-stats-col {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding-top: 40px
+        }
+
+        .wwa-stat-big {
+            padding: 32px 36px;
+            background: var(--bg-3);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+            transition: border-color .3s, transform .4s cubic-bezier(.34, 1.56, .64, 1)
+        }
+
+        .wwa-stat-big:hover {
+            border-color: var(--border-bright);
+            transform: translateY(-6px)
+        }
+
+        .wwa-stat-big::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(to right, var(--green), transparent)
+        }
+
+        .wwa-stat-num {
+            font-weight: 800;
+            font-size: 52px;
+            letter-spacing: -.03em;
+            color: var(--green);
+            line-height: 1
+        }
+
+        .wwa-stat-label {
+            font-size: 14px;
+            color: var(--text-primary);
+            font-weight: 600;
+            margin-top: 4px
+        }
+
+        .wwa-stat-sub {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 2px
+        }
+
+        .wwa-stat-inline {
+            display: flex;
+            gap: 16px
+        }
+
+        .wwa-stat-inline .wwa-stat-big {
+            flex: 1
+        }
+
+        /* ===== FOUNDER ===== */
+        #founder {
+            padding: 140px 60px;
+            background: var(--bg-2);
+            position: relative;
+            overflow: hidden
+        }
+
+        .founder-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(140px);
+            pointer-events: none;
+            z-index: 0;
+            background: rgba(168, 255, 87, .06);
+            width: 600px;
+            height: 600px;
+            bottom: -200px;
+            left: -100px
+        }
+
+        [data-theme="light"] .founder-orb {
+            background: rgba(90, 158, 16, .05)
+        }
+
+        .founder-inner {
+            max-width: 1300px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1
+        }
+
+        .founder-grid {
+            display: grid;
+            grid-template-columns: 580px 1fr;
+            gap: 80px;
+            align-items: start;
+            margin-top: 64px
+        }
+
+        .founder-photo-wrap {
+            position: relative;
+            border-radius: 24px;
+            overflow: hidden;
+            aspect-ratio: 4/5;
+            background: var(--bg-3);
+            border: 1px solid var(--border);
+            margin-bottom: 24px
+        }
+
+
+        .founder-photo-placeholder {
+            width: 100%;
+            height: 100%;
+            min-height: 380px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            background: var(--bg-3);
+            background-image: var(--founder-photo);
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        .founder-photo-placeholder .ph-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: var(--green-glow);
+            border: 1px solid var(--border-bright);
+            display: flex;
+            align-items: center;
+            justify-content: center
+        }
+
+        .founder-photo-placeholder .ph-icon svg {
+            width: 30px;
+            height: 30px;
+            color: var(--green)
+        }
+
+        .founder-photo-placeholder span {
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            letter-spacing: .1em;
+            color: var(--text-muted);
+            text-transform: uppercase
+        }
+
+        .founder-photo-wrap::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 9%;
+            background: linear-gradient(to top, var(--bg-3), transparent);
+            pointer-events: none
+        }
+
+        .founder-name-tag {
+            padding: 22px 24px;
+            background: var(--bg-3);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            gap: 16px
+        }
+
+        .founder-name-dot {
+            width: 42px;
+            height: 42px;
+            flex-shrink: 0;
+            background: var(--green);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center
+        }
+
+        .founder-name-dot svg {
+            width: 20px;
+            height: 20px;
+            color: #080808
+        }
+
+        .founder-name-tag h3 {
+            font-weight: 800;
+            font-size: 18px;
+            letter-spacing: -.01em;
+            line-height: 1.2
+        }
+
+        .founder-name-tag p {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 2px;
+            line-height: 1.5
+        }
+
+        .founder-headline {
+            font-weight: 800;
+            font-size: clamp(30px, 3.5vw, 48px);
+            line-height: 1.05;
+            letter-spacing: -.025em;
+            margin-bottom: 28px
+        }
+
+        .founder-headline em {
+            font-style: italic;
+            font-weight: 400;
+            color: var(--green)
+        }
+
+        .founder-body {
+            font-size: 15px;
+            line-height: 1.85;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            max-width: 560px
+        }
+
+        .pioneer-badges {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin: 32px 0
+        }
+
+        .pioneer-badge {
+            padding: 20px 22px;
+            background: var(--bg-3);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            position: relative;
+            overflow: hidden;
+            transition: border-color .3s, transform .35s cubic-bezier(.34, 1.56, .64, 1);
+            cursor: none
+        }
+
+        .pioneer-badge:hover {
+            border-color: var(--border-bright);
+            transform: translateY(-4px)
+        }
+
+        .pioneer-badge::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(to right, var(--green), transparent)
+        }
+
+        .pioneer-badge-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            letter-spacing: .12em;
+            color: var(--green);
+            text-transform: uppercase;
+            margin-bottom: 8px
+        }
+
+        .pioneer-badge-title {
+            font-weight: 700;
+            font-size: 14px;
+            line-height: 1.3
+        }
+
+        .founder-clients-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            letter-spacing: .14em;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 14px;
+            margin-top: 32px
+        }
+
+        .founder-clients {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px
+        }
+
+        .founder-client-tag {
+            padding: 8px 16px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            letter-spacing: .02em;
+            transition: border-color .3s, color .3s;
+            cursor: none
+        }
+
+        .founder-client-tag:hover {
+            border-color: var(--border-bright);
+            color: var(--green)
+        }
+
+        .founder-expertise {
+            margin-top: 32px
+        }
+
+        .founder-expertise-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            letter-spacing: .14em;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 14px
+        }
+
+        .founder-expertise-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px
+        }
+
+        .founder-exp-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 14px;
+            color: var(--text-secondary)
+        }
+
+        .founder-exp-item::before {
+            content: "";
+            width: 4px;
+            height: 4px;
+            background: var(--green);
+            border-radius: 50%;
+            flex-shrink: 0
+        }
+
+        /* ===== SERVICES ===== */
+        #services-detail {
+            padding: 140px 60px;
+            background: var(--bg);
+            position: relative;
+            overflow: hidden
+        }
+
+        .svc-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(140px);
+            pointer-events: none;
+            z-index: 0;
+            background: rgba(168, 255, 87, .05);
+            width: 600px;
+            height: 600px;
+            top: -200px;
+            right: -100px
+        }
+
+        [data-theme="light"] .svc-orb {
+            background: rgba(90, 158, 16, .05)
+        }
+
+        .svc-header {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            max-width: 1300px;
+            margin: 0 auto 80px;
+            gap: 40px;
+            position: relative;
+            z-index: 1
+        }
+
+        .svc-headline {
+            font-weight: 800;
+            font-size: clamp(40px, 5vw, 70px);
+            line-height: 1;
+            letter-spacing: -.03em
+        }
+
+        .svc-headline em {
+            font-style: italic;
+            font-weight: 400;
+            color: var(--green)
+        }
+
+        .svc-sub {
+            font-size: 15px;
+            color: var(--text-secondary);
+            max-width: 300px;
+            line-height: 1.7
+        }
+
+        .svc-mosaic {
+            max-width: 1300px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 14px;
+            position: relative;
+            z-index: 1
+        }
+
+        .stile {
+            border-radius: 20px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 28px 30px;
+            cursor: none;
+            position: relative;
+            overflow: hidden;
+            transition: transform .45s cubic-bezier(.34, 1.56, .64, 1), border-color .3s, box-shadow .3s
+        }
+
+        .stile:hover {
+            transform: translateY(-7px);
+            border-color: var(--border-bright);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, .25), 0 0 30px var(--green-glow)
+        }
+
+        .stile::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(168, 255, 87, .03) 50%, transparent);
+            transform: translateX(-100%);
+            transition: transform .6s;
+            pointer-events: none
+        }
+
+        .stile:hover::before {
+            transform: translateX(100%)
+        }
+
+        .st-1 {
+            grid-column: span 4
+        }
+
+        .st-2 {
+            grid-column: span 4
+        }
+
+        .st-3 {
+            grid-column: span 4
+        }
+
+        .st-4 {
+            grid-column: span 3
+        }
+
+        .st-5 {
+            grid-column: span 6
+        }
+
+        .st-6 {
+            grid-column: span 3
+        }
+
+        .st-7 {
+            grid-column: span 12
+        }
+
+        .stile-num {
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: .12em;
+            color: var(--green);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px
+        }
+
+        .stile-num::before {
+            content: "";
+            width: 16px;
+            height: 1px;
+            background: var(--green)
+        }
+
+        .stile-icon {
+            width: 44px;
+            height: 44px;
+            background: var(--green-glow);
+            border: 1px solid var(--border-bright);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 18px;
+            transition: transform .35s cubic-bezier(.34, 1.56, .64, 1)
+        }
+
+        .stile:hover .stile-icon {
+            transform: scale(1.15) rotate(8deg)
+        }
+
+        .stile-icon svg {
+            width: 20px;
+            height: 20px;
+            color: var(--green)
+        }
+
+        .stile-name {
+            font-weight: 700;
+            font-size: 16px;
+            letter-spacing: -.01em;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            line-height: 1.2
+        }
+
+        .stile-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.6
+        }
+
+        .stile-list {
+            margin-top: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px
+        }
+
+        .stile-list li {
+            list-style: none;
+            font-size: 12px;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 8px
+        }
+
+        .stile-list li::before {
+            content: "";
+            width: 3px;
+            height: 3px;
+            background: var(--green);
+            border-radius: 50%;
+            flex-shrink: 0
+        }
+
+        .stile-featured {
+            grid-column: span 12;
+            background: var(--bg-3);
+            border: 1px solid var(--border-bright);
+            border-radius: 24px;
+            padding: 0;
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            min-height: 220px
+        }
+
+        .stf-left {
+            padding: 48px 52px;
+            background: var(--green);
+            position: relative;
+            overflow: hidden
+        }
+
+        .stf-left::before {
+            content: "";
+            position: absolute;
+            bottom: -60px;
+            left: -40px;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, .07)
+        }
+
+        .stf-num {
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: .12em;
+            color: rgba(8, 8, 8, .55);
+            margin-bottom: 14px
+        }
+
+        .stf-name {
+            font-weight: 800;
+            font-size: clamp(22px, 2.5vw, 34px);
+            line-height: 1.05;
+            letter-spacing: -.02em;
+            color: #080808;
+            position: relative;
+            z-index: 1
+        }
+
+        .stf-name em {
+            font-style: italic;
+            font-weight: 400
+        }
+
+        .stf-right {
+            padding: 48px 52px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 16px
+        }
+
+        .stf-desc {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            max-width: 440px
+        }
+
+        .stf-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px
+        }
+
+        .stf-tag {
+            padding: 6px 14px;
+            background: var(--surface);
+            border: 1px solid var(--border-bright);
+            border-radius: 50px;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--green);
+            letter-spacing: .04em
+        }
+
+        /* ===== CITIES ===== */
+        #cities {
+            padding: 120px 60px;
+            background: var(--bg-2);
+            position: relative;
+            overflow: hidden
+        }
+
+        .cities-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(160px);
+            pointer-events: none;
+            z-index: 0;
+            background: rgba(168, 255, 87, .05);
+            width: 700px;
+            height: 700px;
+            top: 50%;
+            right: -200px;
+            transform: translateY(-50%)
+        }
+
+        [data-theme="light"] .cities-orb {
+            background: rgba(90, 158, 16, .04)
+        }
+
+        .cities-inner {
+            max-width: 1300px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1
+        }
+
+        .cities-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: start;
+            margin-top: 64px
+        }
+
+        .cities-region-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            letter-spacing: .14em;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px
+        }
+
+        .cities-region-label::before {
+            content: "";
+            flex: 1;
+            max-width: 16px;
+            height: 1px;
+            background: var(--text-muted)
+        }
+
+        .cities-tiles {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 40px
+        }
+
+        .city-tile {
+            padding: 10px 18px;
+            background: var(--bg-3);
+            border: 1px solid var(--border);
+            border-radius: 50px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            letter-spacing: .02em;
+            transition: border-color .3s, color .3s, transform .3s;
+            cursor: none
+        }
+
+        .city-tile:hover {
+            border-color: var(--border-bright);
+            color: var(--green);
+            transform: translateY(-3px)
+        }
+
+        .city-tile.intl {
+            border-color: var(--border-bright);
+            color: var(--green)
+        }
+
+        .cities-map-wrap {
+            aspect-ratio: 4/3;
+            background: var(--bg-3);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            overflow: hidden;
+            position: relative
+        }
+
+        /* =============================================
+           IMAGE — INDIA COVERAGE MAP
+           Replace .cities-map-placeholder with:
+           <img src="https://mykitchen.websblog.in/wp-content/uploads/2026/04/india-coverage-map.png"
+                alt="Pan India Coverage"
+                style="width:100%;height:100%;object-fit:cover;object-position:center;">
+           Tip: Use a dark-themed India map with city dots in #a8ff57
+        ============================================= */
+        .cities-map-placeholder {
+            width: 100%;
+            height: 100%;
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            background-image: url(https://mykitchen.websblog.in/wp-content/uploads/2026/04/aboutmap.png);
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+
+        }
+
+        .cities-map-placeholder .ph-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            background: var(--green-glow);
+            border: 1px solid var(--border-bright);
+            display: flex;
+            align-items: center;
+            justify-content: center
+        }
+
+        .cities-map-placeholder .ph-icon svg {
+            width: 26px;
+            height: 26px;
+            color: var(--green)
+        }
+
+        .cities-map-placeholder span {
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            letter-spacing: .1em;
+            color: var(--text-muted);
+            text-transform: uppercase
+        }
+
+        .cities-map-wrap::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 30%;
+            background: linear-gradient(to top, var(--bg-3), transparent);
+            pointer-events: none
+        }
+
+        .cities-note {
+            margin-top: 20px;
+            padding: 18px 22px;
+            background: var(--surface);
+            border: 1px solid var(--border-bright);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            gap: 14px
+        }
+
+        .cities-note-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--green);
+            border-radius: 50%;
+            flex-shrink: 0;
+            box-shadow: 0 0 8px var(--green-glow-strong);
+            animation: pulseDot 2s ease-in-out infinite
+        }
+
+        @keyframes pulseDot {
+
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 1
+            }
+
+            50% {
+                transform: scale(1.4);
+                opacity: .7
+            }
+        }
+
+        .cities-note span {
+            font-size: 13px;
+            color: var(--text-secondary)
+        }
+
+        .cities-note strong {
+            color: var(--text-primary)
+        }
+
+        /* ===== STATS BAR ===== */
+        #about-stats {
+            background: var(--bg);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            position: relative;
+            overflow: hidden
+        }
+
+        #about-stats::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -50%;
+            width: 200%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--green), transparent);
+            animation: scanLine 4s linear infinite
+        }
+
+        @keyframes scanLine {
+            from {
+                transform: translateX(-50%)
+            }
+
+            to {
+                transform: translateX(50%)
+            }
+        }
+
+        .stats-row {
+            max-width: 1300px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr)
+        }
+
+        .stat-cell {
+            padding: 48px 40px;
+            border-right: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+            transition: background .25s
+        }
+
+        .stat-cell:last-child {
+            border-right: none
+        }
+
+        .stat-cell:hover {
+            background: var(--surface-hover)
+        }
+
+        .stat-cell::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--green);
+            transition: width .4s
+        }
+
+        .stat-cell:hover::after {
+            width: 100%
+        }
+
+        .stat-big {
+            font-weight: 800;
+            font-size: 48px;
+            letter-spacing: -.03em;
+            color: var(--text-primary);
+            line-height: 1
+        }
+
+        .stat-big span {
+            color: var(--green)
+        }
+
+        .stat-lbl {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-top: 6px;
+            letter-spacing: .04em
+        }
+
+        .stat-sub {
+            font-size: 11px;
+            color: var(--text-muted);
+            opacity: .6;
+            margin-top: 2px
+        }
+
+        /* ===== WHY CHOOSE US ===== */
+        #why-us {
+            padding: 140px 60px;
+            background: var(--bg-2)
+        }
+
+        .why-inner {
+            max-width: 1300px;
+            margin: 0 auto
+        }
+
+        .why-header {
+            max-width: 700px;
+            margin-bottom: 80px
+        }
+
+        .why-headline {
+            font-weight: 800;
+            font-size: clamp(36px, 4vw, 60px);
+            line-height: 1.05;
+            letter-spacing: -.025em;
+            margin-top: 16px
+        }
+
+        .why-headline em {
+            font-style: italic;
+            font-weight: 400;
+            color: var(--green)
+        }
+
+        .why-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px
+        }
+
+        .why-card {
+            padding: 36px 32px;
+            background: var(--bg-3);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            cursor: none;
+            transition: transform .45s cubic-bezier(.34, 1.56, .64, 1), border-color .3s;
+            position: relative;
+            overflow: hidden
+        }
+
+        .why-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--border-bright)
+        }
+
+        .why-card::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(to right, var(--green), transparent);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform .4s
+        }
+
+        .why-card:hover::after {
+            transform: scaleX(1)
+        }
+
+        .why-icon {
+            width: 52px;
+            height: 52px;
+            background: var(--green-glow);
+            border: 1px solid var(--border-bright);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+            transition: transform .35s cubic-bezier(.34, 1.56, .64, 1)
+        }
+
+        .why-card:hover .why-icon {
+            transform: scale(1.1) rotate(5deg)
+        }
+
+        .why-icon svg {
+            width: 22px;
+            height: 22px;
+            color: var(--green)
+        }
+
+        .why-title {
+            font-weight: 700;
+            font-size: 18px;
+            letter-spacing: -.01em;
+            margin-bottom: 12px
+        }
+
+        .why-body {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.65
+        }
+
+        /* ===== CTA ===== */
+        #cta-strip {
+            padding: 100px 60px;
+            background: var(--bg)
+        }
+
+        .cta-inner {
+            max-width: 1300px;
+            margin: 0 auto;
+            background: var(--bg-3);
+            border: 1px solid var(--border);
+            border-radius: 32px;
+            padding: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 60px;
+            position: relative;
+            overflow: hidden;
+            background-image: url(https://mykitchen.websblog.in/wp-content/uploads/2026/04/sa1.png);
+            background-size: cover;
+            background-repeat: no-repeat;
+            /* background-position: 61% 0%; */
+            background-blend-mode: overlay;
+        }
+
+        .cta-inner::before {
+            content: "";
+            position: absolute;
+            top: -100px;
+            right: -100px;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(ellipse, var(--green-glow), transparent 70%);
+            pointer-events: none
+        }
+
+        .cta-text {
+            position: relative;
+            z-index: 1
+        }
+
+        .cta-headline {
+            font-weight: 800;
+            font-size: clamp(32px, 3.5vw, 52px);
+            line-height: 1.05;
+            letter-spacing: -.025em;
+            margin-top: 16px
+        }
+
+        .cta-headline em {
+            font-style: italic;
+            font-weight: 400;
+            color: var(--green)
+        }
+
+        .cta-body {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.75;
+            margin-top: 16px;
+            max-width: 460px
+        }
+
+        .cta-actions {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            flex-shrink: 0;
+            flex-direction: column;
+            position: relative;
+            z-index: 1
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--green);
+            color: #080808;
+            font-weight: 700;
+            font-size: 14px;
+            letter-spacing: .06em;
+            padding: 16px 32px;
+            border-radius: 50px;
+            text-decoration: none;
+            border: none;
+            cursor: none;
+            transition: transform .2s, box-shadow .3s;
+            white-space: nowrap;
+            position: relative;
+            overflow: hidden
+        }
+
+        .btn-primary::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .2), transparent);
+            transform: translateX(-100%);
+            transition: transform .5s
+        }
+
+        .btn-primary:hover::after {
+            transform: translateX(100%)
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px var(--green-glow-strong)
+        }
+
+        .btn-primary svg {
+            width: 14px;
+            height: 14px
+        }
+
+        .btn-ghost {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: transparent;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 500;
+            padding: 16px 24px;
+            border-radius: 50px;
+            text-decoration: none;
+            border: 1px solid var(--border);
+            cursor: none;
+            transition: color .2s, border-color .2s, transform .2s;
+            white-space: nowrap
+        }
+
+        .btn-ghost:hover {
+            color: var(--text-primary);
+            border-color: var(--text-muted);
+            transform: translateY(-2px)
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media(max-width:1100px) {
+
+            .founder-grid,
+            .wwa-grid,
+            .cities-grid {
+                grid-template-columns: 1fr
+            }
+
+            .st-1,
+            .st-2,
+            .st-3 {
+                grid-column: span 6
+            }
+
+            .st-4,
+            .st-5,
+            .st-6 {
+                grid-column: span 6
+            }
+
+            .stile-featured {
+                grid-template-columns: 1fr
+            }
+
+            .why-grid {
+                grid-template-columns: repeat(2, 1fr)
+            }
+
+            .stats-row {
+                grid-template-columns: repeat(2, 1fr)
+            }
+
+            .stat-cell {
+                border-bottom: 1px solid var(--border)
+            }
+
+            .pioneer-badges {
+                grid-template-columns: 1fr 1fr
+            }
+        }
+
+        @media(max-width:800px) {
+            #about-hero {
+                padding: 20px 24px 80px
+            }
+
+            #who-we-are,
+            #founder,
+            #services-detail,
+            #cities,
+            #why-us,
+            #cta-strip {
+                padding: 80px 24px
+            }
+
+            .hero-float-badge,
+            .hero-float-badge-2 {
+                display: none
+            }
+
+            .st-1,
+            .st-2,
+            .st-3,
+            .st-4,
+            .st-5,
+            .st-6,
+            .st-7 {
+                grid-column: 1 / -1
+            }
+
+            .stile-featured {
+                grid-template-columns: 1fr
+            }
+
+            .why-grid {
+                grid-template-columns: 1fr
+            }
+
+            .stats-row {
+                grid-template-columns: 1fr 1fr
+            }
+
+            .cta-inner {
+                flex-direction: column;
+                padding: 48px 32px
+            }
+
+            .wwa-stat-inline {
+                flex-direction: column
+            }
+
+            .svc-header {
+                flex-direction: column;
+                align-items: flex-start
+            }
+
+            .pioneer-badges {
+                grid-template-columns: 1fr
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="cursor"></div>
+    <div id="cursor-ring"></div>
+    <canvas id="particles"></canvas>
+
+    <button id="theme-toggle" aria-label="Toggle theme">
+        <svg id="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+            color="var(--text-secondary)">
+            <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
+        </svg>
+        <svg id="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+            color="var(--text-secondary)">
+            <circle cx="12" cy="12" r="5" />
+            <path
+                d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+        </svg>
+    </button>
+
+
+    <!-- ══════════════════════════════════════════
+         HERO
+         BG IMAGE: Set in CSS var --hero-bg-image
+         → dark:  https://mykitchen.websblog.in/wp-content/uploads/2026/04/ab1.png
+         → light: https://mykitchen.websblog.in/wp-content/uploads/2026/04/c1.png
+    ══════════════════════════════════════════ -->
+    <section id="about-hero">
+        <div class="hero-orb-1"></div>
+        <div class="hero-orb-2"></div>
+        <div class="hero-bg-word">ABOUT</div>
+
+        <div class="hero-float-badge">Est. 2012 · Mumbai</div>
+        <div class="hero-float-badge-2">
+            <div class="hfb2-num">100+</div>
+            <div class="hfb2-label">Kitchens Consulted</div>
+        </div>
+
+        <div class="hero-content">
+            <div class="hero-label">About Us</div>
+            <h1 class="hero-title">
+                <span class="word"><span>We</span></span>
+                <span class="word"><span>are</span></span>
+                <br>
+                <span class="word"><span><em>execution-driven</em></span></span>
+                <br>
+                <span class="word"><span>growth</span></span>
+                <span class="word"><span>partners.</span></span>
+            </h1>
+            <p class="hero-body">Not just consultants — we help food entrepreneurs, restaurant owners, and investors
+                create sustainable, scalable, and high-margin food businesses from the ground up.</p>
+            <div class="hero-pills">
+                <div class="hero-pill">
+                    <div class="dot"></div>Cloud Kitchens
+                </div>
+                <div class="hero-pill">
+                    <div class="dot"></div>Ghost Kitchens
+                </div>
+                <div class="hero-pill">
+                    <div class="dot"></div>Dark Kitchens
+                </div>
+                <div class="hero-pill">
+                    <div class="dot"></div>Delivery Kitchens
+                </div>
+            </div>
+        </div>
+
+        <div class="scroll-hint">
+            <div class="scroll-line"></div><span>Scroll</span>
+        </div>
+    </section>
+
+
+    <!-- MARQUEE -->
+    <div class="marquee-section">
+        <div class="marquee-track">
+            <div class="marquee-item">
+                <div class="dot"></div>Cloud Kitchen Setup
+            </div>
+            <div class="marquee-item accent">
+                <div class="dot"></div>Multi-Brand Strategy
+            </div>
+            <div class="marquee-item">
+                <div class="dot"></div>Menu Engineering
+            </div>
+            <div class="marquee-item accent">
+                <div class="dot"></div>Zomato &amp; Swiggy Growth
+            </div>
+            <div class="marquee-item">
+                <div class="dot"></div>SOP Development
+            </div>
+            <div class="marquee-item accent">
+                <div class="dot"></div>Franchise Development
+            </div>
+            <div class="marquee-item">
+                <div class="dot"></div>Branding &amp; Packaging
+            </div>
+            <div class="marquee-item accent">
+                <div class="dot"></div>Pan-India &amp; Dubai
+            </div>
+            <div class="marquee-item">
+                <div class="dot"></div>Cloud Kitchen Setup
+            </div>
+            <div class="marquee-item accent">
+                <div class="dot"></div>Multi-Brand Strategy
+            </div>
+            <div class="marquee-item">
+                <div class="dot"></div>Menu Engineering
+            </div>
+            <div class="marquee-item accent">
+                <div class="dot"></div>Zomato &amp; Swiggy Growth
+            </div>
+            <div class="marquee-item">
+                <div class="dot"></div>SOP Development
+            </div>
+            <div class="marquee-item accent">
+                <div class="dot"></div>Franchise Development
+            </div>
+            <div class="marquee-item">
+                <div class="dot"></div>Branding &amp; Packaging
+            </div>
+            <div class="marquee-item accent">
+                <div class="dot"></div>Pan-India &amp; Dubai
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ══════════════════════════════════════════
+         WHO WE ARE
+    ══════════════════════════════════════════ -->
+    <section id="who-we-are">
+        <div class="wwa-grid">
+            <div class="wwa-left reveal-left">
+                <div class="wwa-tagline">Who We Are</div>
+                <h2 class="wwa-headline">India's most<br>complete<br><em>kitchen partner.</em></h2>
+                <p class="wwa-body">MyCloudKitchen Consulting is an execution-driven, end-to-end cloud kitchen &amp;
+                    restaurant consulting firm. We offer complete 360° solutions for anyone looking to start or scale in
+                    the food business.</p>
+                <p class="wwa-body">Call it a Cloud Kitchen, Ghost Kitchen, Dark Kitchen, or Delivery Kitchen — the
+                    concept is the same: delivering exceptional food at a fraction of traditional restaurant costs. We
+                    make it happen.</p>
+                <div class="wwa-mission-box reveal d3">
+                    <div class="wwa-mission-label">Our Mission</div>
+                    <p class="wwa-mission-text">To build India's most scalable cloud kitchen ecosystem by enabling
+                        entrepreneurs to launch multi-brand, high-profit food businesses with minimal risk and maximum
+                        growth potential.</p>
+                </div>
+            </div>
+
+            <div class="wwa-stats-col reveal-right">
+                <div class="wwa-stat-big reveal d1">
+                    <div class="wwa-stat-num">2012</div>
+                    <div class="wwa-stat-label">Year Founded</div>
+                    <div class="wwa-stat-sub">Over a decade in cloud kitchen consulting</div>
+                </div>
+                <div class="wwa-stat-inline">
+                    <div class="wwa-stat-big reveal d2">
+                        <div class="wwa-stat-num">100+</div>
+                        <div class="wwa-stat-label">Kitchens Consulted</div>
+                        <div class="wwa-stat-sub">Pan-India</div>
+                    </div>
+                    <div class="wwa-stat-big reveal d3">
+                        <div class="wwa-stat-num">15+</div>
+                        <div class="wwa-stat-label">Cities Covered</div>
+                        <div class="wwa-stat-sub">+ International</div>
+                    </div>
+                </div>
+                <div class="wwa-stat-big reveal d4">
+                    <div class="wwa-stat-num">360°</div>
+                    <div class="wwa-stat-label">End-to-End Services</div>
+                    <div class="wwa-stat-sub">From first idea to first order — one partner, zero loose ends</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════
+         FOUNDER — KRUNAL OZA
+    ══════════════════════════════════════════ -->
+    <section id="founder">
+        <div class="founder-orb"></div>
+        <div class="founder-inner">
+
+            <div class="reveal">
+                <div class="section-tag">The Man Behind It</div>
+                <h2
+                    style="font-weight:800;font-size:clamp(36px,4vw,56px);line-height:1.05;letter-spacing:-.025em;margin-top:8px;">
+                    Meet <em style="font-style:italic;font-weight:400;color:var(--green);">Krunal Oza</em>
+                </h2>
+            </div>
+
+            <div class="founder-grid">
+
+                <!-- LEFT: Photo + Identity -->
+                <div class="founder-identity reveal-left">
+                    <div class="founder-photo-wrap">
+
+                        <div class="founder-photo-placeholder">
+
+                        </div>
+                    </div>
+
+                    <div class="founder-name-tag">
+                        <div class="founder-name-dot">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path
+                                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h3>Krunal Oza</h3>
+                            <p>Senior Cloud Kitchen &amp; Hospitality Consultant<br>Founder — MyCloudKitchen Consulting
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RIGHT: Bio -->
+                <div class="founder-bio reveal-right">
+                    <h3 class="founder-headline">
+                        11+ years shaping<br>India's food delivery<br><em>revolution.</em>
+                    </h3>
+
+                    <p class="founder-body"><b>Krunal Oza</b> is a leading name in India's food and beverage consulting
+                        space,
+                        with 11+ years of deep expertise in cloud kitchens, restaurant strategy, and F&B brand scaling.
+                    </p>
+
+                    <p class="founder-body">At a time when the industry was still focused on dine-in formats, he
+                        aggressively advocated the delivery-first kitchen model — helping shape what is now one of the
+                        fastest-growing segments in the F&B industry.</p>
+
+                    <div class="pioneer-badges">
+                        <div class="pioneer-badge reveal d1">
+                            <div class="pioneer-badge-label">Pioneer of</div>
+                            <div class="pioneer-badge-title">Cloud Kitchen &amp; Dark Kitchen Model in India</div>
+                        </div>
+                        <div class="pioneer-badge reveal d2">
+                            <div class="pioneer-badge-label">First to Scale</div>
+                            <div class="pioneer-badge-title">Multi-Brand Cloud Kitchen Operations</div>
+                        </div>
+                        <div class="pioneer-badge reveal d3">
+                            <div class="pioneer-badge-label">Industry Speaker</div>
+                            <div class="pioneer-badge-title">Keynotes &amp; Workshops Across India's F&B Conferences
+                            </div>
+                        </div>
+                        <div class="pioneer-badge reveal d4">
+                            <div class="pioneer-badge-label">Corporate Impact</div>
+                            <div class="pioneer-badge-title">100+ Cloud Kitchens &amp; Large F&B Brands Consulted</div>
+                        </div>
+                    </div>
+
+                    <div class="founder-clients-label">Worked With &amp; Consulted For</div>
+                    <div class="founder-clients">
+                        <span class="founder-client-tag">Rebel Foods (EatSure)</span>
+                        <span class="founder-client-tag">EatClub</span>
+                        <span class="founder-client-tag">Biryani By Kilo</span>
+                        <span class="founder-client-tag">Cure Foods</span>
+                    </div>
+
+                    <div class="founder-expertise">
+                        <div class="founder-expertise-label">Core Expertise</div>
+                        <div class="founder-expertise-list">
+                            <div class="founder-exp-item">Multi-brand kitchen strategy formulation</div>
+                            <div class="founder-exp-item">Menu engineering &amp; revenue optimization</div>
+                            <div class="founder-exp-item">Large-scale kitchen operations &amp; SOP systems</div>
+                            <div class="founder-exp-item">Franchise-driven F&amp;B growth models</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════
+         SERVICES — 360° SOLUTIONS
+    ══════════════════════════════════════════ -->
+    <section id="services-detail">
+        <div class="svc-orb"></div>
+        <div class="svc-header reveal">
+            <div>
+                <div class="section-tag">What We Do</div>
+                <h2 class="svc-headline">End-to-End<br>Cloud Kitchen<br><em>Solutions.</em></h2>
+            </div>
+            <p class="svc-sub">7 complete service verticals — we cover every layer so you can focus purely on the food.
+            </p>
+        </div>
+
+        <div class="svc-mosaic">
+
+            <div class="stile st-1 reveal d1">
+                <div class="stile-num">01</div>
+                <div class="stile-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <rect x="3" y="3" width="18" height="18" rx="2" />
+                        <path d="M3 9h18M9 21V9" />
+                    </svg></div>
+                <div class="stile-name">Cloud Kitchen Setup &amp; Launch</div>
+                <div class="stile-desc">End-to-end kitchen setup from location mapping to launch day.</div>
+                <ul class="stile-list">
+                    <li>Location mapping &amp; feasibility</li>
+                    <li>Vendor sourcing &amp; execution</li>
+                    <li>Aggregator onboarding</li>
+                </ul>
+            </div>
+
+            <div class="stile st-2 reveal d2">
+                <div class="stile-num">02</div>
+                <div class="stile-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path
+                            d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                    </svg></div>
+                <div class="stile-name">Multi-Brand Cloud Kitchen Strategy</div>
+                <div class="stile-desc">Build multiple food brands from a single kitchen for maximum revenue.</div>
+                <ul class="stile-list">
+                    <li>Cuisine segmentation for ROI</li>
+                    <li>High-ROI brand architecture</li>
+                    <li>Plug-and-play brand models</li>
+                </ul>
+            </div>
+
+            <div class="stile st-3 reveal d3">
+                <div class="stile-num">03</div>
+                <div class="stile-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path
+                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg></div>
+                <div class="stile-name">Menu Engineering &amp; Food Cost Optimization</div>
+                <div class="stile-desc">High-selling menu curation engineered for margin and delivery performance.</div>
+                <ul class="stile-list">
+                    <li>Food costing &amp; margin optimization</li>
+                    <li>Delivery-friendly menu design</li>
+                    <li>Cuisine-specific product development</li>
+                </ul>
+            </div>
+
+            <div class="stile st-1 reveal d1">
+                <div class="stile-num">04</div>
+                <div class="stile-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" />
+                        <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" />
+                    </svg></div>
+                <div class="stile-name">SOP Development &amp; Operations Management</div>
+                <div class="stile-desc">Kitchen SOPs, staff training, daily ops optimization &amp; quality control
+                    frameworks built for scalability.</div>
+            </div>
+
+            <div class="stile st-2 reveal d2">
+                <div class="stile-num">05</div>
+                <div class="stile-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg></div>
+                <div class="stile-name">Zomato &amp; Swiggy Growth Management</div>
+                <div class="stile-desc">Specialists in scaling brands on Zomato and Swiggy — from listing to top
+                    rankings.</div>
+                <ul class="stile-list">
+                    <li>Listing optimization &amp; ranking</li>
+                    <li>Campaign &amp; discount planning</li>
+                    <li>Rating improvement &amp; conversion</li>
+                    <li>Data-driven sales growth</li>
+                </ul>
+            </div>
+
+            <div class="stile st-3 reveal d3">
+                <div class="stile-num">06</div>
+                <div class="stile-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <circle cx="12" cy="12" r="10" />
+                        <path
+                            d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85" />
+                    </svg></div>
+                <div class="stile-name">Branding, Packaging &amp; Digital Presence</div>
+                <div class="stile-desc">Brand naming, logo &amp; identity, menu design, packaging, website &amp; social
+                    media content strategy.</div>
+            </div>
+
+            <!-- 07 Franchise — Full Width Feature -->
+            <div class="stile-featured reveal d1">
+                <div class="stf-left">
+                    <div class="stf-num">07 — Franchise</div>
+                    <div class="stf-name">Franchise Development<br><em>&amp; Expansion.</em></div>
+                </div>
+                <div class="stf-right">
+                    <p class="stf-desc">From franchise model creation to investor pitch decks and Pan-India franchise
+                        sales strategy — we build plug-and-play scalable brand systems designed to expand across cities
+                        and countries.</p>
+                    <div class="stf-tags">
+                        <span class="stf-tag">Franchise Model Creation</span>
+                        <span class="stf-tag">Investor Pitch Decks</span>
+                        <span class="stf-tag">Unit Economics</span>
+                        <span class="stf-tag">Pan-India Franchise Sales</span>
+                        <span class="stf-tag">Scalable Brand Systems</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════
+         STATS BAR
+    ══════════════════════════════════════════ -->
+    <section id="about-stats">
+        <div class="stats-row">
+            <div class="stat-cell reveal d1">
+                <div class="stat-big" data-target="100" data-suffix="+">0<span>+</span></div>
+                <div class="stat-lbl">Cloud Kitchens Consulted</div>
+                <div class="stat-sub">Pan-India &amp; growing</div>
+            </div>
+            <div class="stat-cell reveal d2">
+                <div class="stat-big" data-target="11" data-suffix="+ Yrs">0<span>+ Yrs</span></div>
+                <div class="stat-lbl">Industry Experience</div>
+                <div class="stat-sub">Since 2012</div>
+            </div>
+            <div class="stat-cell reveal d3">
+                <div class="stat-big" data-target="15" data-suffix="+">0<span>+</span></div>
+                <div class="stat-lbl">Cities We Operate In</div>
+                <div class="stat-sub">Pan-India + international consulting</div>
+            </div>
+            <div class="stat-cell reveal d4">
+                <div class="stat-big" data-target="7" data-suffix="">0</div>
+                <div class="stat-lbl">Service Verticals</div>
+                <div class="stat-sub">360° end-to-end coverage</div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════
+         CITIES WE OPERATE IN
+    ══════════════════════════════════════════ -->
+    <section id="cities">
+        <div class="cities-orb"></div>
+        <div class="cities-inner">
+
+            <div class="reveal">
+                <div class="section-tag">Our Reach</div>
+                <h2
+                    style="font-weight:800;font-size:clamp(36px,4vw,58px);line-height:1.05;letter-spacing:-.025em;margin-top:8px;">
+                    Pan-India &amp; <em style="font-style:italic;font-weight:400;color:var(--green);">Global Reach.</em>
+                </h2>
+            </div>
+
+            <div class="cities-grid">
+                <div class="cities-list-wrap">
+                    <div class="cities-region-label">India — 15 Cities</div>
+                    <div class="cities-tiles">
+                        <span class="city-tile">Mumbai</span>
+                        <span class="city-tile">Pune</span>
+                        <span class="city-tile">Delhi NCR</span>
+                        <span class="city-tile">Bangalore</span>
+                        <span class="city-tile">Hyderabad</span>
+                        <span class="city-tile">Chennai</span>
+                        <span class="city-tile">Ahmedabad</span>
+                        <span class="city-tile">Kolkata</span>
+                        <span class="city-tile">Jaipur</span>
+                        <span class="city-tile">Goa</span>
+                        <span class="city-tile">Chandigarh</span>
+                        <span class="city-tile">Indore</span>
+                        <span class="city-tile">Surat</span>
+                        <span class="city-tile">Lucknow</span>
+                        <span class="city-tile">Nagpur</span>
+                    </div>
+
+                    <div class="cities-region-label">International</div>
+                    <div class="cities-tiles">
+                        <span class="city-tile intl">Dubai, UAE</span>
+                        <span class="city-tile intl">Global Markets</span>
+                    </div>
+
+                    <div class="cities-note reveal d2">
+                        <div class="cities-note-dot"></div>
+                        <span>International consulting available for <strong>Indian F&B expansion</strong> into Dubai,
+                            UAE &amp; global markets.</span>
+                    </div>
+                </div>
+
+                <div class="cities-map-wrap reveal-right">
+                    <!--
+                    ═══════════════════════════════════════════
+                    IMAGE PLACEMENT — INDIA COVERAGE MAP
+                    Replace this placeholder div with:
+                    <img
+                        src="https://mykitchen.websblog.in/wp-content/uploads/2026/04/india-coverage-map.png"
+                        alt="MyCloudKitchen Pan-India Coverage Map"
+                        style="width:100%;height:100%;object-fit:cover;object-position:center;"
+                    >
+                    Tip: Use a dark-background India map with
+                    city dots highlighted in #a8ff57 (--green)
+                    ═══════════════════════════════════════════
+                    -->
+                    <div class="cities-map-placeholder">
+                        <div class="ph-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
+                                <circle cx="12" cy="10" r="3" />
+                            </svg>
+                        </div>
+                        <span>India Coverage Map</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════
+         WHY CHOOSE US
+    ══════════════════════════════════════════ -->
+    <section id="why-us">
+        <div class="why-inner">
+            <div class="why-header reveal">
+                <div class="section-tag">Why Choose Us</div>
+                <h2 class="why-headline">One partner.<br><em>Zero gaps.</em></h2>
+            </div>
+            <div class="why-grid">
+                <div class="why-card reveal d1">
+                    <div class="why-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M9 11l3 3L22 4" />
+                            <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" />
+                        </svg></div>
+                    <div class="why-title">Proven Multi-Brand Expertise</div>
+                    <div class="why-body">Pioneers of the multi-brand cloud kitchen model in India — now the backbone of
+                        major food delivery companies and scalable F&B businesses nationwide.</div>
+                </div>
+                <div class="why-card reveal d2">
+                    <div class="why-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <circle cx="12" cy="12" r="10" />
+                            <path d="M12 6v6l4 2" />
+                        </svg></div>
+                    <div class="why-title">Hands-On Execution</div>
+                    <div class="why-body">Not just advisory — we execute. Vendor sourcing, kitchen setup, staff
+                        training, and aggregator onboarding are all handled directly by our team.</div>
+                </div>
+                <div class="why-card reveal d3">
+                    <div class="why-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
+                            <circle cx="9" cy="7" r="4" />
+                            <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" />
+                        </svg></div>
+                    <div class="why-title">Trusted by All Scales</div>
+                    <div class="why-body">From first-time food entrepreneurs and SMEs to large F&B corporates — our
+                        systems are designed to scale, whether you're launching one kitchen or fifty.</div>
+                </div>
+                <div class="why-card reveal d1">
+                    <div class="why-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path
+                                d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                        </svg></div>
+                    <div class="why-title">Strong Industry Network</div>
+                    <div class="why-body">Over a decade of relationships with vendors, suppliers, aggregators, and real
+                        estate contacts means faster launches and better pricing for every client.</div>
+                </div>
+                <div class="why-card reveal d2">
+                    <div class="why-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
+                            <circle cx="12" cy="10" r="3" />
+                        </svg></div>
+                    <div class="why-title">Pan-India + Global Presence</div>
+                    <div class="why-body">Actively consulting across 15+ Indian cities with international consulting
+                        available for Indian F&B expansion into Dubai, UAE, and global markets.</div>
+                </div>
+                <div class="why-card reveal d3">
+                    <div class="why-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M13 10V3L4 14h7v7l9-11h-7z" />
+                        </svg></div>
+                    <div class="why-title">Built for Franchising</div>
+                    <div class="why-body">Every system we build is scalable from day one. SOPs, brand architecture, and
+                        operations are all designed for franchise-driven growth across cities.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════
+         CTA
+    ══════════════════════════════════════════ -->
+    <section id="cta-strip">
+        <div class="cta-inner reveal">
+            <div class="cta-text">
+                <div class="section-tag">Work With Us</div>
+                <h2 class="cta-headline">Ready to launch<br>your <em>cloud kitchen?</em></h2>
+                <p class="cta-body">Whether you're starting a new cloud kitchen, expanding your restaurant, looking for
+                    franchise growth, or building a multi-brand food empire — we have the strategy, execution, and
+                    systems to scale.</p>
+            </div>
+            <div class="cta-actions">
+                <a href="#" class="btn-primary">
+                    Get a Free Consult
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7" />
+                    </svg>
+                </a>
+                <a href="tel:+919022453555" class="btn-ghost">Call +91-9022453555</a>
+            </div>
+        </div>
+    </section>
+
+
+    <script>
+        /* CURSOR */
+        const cursor = document.getElementById('cursor');
+        const cursorRing = document.getElementById('cursor-ring');
+        let mx = 0, my = 0, rx = 0, ry = 0;
+        document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; cursor.style.left = mx + 'px'; cursor.style.top = my + 'px'; });
+        (function animateRing() { rx += (mx - rx) * .12; ry += (my - ry) * .12; cursorRing.style.left = rx + 'px'; cursorRing.style.top = ry + 'px'; requestAnimationFrame(animateRing); })();
+        document.querySelectorAll('a,button,.stile,.why-card,.wwa-stat-big,.stat-cell,.city-tile,.pioneer-badge,.founder-client-tag').forEach(el => {
+            el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+            el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+        });
+
+        /* THEME */
+        document.getElementById('theme-toggle').addEventListener('click', () => {
+            const html = document.documentElement;
+            html.setAttribute('data-theme', html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+        });
+
+        /* PARTICLES */
+        const canvas = document.getElementById('particles');
+        const ctx = canvas.getContext('2d');
+        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        resizeCanvas(); window.addEventListener('resize', resizeCanvas);
+        const particles = [];
+        class Particle {
+            constructor() { this.reset(); }
+            reset() { this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height; this.size = Math.random() * 1.5 + .3; this.speedX = (Math.random() - .5) * .3; this.speedY = (Math.random() - .5) * .3; this.opacity = Math.random() * .4 + .05; this.green = Math.random() > .7; }
+            update() { this.x += this.speedX; this.y += this.speedY; if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) this.reset(); }
+            draw() { const isDark = document.documentElement.getAttribute('data-theme') === 'dark'; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fillStyle = this.green ? (isDark ? `rgba(168,255,87,${this.opacity})` : `rgba(90,158,16,${this.opacity * .6})`) : (isDark ? `rgba(255,255,255,${this.opacity * .3})` : `rgba(0,0,0,${this.opacity * .15})`); ctx.fill(); }
+        }
+        for (let i = 0; i < 55; i++) particles.push(new Particle());
+        (function animateParticles() { ctx.clearRect(0, 0, canvas.width, canvas.height); particles.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animateParticles); })();
+
+        /* REVEAL */
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+        }, { threshold: .1, rootMargin: '0px 0px -60px 0px' });
+        document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale').forEach(el => revealObserver.observe(el));
+
+        /* COUNTER */
+        function animateCounter(el, target, suffix, decimals = 0, duration = 2000) {
+            let start = null;
+            const step = (timestamp) => {
+                if (!start) start = timestamp;
+                const progress = Math.min((timestamp - start) / duration, 1);
+                const eased = 1 - Math.pow(1 - progress, 4);
+                const current = (eased * target).toFixed(decimals);
+                el.innerHTML = current + '<span>' + suffix + '</span>';
+                if (progress < 1) requestAnimationFrame(step);
+                else el.innerHTML = target + '<span>' + suffix + '</span>';
+            };
+            requestAnimationFrame(step);
+        }
+        const statsObserver = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const el = entry.target;
+                    const numEl = el.querySelector('.stat-big[data-target]');
+                    if (numEl && !numEl.dataset.animated) { numEl.dataset.animated = '1'; const t = parseFloat(numEl.dataset.target); const s = numEl.dataset.suffix || ''; animateCounter(numEl, t, s); }
+                    statsObserver.unobserve(el);
+                }
+            });
+        }, { threshold: .5 });
+        document.querySelectorAll('.stat-cell').forEach(el => statsObserver.observe(el));
+
+        /* CARD GLOW */
+        document.querySelectorAll('.why-card,.wwa-stat-big,.stile,.pioneer-badge').forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                const x = ((e.clientX - rect.left) / rect.width) * 100;
+                const y = ((e.clientY - rect.top) / rect.height) * 100;
+                const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+                const g = isDark ? 'rgba(168,255,87,0.06)' : 'rgba(90,158,16,0.05)';
+                card.style.background = `radial-gradient(circle at ${x}% ${y}%,${g},var(--card-bg) 60%)`;
+            });
+            card.addEventListener('mouseleave', () => { card.style.background = ''; });
+        });
+
+        /* MAGNETIC BUTTONS */
+        document.querySelectorAll('.btn-primary').forEach(btn => {
+            btn.addEventListener('mousemove', e => {
+                const rect = btn.getBoundingClientRect();
+                const dx = (e.clientX - rect.left - rect.width / 2) * .3;
+                const dy = (e.clientY - rect.top - rect.height / 2) * .3;
+                btn.style.transform = `translate(${dx}px,${dy}px)`;
+            });
+            btn.addEventListener('mouseleave', () => { btn.style.transform = ''; });
+        });
+    </script>
+</body>
+
+</html>

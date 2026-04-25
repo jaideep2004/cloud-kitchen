@@ -1,0 +1,1853 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloud Kitchen Setup Guide — MyCloudKitchen Blog</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Hubot+Sans:ital,wght@0,200..900;1,200..900&family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --green: #a8ff57;
+            --green-dim: #6bc930;
+            --green-glow: rgba(168, 255, 87, 0.18);
+            --green-glow-strong: rgba(168, 255, 87, 0.35);
+            --bg: #080808;
+            --bg-2: #0f0f0f;
+            --bg-3: #161616;
+            --surface: rgba(255, 255, 255, 0.04);
+            --surface-hover: rgba(255, 255, 255, 0.07);
+            --border: rgba(255, 255, 255, 0.08);
+            --border-bright: rgba(168, 255, 87, 0.25);
+            --text-primary: #f0f0f0;
+            --text-secondary: #ccc8c8;
+            --text-muted: #9a9a9a;
+            --card-bg: rgba(20, 20, 20, 0.85);
+        }
+
+        [data-theme="light"] {
+            --bg: #f4f2ed;
+            --bg-2: #ede9e2;
+            --bg-3: #e5e0d8;
+            --surface: rgba(0, 0, 0, 0.04);
+            --surface-hover: rgba(0, 0, 0, 0.07);
+            --border: rgba(0, 0, 0, 0.08);
+            --border-bright: rgba(100, 180, 30, 0.3);
+            --text-primary: #111;
+            --text-secondary: #444;
+            --text-muted: #7d7a7a;
+            --card-bg: rgba(240, 237, 230, 0.9);
+            --green: #5a9e10;
+            --green-dim: #4a8a0c;
+            --green-glow: rgba(90, 158, 16, 0.12);
+            --green-glow-strong: rgba(90, 158, 16, 0.22);
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            font-family: 'Hubot Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            cursor: none;
+            line-height: 1.6;
+            transition: background .5s, color .5s;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            opacity: .03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            background-size: 256px;
+        }
+
+        /* CURSOR */
+        #cursor {
+            width: 12px;
+            height: 12px;
+            background: var(--green);
+            border-radius: 50%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 9999;
+            mix-blend-mode: difference;
+            transform: translate(-50%, -50%);
+            transition: width .25s, height .25s;
+        }
+
+        #cursor-ring {
+            width: 36px;
+            height: 36px;
+            border: 1px solid var(--green);
+            border-radius: 50%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            opacity: .5;
+        }
+
+        body.cursor-hover #cursor {
+            width: 20px;
+            height: 20px;
+        }
+
+        body.cursor-hover #cursor-ring {
+            width: 60px;
+            height: 60px;
+            opacity: .2;
+        }
+
+        /* THEME TOGGLE */
+        #theme-toggle {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            z-index: 1000;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: none;
+            backdrop-filter: blur(12px);
+            transition: background .3s, transform .4s;
+        }
+
+        #theme-toggle:hover {
+            background: var(--surface-hover);
+            transform: rotate(30deg);
+        }
+
+        #theme-toggle svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        #sun-icon {
+            display: none;
+        }
+
+        [data-theme="light"] #sun-icon {
+            display: block;
+        }
+
+        [data-theme="light"] #moon-icon {
+            display: none;
+        }
+
+        /* PARTICLES */
+        canvas#particles {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            opacity: .4;
+        }
+
+        /* REVEAL */
+        .reveal,
+        .reveal-left,
+        .reveal-right {
+            opacity: 0;
+            transition: opacity .9s cubic-bezier(.16, 1, .3, 1), transform .9s cubic-bezier(.16, 1, .3, 1);
+        }
+
+        .reveal {
+            transform: translateY(40px);
+        }
+
+        .reveal-left {
+            transform: translateX(-50px);
+        }
+
+        .reveal-right {
+            transform: translateX(50px);
+        }
+
+        .reveal.visible,
+        .reveal-left.visible,
+        .reveal-right.visible {
+            opacity: 1;
+            transform: none;
+        }
+
+        .d1 {
+            transition-delay: .1s
+        }
+
+        .d2 {
+            transition-delay: .2s
+        }
+
+        .d3 {
+            transition-delay: .3s
+        }
+
+        .section-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            letter-spacing: .14em;
+            color: var(--green);
+            text-transform: uppercase;
+            margin-bottom: 28px;
+        }
+
+        .section-tag::before {
+            content: "";
+            width: 20px;
+            height: 1px;
+            background: currentColor;
+        }
+
+        /* ===== BACK NAV ===== */
+        #back-nav {
+            padding: 32px 60px 0;
+            position: relative;
+            z-index: 2;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: .1em;
+            color: var(--text-muted);
+            text-decoration: none;
+            text-transform: uppercase;
+            transition: color .25s;
+        }
+
+        .back-link:hover {
+            color: var(--green);
+        }
+
+        .back-link svg {
+            width: 14px;
+            height: 14px;
+            transition: transform .3s;
+        }
+
+        .back-link:hover svg {
+            transform: translateX(-4px);
+        }
+
+        /* ===== ARTICLE HERO ===== */
+        #article-hero {
+            padding: 48px 60px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            pointer-events: none;
+            z-index: 0;
+            background: rgba(168, 255, 87, .07);
+            width: 600px;
+            height: 600px;
+            top: -200px;
+            right: -100px;
+            animation: orbFloat 12s ease-in-out infinite alternate;
+        }
+
+        [data-theme="light"] .hero-orb {
+            background: rgba(90, 158, 16, .06);
+        }
+
+        @keyframes orbFloat {
+            from {
+                transform: translate(0, 0) scale(1)
+            }
+
+            to {
+                transform: translate(-40px, 30px) scale(1.1)
+            }
+        }
+
+        .article-hero-inner {
+            max-width: 860px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .article-badges {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 28px;
+            opacity: 0;
+            transform: translateY(16px);
+            animation: fadeUp .7s .3s forwards;
+        }
+
+        .article-cat {
+            padding: 5px 14px;
+            background: var(--green-glow);
+            border: 1px solid var(--border-bright);
+            border-radius: 50px;
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            font-weight: 700;
+            color: var(--green);
+            letter-spacing: .12em;
+            text-transform: uppercase;
+        }
+
+        .article-date {
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            color: var(--text-muted);
+        }
+
+        .article-read-time {
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            color: var(--text-muted);
+        }
+
+        .badge-sep {
+            width: 3px;
+            height: 3px;
+            background: var(--border);
+            border-radius: 50%;
+        }
+
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+
+        .article-title {
+            font-weight: 800;
+            font-size: clamp(36px, 5vw, 62px);
+            line-height: 1.05;
+            letter-spacing: -.03em;
+            margin-bottom: 28px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp .9s .5s forwards;
+        }
+
+        .article-title em {
+            font-style: italic;
+            font-weight: 400;
+            color: var(--green);
+        }
+
+        .article-subtitle {
+            font-size: 18px;
+            line-height: 1.75;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin-bottom: 40px;
+            font-weight: 400;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp .9s .7s forwards;
+        }
+
+        .article-author-bar {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            padding: 24px 28px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            margin-bottom: 52px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp .9s .9s forwards;
+        }
+
+        .author-avatar {
+            width: 48px;
+            height: 48px;
+            background: var(--green);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .author-avatar svg {
+            width: 22px;
+            height: 22px;
+            color: #080808;
+        }
+
+        .author-info {
+            flex: 1;
+        }
+
+        .author-name {
+            font-weight: 700;
+            font-size: 15px;
+            color: var(--text-primary);
+        }
+
+        .author-role {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .author-divider {
+            width: 1px;
+            height: 36px;
+            background: var(--border);
+        }
+
+        .author-stats {
+            display: flex;
+            gap: 24px;
+        }
+
+        .author-stat {
+            text-align: center;
+        }
+
+        .author-stat-num {
+            font-weight: 800;
+            font-size: 20px;
+            color: var(--green);
+            line-height: 1;
+        }
+
+        .author-stat-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            color: var(--text-muted);
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            margin-top: 2px;
+        }
+
+        /* ===== HERO IMAGE ===== */
+        /* IMAGE SLOT — HERO/COVER IMAGE */
+        /* Replace this entire .article-cover section with:
+           <div class="article-cover-img">
+             <img src="https://mykitchen.websblog.in/wp-content/uploads/2026/04/blog/cloud-kitchen-setup-cover.jpg"
+                  alt="The Complete Cloud Kitchen Setup Guide"
+                  style="width:100%;height:100%;object-fit:cover;object-position:center;">
+           </div>
+           Recommended: 1240×560px, wide cinematic crop, food/kitchen themed */
+        .article-cover {
+            max-width: 1040px;
+            margin: 0 auto;
+            border-radius: 24px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            position: relative;
+            z-index: 1;
+        }
+
+        .article-cover-placeholder {
+            height: 480px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+
+        }
+
+        .article-cover-placeholder .ph-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 18px;
+            background: var(--green-glow);
+            border: 1px solid var(--border-bright);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .article-cover-placeholder .ph-icon svg {
+            width: 30px;
+            height: 30px;
+            color: var(--green);
+        }
+
+        .article-cover-placeholder span {
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            letter-spacing: .1em;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        /* ===== ARTICLE BODY ===== */
+        #article-body {
+            padding: 80px 60px 60px;
+        }
+
+        .article-layout {
+            max-width: 1040px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 280px;
+            gap: 60px;
+            align-items: start;
+        }
+
+        /* CONTENT */
+        .article-content {
+            min-width: 0;
+        }
+
+        .prose {
+            color: var(--text-secondary);
+            font-size: 16px;
+            line-height: 1.85;
+        }
+
+        .prose h2 {
+            font-weight: 800;
+            font-size: clamp(22px, 2.5vw, 30px);
+            letter-spacing: -.02em;
+            color: var(--text-primary);
+            margin: 52px 0 20px;
+            line-height: 1.1;
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .prose h2::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 6px;
+            bottom: 6px;
+            width: 3px;
+            background: var(--green);
+            border-radius: 2px;
+        }
+
+        .prose h3 {
+            font-weight: 700;
+            font-size: 18px;
+            letter-spacing: -.01em;
+            color: var(--text-primary);
+            margin: 36px 0 14px;
+        }
+
+        .prose p {
+            margin-bottom: 22px;
+        }
+
+        .prose strong {
+            color: var(--text-primary);
+            font-weight: 700;
+        }
+
+        .prose em {
+            font-style: italic;
+            color: var(--green);
+        }
+
+        .prose ul,
+        .prose ol {
+            margin: 20px 0 22px 0;
+            padding-left: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .prose ul li {
+            list-style: none;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .prose ul li::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 10px;
+            width: 5px;
+            height: 5px;
+            background: var(--green);
+            border-radius: 50%;
+        }
+
+        .prose ol {
+            counter-reset: li;
+        }
+
+        .prose ol li {
+            list-style: none;
+            padding-left: 32px;
+            position: relative;
+            counter-increment: li;
+        }
+
+        .prose ol li::before {
+            content: counter(li);
+            position: absolute;
+            left: 0;
+            top: 2px;
+            width: 20px;
+            height: 20px;
+            background: var(--green-glow);
+            border: 1px solid var(--border-bright);
+            border-radius: 6px;
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            font-weight: 700;
+            color: var(--green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* CALLOUT BOX */
+        .prose .callout {
+            margin: 32px 0;
+            padding: 24px 28px 24px 32px;
+            background: var(--surface);
+            border: 1px solid var(--border-bright);
+            border-left: 3px solid var(--green);
+            border-radius: 16px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .prose .callout::before {
+            content: '"';
+            position: absolute;
+            top: -10px;
+            right: 20px;
+            font-size: 80px;
+            font-weight: 900;
+            color: var(--green);
+            opacity: .08;
+            line-height: 1;
+            font-family: Georgia, serif;
+        }
+
+        .prose .callout-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            letter-spacing: .14em;
+            color: var(--green);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .prose .callout p {
+            margin-bottom: 0;
+            font-size: 14px;
+            font-style: italic;
+            line-height: 1.8;
+        }
+
+        /* STAT PULL */
+        .prose .stat-pull {
+            margin: 36px 0;
+            padding: 32px 36px;
+            background: var(--bg-3);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+
+        .prose .stat-pull::before {
+            content: "";
+            position: absolute;
+            display: none;
+        }
+
+        .sp-num {
+            font-weight: 800;
+            font-size: 52px;
+            letter-spacing: -.03em;
+            color: var(--green);
+            line-height: 1;
+            flex-shrink: 0;
+        }
+
+        .sp-text {
+            font-size: 15px;
+            line-height: 1.65;
+            color: var(--text-secondary);
+        }
+
+        .sp-text strong {
+            color: var(--text-primary);
+        }
+
+        /* STEP BLOCKS */
+        .prose .steps {
+            margin: 32px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .prose .step-item {
+            display: flex;
+            gap: 20px;
+            padding: 22px 24px;
+            background: var(--bg-3);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            transition: border-color .3s;
+            cursor: none;
+        }
+
+        .prose .step-item:hover {
+            border-color: var(--border-bright);
+        }
+
+        .step-num {
+            width: 36px;
+            height: 36px;
+            flex-shrink: 0;
+            background: var(--green);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Space Mono', monospace;
+            font-weight: 700;
+            font-size: 12px;
+            color: #080808;
+        }
+
+        .step-body {
+            flex: 1;
+        }
+
+        .step-title {
+            font-weight: 700;
+            font-size: 15px;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+        }
+
+        .step-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.65;
+        }
+
+        /* INLINE IMAGE */
+        /* IMAGE SLOT — INLINE BLOG IMAGES */
+        /* Replace .inline-img-placeholder divs with:
+           <figure class="inline-img">
+             <img src="https://mykitchen.websblog.in/wp-content/uploads/2026/04/blog/your-image.jpg" alt="Description"
+                  style="width:100%;border-radius:16px;border:1px solid var(--border);">
+             <figcaption>Your caption here</figcaption>
+           </figure>
+           Recommended: 760×400px */
+        .inline-img {
+            margin: 36px 0;
+        }
+
+        .inline-img-placeholder {
+            height: 300px;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            background: var(--bg-3);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            /* ↓ REPLACE with actual image ↓ */
+            /* background-image: url('https://mykitchen.websblog.in/wp-content/uploads/2026/04/blog/inline-image.jpg'); background-size:cover; */
+        }
+
+        .inline-img-placeholder svg {
+            width: 28px;
+            height: 28px;
+            color: var(--border);
+        }
+
+        .inline-img-placeholder span {
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            letter-spacing: .1em;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .inline-img figcaption {
+            margin-top: 10px;
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            letter-spacing: .06em;
+            color: var(--text-muted);
+            text-align: center;
+        }
+
+        /* POST TAGS */
+        .post-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 48px;
+            padding-top: 32px;
+            border-top: 1px solid var(--border);
+        }
+
+        .post-tag {
+            padding: 7px 16px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-muted);
+            letter-spacing: .02em;
+            cursor: none;
+            transition: border-color .25s, color .25s;
+        }
+
+        .post-tag:hover {
+            border-color: var(--border-bright);
+            color: var(--green);
+        }
+
+        /* SHARE */
+        .post-share {
+            margin-top: 28px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .share-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            letter-spacing: .1em;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .share-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: none;
+            transition: border-color .25s, background .25s;
+        }
+
+        .share-btn:hover {
+            border-color: var(--border-bright);
+            background: var(--green-glow);
+        }
+
+        .share-btn svg {
+            width: 15px;
+            height: 15px;
+            color: var(--text-secondary);
+        }
+
+        /* ===== SIDEBAR ===== */
+        .article-sidebar {
+            position: sticky;
+            top: 100px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* TABLE OF CONTENTS */
+        .toc-box {
+            padding: 24px 26px;
+            background: var(--bg-3);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+        }
+
+        .toc-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            letter-spacing: .14em;
+            color: var(--green);
+            text-transform: uppercase;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .toc-label::before {
+            content: "";
+            width: 12px;
+            height: 1px;
+            background: var(--green);
+        }
+
+        .toc-list {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .toc-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 7px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            color: var(--text-muted);
+            cursor: none;
+            text-decoration: none;
+            transition: background .2s, color .2s;
+        }
+
+        .toc-item:hover,
+        .toc-item.active {
+            background: var(--surface);
+            color: var(--text-primary);
+        }
+
+        .toc-item.active {
+            color: var(--green);
+        }
+
+        .toc-num {
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            color: var(--green);
+            opacity: .7;
+            flex-shrink: 0;
+            width: 18px;
+        }
+
+        /* AUTHOR CARD SIDEBAR */
+        .author-card {
+            padding: 24px 26px;
+            background: var(--bg-3);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+        }
+
+        .author-card-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            letter-spacing: .14em;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+
+        .author-card-avatar {
+            width: 52px;
+            height: 52px;
+            background: var(--green);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 14px;
+        }
+
+        .author-card-avatar svg {
+            width: 24px;
+            height: 24px;
+            color: #080808;
+        }
+
+        .author-card-name {
+            font-weight: 800;
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+
+        .author-card-role {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 14px;
+            line-height: 1.5;
+        }
+
+        .author-card-bio {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.65;
+        }
+
+        /* CTA SIDEBAR */
+        .sidebar-cta {
+            padding: 28px 26px;
+            background: var(--green);
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sidebar-cta::before {
+            content: "";
+            position: absolute;
+            bottom: -40px;
+            right: -30px;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, .07);
+        }
+
+        .sidebar-cta-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: .12em;
+            color: rgba(8, 8, 8, .55);
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .sidebar-cta-headline {
+            font-weight: 800;
+            font-size: 18px;
+            line-height: 1.15;
+            letter-spacing: -.015em;
+            color: #080808;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .sidebar-cta-body {
+            font-size: 12px;
+            color: rgba(8, 8, 8, .65);
+            line-height: 1.6;
+            margin-bottom: 18px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .sidebar-cta-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 11px 20px;
+            background: #080808;
+            color: var(--green);
+            border-radius: 50px;
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: .08em;
+            text-decoration: none;
+            cursor: none;
+            transition: opacity .2s;
+        }
+
+        .sidebar-cta-btn:hover {
+            opacity: .85;
+        }
+
+        .sidebar-cta-btn svg {
+            width: 12px;
+            height: 12px;
+        }
+
+        /* ===== RELATED POSTS ===== */
+        #related-posts {
+            padding: 80px 60px;
+            background: var(--bg-2);
+            border-top: 1px solid var(--border);
+        }
+
+        .related-inner {
+            max-width: 1040px;
+            margin: 0 auto;
+        }
+
+        .related-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 36px;
+        }
+
+        .related-headline {
+            font-weight: 800;
+            font-size: 24px;
+            letter-spacing: -.015em;
+        }
+
+        .related-all {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: .1em;
+            color: var(--green);
+            text-decoration: none;
+            text-transform: uppercase;
+        }
+
+        .related-all svg {
+            width: 12px;
+            height: 12px;
+            transition: transform .3s;
+        }
+
+        .related-all:hover svg {
+            transform: translateX(4px);
+        }
+
+        .related-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+        }
+
+        .related-card {
+            border-radius: 18px;
+            border: 1px solid var(--border);
+            background: var(--card-bg);
+            overflow: hidden;
+            cursor: none;
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            transition: transform .4s cubic-bezier(.34, 1.56, .64, 1), border-color .3s;
+        }
+
+        .related-card:hover {
+            transform: translateY(-6px);
+            border-color: var(--border-bright);
+        }
+
+        /* IMAGE SLOT — RELATED CARD */
+        /* Replace .rc-img with:
+           <img src="https://mykitchen.websblog.in/wp-content/uploads/2026/04/blog/related-post.jpg" alt="title"
+                style="width:100%;height:160px;object-fit:cover;">
+           Recommended: 400×320px */
+        .rc-img {
+            height: 160px;
+            background: var(--bg-3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .rc-img svg {
+            width: 24px;
+            height: 24px;
+            color: var(--border);
+        }
+
+        .rc-content {
+            padding: 18px 20px 22px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .rc-cat {
+            font-family: 'Space Mono', monospace;
+            font-size: 8px;
+            font-weight: 700;
+            color: var(--green);
+            letter-spacing: .1em;
+            text-transform: uppercase;
+        }
+
+        .rc-title {
+            font-weight: 700;
+            font-size: 14px;
+            line-height: 1.3;
+            color: var(--text-primary);
+            flex: 1;
+        }
+
+        .rc-foot {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: auto;
+        }
+
+        .rc-date {
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            color: var(--text-muted);
+        }
+
+        .rc-arrow {
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background .2s, border-color .2s;
+        }
+
+        .related-card:hover .rc-arrow {
+            background: var(--green-glow);
+            border-color: var(--border-bright);
+        }
+
+        .rc-arrow svg {
+            width: 10px;
+            height: 10px;
+            color: var(--green);
+        }
+
+        /* PROGRESS BAR */
+        #reading-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: transparent;
+            z-index: 1001;
+        }
+
+        #reading-progress-bar {
+            height: 100%;
+            background: var(--green);
+            width: 0%;
+            transition: width .1s linear;
+            box-shadow: 0 0 8px var(--green-glow-strong);
+        }
+
+        @media(max-width:1000px) {
+            .article-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .article-sidebar {
+                position: relative;
+                top: 0;
+            }
+
+            .related-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media(max-width:700px) {
+
+            #back-nav,
+            #article-hero,
+            #article-body,
+            #related-posts {
+                padding-left: 24px;
+                padding-right: 24px;
+            }
+
+            .article-badges {
+                flex-wrap: wrap;
+            }
+
+            .article-author-bar {
+                flex-wrap: wrap;
+            }
+
+            .author-stats {
+                flex-wrap: wrap;
+                gap: 16px;
+            }
+
+            .related-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .related-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="cursor"></div>
+    <div id="cursor-ring"></div>
+    <canvas id="particles"></canvas>
+    <div id="reading-progress">
+        <div id="reading-progress-bar"></div>
+    </div>
+
+    <button id="theme-toggle" aria-label="Toggle theme">
+        <svg id="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+            color="var(--text-secondary)">
+            <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
+        </svg>
+        <svg id="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+            color="var(--text-secondary)">
+            <circle cx="12" cy="12" r="5" />
+            <path
+                d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+        </svg>
+    </button>
+
+    <!-- ══════════════════════════════════════════
+         BACK NAV
+    ══════════════════════════════════════════ -->
+    <nav id="back-nav">
+        <a href="blog-index.html" class="back-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 5l-7 7 7 7" />
+            </svg>
+            Back to Blog
+        </a>
+    </nav>
+
+    <!-- ══════════════════════════════════════════
+         ARTICLE HERO
+    ══════════════════════════════════════════ -->
+    <section id="article-hero">
+        <div class="hero-orb"></div>
+        <div class="article-hero-inner">
+
+            <div class="article-badges">
+                <span class="article-cat">Cloud Kitchen</span>
+                <span class="badge-sep"></span>
+                <span class="article-date">November 14, 2024</span>
+                <span class="badge-sep"></span>
+                <span class="article-read-time">12 min read</span>
+            </div>
+
+            <h1 class="article-title">The Complete Cloud Kitchen Setup Guide for <em>Indian Entrepreneurs</em> in 2024
+            </h1>
+            <p class="article-subtitle">A zero-fluff, step-by-step playbook covering location selection, kitchen
+                equipment, staff hiring, aggregator onboarding, and first-week operations — from someone who's done it
+                100+ times.</p>
+
+            <div class="article-author-bar">
+                <div class="author-avatar">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
+                        <circle cx="12" cy="7" r="4" />
+                    </svg>
+                </div>
+                <div class="author-info">
+                    <div class="author-name">Krunal Oza</div>
+                    <div class="author-role">Senior Cloud Kitchen Consultant · Founder, MCK Consulting</div>
+                </div>
+                <div class="author-divider"></div>
+                <div class="author-stats">
+                    <div class="author-stat">
+                        <div class="author-stat-num">100+</div>
+                        <div class="author-stat-label">Kitchens</div>
+                    </div>
+                    <div class="author-stat">
+                        <div class="author-stat-num">11+</div>
+                        <div class="author-stat-label">Years</div>
+                    </div>
+                    <div class="author-stat">
+                        <div class="author-stat-num">15+</div>
+                        <div class="author-stat-label">Cities</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ARTICLE COVER IMAGE -->
+        <div class="article-cover" style="padding:0 60px;">
+            <!-- IMAGE SLOT — COVER/HERO IMAGE
+                 Replace this placeholder with:
+                 <img src="https://mykitchen.websblog.in/wp-content/uploads/2026/04/blog/cloud-kitchen-setup-cover.jpg"
+                      alt="The Complete Cloud Kitchen Setup Guide"
+                      style="width:100%;height:480px;object-fit:cover;display:block;">
+                 Recommended: 1240×560px, wide landscape format -->
+            <div class="article-cover-placeholder">
+                <div class="ph-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <rect x="3" y="3" width="18" height="18" rx="2" />
+                        <path d="M3 9h18M9 21V9" />
+                    </svg>
+                </div>
+                <span>Cover Image · 1240×560px</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         ARTICLE BODY + SIDEBAR
+    ══════════════════════════════════════════ -->
+    <section id="article-body">
+        <div class="article-layout reveal">
+
+            <!-- MAIN CONTENT -->
+            <article class="article-content">
+                <div class="prose">
+
+                    <p>India's cloud kitchen market is projected to hit <strong>₹14,000 crore by 2025</strong>. If
+                        you're reading this, you're already thinking about your slice of it. But here's the truth: most
+                        cloud kitchens that fail don't fail because of bad food. They fail because of poor location
+                        selection, wrong kitchen sizing, and zero aggregator strategy. This guide fixes all three.</p>
+
+                    <h2 id="what-is-cloud-kitchen">What Exactly Is a Cloud Kitchen?</h2>
+                    <p>A cloud kitchen — also called a ghost kitchen, dark kitchen, or delivery kitchen — is a
+                        professional food preparation facility built exclusively for delivery orders. There's no dine-in
+                        space, no servers, no ambiance costs. Just a kitchen, great food, and a delivery fleet.</p>
+
+                    <div class="callout">
+                        <div class="callout-label">Key Insight</div>
+                        <p>A cloud kitchen can operate at <em>40–60% lower costs</em> compared to a traditional
+                            restaurant while generating comparable or higher revenue through multi-brand strategies. The
+                            model flips the traditional economics of F&B entirely.</p>
+                    </div>
+
+                    <h2 id="location">Step 1: Choosing the Right Location</h2>
+                    <p>Location strategy for cloud kitchens is completely different from traditional restaurants. You're
+                        not chasing foot traffic — you're chasing delivery density. Here's our exact framework:</p>
+
+                    <div class="steps">
+                        <div class="step-item">
+                            <div class="step-num">01</div>
+                            <div class="step-body">
+                                <div class="step-title">Delivery Radius Mapping</div>
+                                <div class="step-desc">Identify zones with high Zomato/Swiggy order density within
+                                    3–4km. Use platform analytics or aggregator rep data to validate demand before
+                                    signing a lease.</div>
+                            </div>
+                        </div>
+                        <div class="step-item">
+                            <div class="step-num">02</div>
+                            <div class="step-body">
+                                <div class="step-title">Competitor Saturation Check</div>
+                                <div class="step-desc">Count active cloud kitchens within your target cuisine category
+                                    in the delivery radius. Market saturation above 40% signals high CAC — find a less
+                                    contested zone.</div>
+                            </div>
+                        </div>
+                        <div class="step-item">
+                            <div class="step-num">03</div>
+                            <div class="step-body">
+                                <div class="step-title">Operational Infrastructure</div>
+                                <div class="step-desc">Confirm reliable electricity (3-phase for commercial equipment),
+                                    water supply, waste management, and — critically — ground floor access for delivery
+                                    partner pickups.</div>
+                            </div>
+                        </div>
+                        <div class="step-item">
+                            <div class="step-num">04</div>
+                            <div class="step-body">
+                                <div class="step-title">Rent Economics</div>
+                                <div class="step-desc">Target rent at no more than 8–10% of projected monthly revenue.
+                                    Industrial areas and commercial basements often deliver the best cost-per-sqft
+                                    without sacrificing delivery reach.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- INLINE IMAGE SLOT -->
+                    <!-- Replace with: <img src="https://mykitchen.websblog.in/wp-content/uploads/2026/04/blog/location-map-strategy.jpg" alt="Location selection map strategy" style="width:100%;border-radius:16px;"> -->
+                    <figure class="inline-img">
+                        <div class="inline-img-placeholder">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
+                                <circle cx="12" cy="10" r="3" />
+                            </svg>
+                            <span>Inline Image · 760×360px · Location Strategy Diagram</span>
+                        </div>
+                        <figcaption>Delivery radius mapping for cloud kitchen location selection — real data from 3
+                            Mumbai kitchens</figcaption>
+                    </figure>
+
+                    <h2 id="kitchen-setup">Step 2: Setting Up the Kitchen</h2>
+                    <p>The biggest mistake first-time operators make is over-investing in kitchen setup. A lean cloud
+                        kitchen can be launched for <strong>₹8–15 lakhs</strong> depending on cuisine complexity. Here's
+                        how we structure equipment procurement:</p>
+
+                    <ul>
+                        <li><strong>Core cooking equipment:</strong> Commercial range, oven, fryer (cuisine-dependent),
+                            and exhaust system. Buy proven brands — avoid unbranded equipment that breaks in 6 months.
+                        </li>
+                        <li><strong>Prep equipment:</strong> Commercial mixer, food processor, prep tables. Second-hand
+                            market (IDA auctions, HoReCa dealers) delivers 40–60% savings on good-condition units.</li>
+                        <li><strong>Cold chain:</strong> Commercial refrigerator and freezer — never compromise here.
+                            Spoilage from equipment failure is a silent margin killer.</li>
+                        <li><strong>Packaging station:</strong> Dedicated packing area with labeling, sealing, and bag
+                            stacking set up for speed during peak hours.</li>
+                        <li><strong>POS & order management:</strong> A cloud-based order management system that
+                            aggregates Zomato, Swiggy, and direct orders into one screen from day one.</li>
+                    </ul>
+
+                    <div class="stat-pull">
+                        <div class="sp-num">₹12L</div>
+                        <div class="sp-text"><strong>Average kitchen setup cost</strong> for a standard cloud kitchen
+                            across Tier 1 Indian cities when procurement is handled strategically. Many of our clients
+                            launch in under ₹8L for single-cuisine setups.</div>
+                    </div>
+
+                    <h2 id="brands">Step 3: Planning Your Brand Architecture</h2>
+                    <p>The single biggest advantage of cloud kitchens is <em>multi-brand monetization</em>. One kitchen.
+                        Multiple brands. Each targeting a different cuisine, price point, or audience. This is where
+                        cloud kitchen economics become genuinely compelling.</p>
+
+                    <p>A well-planned 3-brand kitchen operating from a 400 sqft space in Mumbai or Bangalore can
+                        generate revenue equivalent to a full-service restaurant operating from 2000 sqft. The
+                        difference is in how intelligently you stack your brand portfolio against your kitchen's peak
+                        capacity.</p>
+
+                    <!-- INLINE IMAGE SLOT -->
+                    <!-- Replace with: <img src="https://mykitchen.websblog.in/wp-content/uploads/2026/04/blog/multi-brand-architecture.jpg" alt="Multi-brand kitchen architecture diagram" style="width:100%;border-radius:16px;"> -->
+                    <figure class="inline-img">
+                        <div class="inline-img-placeholder">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                                <path
+                                    d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                            </svg>
+                            <span>Inline Image · 760×360px · Brand Portfolio Matrix</span>
+                        </div>
+                        <figcaption>3-brand kitchen architecture — how we structure brand portfolios for maximum
+                            cross-utilization</figcaption>
+                    </figure>
+
+                    <h2 id="aggregators">Step 4: Aggregator Onboarding Strategy</h2>
+                    <p>Your Zomato and Swiggy listings are your storefronts. Most new cloud kitchens treat onboarding as
+                        a checkbox — it's not. The first 30 days of your listing determine your algorithmic trajectory
+                        for months. Here's the playbook:</p>
+
+                    <ol>
+                        <li><strong>Lead with photography.</strong> Invest ₹8,000–₹15,000 in professional food
+                            photography before you go live. Low-quality photos are the single biggest conversion killer
+                            on delivery platforms.</li>
+                        <li><strong>Launch with 12–18 items maximum.</strong> A focused, well-executed menu ranks better
+                            than a 60-item menu with inconsistent quality. You can expand after you've established
+                            ratings.</li>
+                        <li><strong>Use the new merchant programs.</strong> Both Zomato and Swiggy run new restaurant
+                            visibility boosts in the first 30–60 days. Coordinate your launch to maximize this window.
+                        </li>
+                        <li><strong>Price for conversion first.</strong> Your first-month pricing should prioritize
+                            review volume over margin. You're buying social proof, not immediate profit.</li>
+                        <li><strong>Respond to every review in week one.</strong> Aggregator algorithms favour
+                            engagement. Responding to reviews (positive and negative) signals an active operator and
+                            improves ranking velocity.</li>
+                    </ol>
+
+                    <div class="callout">
+                        <div class="callout-label">Pro Tip from the Field</div>
+                        <p>The 4.2+ rating threshold on Zomato and Swiggy is the algorithmic tipping point. Below it,
+                            organic visibility drops sharply. Above it, you get featured placement, search ranking
+                            boosts, and better ad ROI. <em>Everything in your first 60 days should be engineered to hit
+                                and hold 4.2+.</em></p>
+                    </div>
+
+                    <h2 id="operations">Step 5: First-Week Operations</h2>
+                    <p>Most cloud kitchens open with a burst of motivation and hit their first operational crisis within
+                        72 hours. Here's how to prevent that with proper systems before day one.</p>
+
+                    <p>Build a pre-opening SOP checklist covering: FSSAI licensing, GST registration, aggregator account
+                        approvals, staff hiring and training (minimum 2 cooks + 1 packaging staff), supplier
+                        relationships with confirmed credit terms, and a complete mise en place system for your menu.
+                    </p>
+
+                    <p>The kitchens we've launched that hit profitability fastest share one trait: they were
+                        operationally boring. No drama, no surprises. That comes from SOPs designed before the first
+                        order, not after the first crisis.</p>
+
+                </div>
+
+                <!-- TAGS -->
+                <div class="post-tags">
+                    <span class="post-tag">Cloud Kitchen</span>
+                    <span class="post-tag">Setup Guide</span>
+                    <span class="post-tag">India F&B</span>
+                    <span class="post-tag">Zomato</span>
+                    <span class="post-tag">Swiggy</span>
+                    <span class="post-tag">Multi-Brand</span>
+                    <span class="post-tag">Operations</span>
+                </div>
+
+                <!-- SHARE -->
+                <div class="post-share">
+                    <span class="share-label">Share</span>
+                    <button class="share-btn" title="Share on LinkedIn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z" />
+                            <rect x="2" y="9" width="4" height="12" />
+                            <circle cx="4" cy="4" r="2" />
+                        </svg>
+                    </button>
+                    <button class="share-btn" title="Share on Twitter/X">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path
+                                d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z" />
+                        </svg>
+                    </button>
+                    <button class="share-btn" title="Copy link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71" />
+                            <path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71" />
+                        </svg>
+                    </button>
+                    <button class="share-btn" title="Share on WhatsApp">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path
+                                d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z" />
+                        </svg>
+                    </button>
+                </div>
+            </article>
+
+            <!-- SIDEBAR -->
+            <aside class="article-sidebar">
+
+                <!-- TABLE OF CONTENTS -->
+                <div class="toc-box reveal d1">
+                    <div class="toc-label">In This Article</div>
+                    <nav class="toc-list">
+                        <a href="#what-is-cloud-kitchen" class="toc-item active"><span class="toc-num">01</span>What Is
+                            a Cloud Kitchen</a>
+                        <a href="#location" class="toc-item"><span class="toc-num">02</span>Choosing Location</a>
+                        <a href="#kitchen-setup" class="toc-item"><span class="toc-num">03</span>Kitchen Setup</a>
+                        <a href="#brands" class="toc-item"><span class="toc-num">04</span>Brand Architecture</a>
+                        <a href="#aggregators" class="toc-item"><span class="toc-num">05</span>Aggregator Strategy</a>
+                        <a href="#operations" class="toc-item"><span class="toc-num">06</span>First-Week Ops</a>
+                    </nav>
+                </div>
+
+                <!-- AUTHOR -->
+                <div class="author-card reveal d2">
+                    <div class="author-card-label">Written By</div>
+                    <div class="author-card-avatar">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
+                            <circle cx="12" cy="7" r="4" />
+                        </svg>
+                    </div>
+                    <div class="author-card-name">Krunal Oza</div>
+                    <div class="author-card-role">Senior Cloud Kitchen Consultant<br>Founder, MCK Consulting</div>
+                    <div class="author-card-bio">11+ years in cloud kitchen consulting. Helped launch 100+ kitchens
+                        across India. Pioneer of the multi-brand delivery kitchen model in India.</div>
+                </div>
+
+                <!-- CTA -->
+                <div class="sidebar-cta reveal d3">
+                    <div class="sidebar-cta-label">Ready to Launch?</div>
+                    <div class="sidebar-cta-headline">Get a free kitchen consultation</div>
+                    <div class="sidebar-cta-body">Talk to Krunal directly about your cloud kitchen idea — no pitch, just
+                        honest advice.</div>
+                    <a href="tel:+919022453555" class="sidebar-cta-btn">
+                        Book Free Call
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
+                    </a>
+                </div>
+
+            </aside>
+        </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         RELATED POSTS
+    ══════════════════════════════════════════ -->
+    <section id="related-posts">
+        <div class="related-inner">
+            <div class="related-header reveal">
+                <h2 class="related-headline">Keep Reading</h2>
+                <a href="blog-index.html" class="related-all">
+                    All Articles
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7" />
+                    </svg>
+                </a>
+            </div>
+
+            <div class="related-grid">
+                <!-- RELATED CARD 1 -->
+                <a href="#" class="related-card reveal d1">
+                    <!-- IMAGE SLOT — replace with: <img src="https://mykitchen.websblog.in/wp-content/uploads/2026/04/blog/zomato-rank.jpg" alt="title" style="width:100%;height:160px;object-fit:cover;"> -->
+                    <div class="rc-img"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                            <path d="M13 10V3L4 14h7v7l9-11h-7z" />
+                        </svg></div>
+                    <div class="rc-content">
+                        <span class="rc-cat">Aggregator Growth</span>
+                        <div class="rc-title">How to Rank #1 on Zomato & Swiggy Without Burning Your Ad Budget</div>
+                        <div class="rc-foot">
+                            <span class="rc-date">Oct 28, 2024</span>
+                            <div class="rc-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M5 12h14M12 5l7 7-7 7" />
+                                </svg></div>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- RELATED CARD 2 -->
+                <a href="#" class="related-card reveal d2">
+                    <!-- IMAGE SLOT — replace with: <img src="https://mykitchen.websblog.in/wp-content/uploads/2026/04/blog/multi-brand.jpg" alt="title" style="width:100%;height:160px;object-fit:cover;"> -->
+                    <div class="rc-img"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                            <path
+                                d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                        </svg></div>
+                    <div class="rc-content">
+                        <span class="rc-cat">Multi-Brand</span>
+                        <div class="rc-title">Running 5 Brands from One Kitchen: The Math That Makes It Work</div>
+                        <div class="rc-foot">
+                            <span class="rc-date">Oct 15, 2024</span>
+                            <div class="rc-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M5 12h14M12 5l7 7-7 7" />
+                                </svg></div>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- RELATED CARD 3 -->
+                <a href="#" class="related-card reveal d3">
+                    <!-- IMAGE SLOT — replace with: <img src="https://mykitchen.websblog.in/wp-content/uploads/2026/04/blog/menu-engineering.jpg" alt="title" style="width:100%;height:160px;object-fit:cover;"> -->
+                    <div class="rc-img"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                            <path
+                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg></div>
+                    <div class="rc-content">
+                        <span class="rc-cat">Menu Strategy</span>
+                        <div class="rc-title">Menu Engineering 101: How to Price for Maximum Delivery Margin</div>
+                        <div class="rc-foot">
+                            <span class="rc-date">Sep 30, 2024</span>
+                            <div class="rc-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M5 12h14M12 5l7 7-7 7" />
+                                </svg></div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        /* CURSOR */
+        const cursor = document.getElementById('cursor');
+        const cursorRing = document.getElementById('cursor-ring');
+        let mx = 0, my = 0, rx = 0, ry = 0;
+        document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; cursor.style.left = mx + 'px'; cursor.style.top = my + 'px'; });
+        (function animateRing() { rx += (mx - rx) * .12; ry += (my - ry) * .12; cursorRing.style.left = rx + 'px'; cursorRing.style.top = ry + 'px'; requestAnimationFrame(animateRing); })();
+        document.querySelectorAll('a,button,.toc-item,.post-tag,.share-btn,.step-item,.related-card').forEach(el => {
+            el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+            el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+        });
+
+        /* THEME */
+        document.getElementById('theme-toggle').addEventListener('click', () => {
+            const html = document.documentElement;
+            html.setAttribute('data-theme', html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+        });
+
+        /* PARTICLES */
+        const canvas = document.getElementById('particles');
+        const ctx = canvas.getContext('2d');
+        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        resizeCanvas(); window.addEventListener('resize', resizeCanvas);
+        const particles = [];
+        class Particle { constructor() { this.reset(); } reset() { this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height; this.size = Math.random() * 1.5 + .3; this.speedX = (Math.random() - .5) * .3; this.speedY = (Math.random() - .5) * .3; this.opacity = Math.random() * .4 + .05; this.green = Math.random() > .7; } update() { this.x += this.speedX; this.y += this.speedY; if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) this.reset(); } draw() { const isDark = document.documentElement.getAttribute('data-theme') === 'dark'; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fillStyle = this.green ? (isDark ? `rgba(168,255,87,${this.opacity})` : `rgba(90,158,16,${this.opacity * .6})`) : (isDark ? `rgba(255,255,255,${this.opacity * .3})` : `rgba(0,0,0,${this.opacity * .15})`); ctx.fill(); } }
+        for (let i = 0; i < 55; i++)particles.push(new Particle());
+        (function animateParticles() { ctx.clearRect(0, 0, canvas.width, canvas.height); particles.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animateParticles); })();
+
+        /* REVEAL */
+        const revealObserver = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); }); }, { threshold: .1, rootMargin: '0px 0px -60px 0px' });
+        document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el => revealObserver.observe(el));
+
+        /* READING PROGRESS */
+        const progressBar = document.getElementById('reading-progress-bar');
+        window.addEventListener('scroll', () => {
+            const body = document.body;
+            const html = document.documentElement;
+            const scrollTop = window.pageYOffset || html.scrollTop;
+            const scrollHeight = Math.max(body.scrollHeight, html.scrollHeight) - html.clientHeight;
+            progressBar.style.width = (scrollTop / scrollHeight * 100) + '%';
+        });
+
+        /* TOC ACTIVE STATE */
+        const tocItems = document.querySelectorAll('.toc-item');
+        const headings = document.querySelectorAll('.prose h2');
+        window.addEventListener('scroll', () => {
+            let current = '';
+            headings.forEach(heading => {
+                if (window.scrollY >= heading.offsetTop - 200) current = heading.id;
+            });
+            tocItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('href') === '#' + current) item.classList.add('active');
+            });
+        });
+
+        /* CARD GLOW */
+        document.querySelectorAll('.related-card,.step-item').forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                const x = ((e.clientX - rect.left) / rect.width) * 100;
+                const y = ((e.clientY - rect.top) / rect.height) * 100;
+                const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+                const g = isDark ? 'rgba(168,255,87,0.04)' : 'rgba(90,158,16,0.03)';
+                card.style.background = `radial-gradient(circle at ${x}% ${y}%,${g},var(--card-bg) 60%)`;
+            });
+            card.addEventListener('mouseleave', () => { card.style.background = ''; });
+        });
+
+        /* COPY LINK */
+        document.querySelector('[title="Copy link"]').addEventListener('click', () => {
+            navigator.clipboard.writeText(window.location.href).then(() => {
+                const btn = document.querySelector('[title="Copy link"]');
+                btn.style.borderColor = 'var(--green)';
+                setTimeout(() => { btn.style.borderColor = ''; }, 1500);
+            });
+        });
+    </script>
+</body>
+
+</html>

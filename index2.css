@@ -18,6 +18,7 @@
 	--text-muted: #444;
 	--card-bg: rgba(20, 20, 20, 0.85);
 	--shadow: 0 32px 80px rgba(0, 0, 0, 0.6);
+	--footr-logo: ;
 }
 
 [data-theme="light"] {
@@ -162,96 +163,6 @@ body.cursor-hover #cursor-ring {
 }
 
 /* NAV */
-/* nav {
-	position: fixed;
-	top: 20px;
-	left: 50%;
-	transform: translateX(-50%);
-	z-index: 900;
-	display: flex;
-	align-items: center;
-	background: var(--card-bg);
-	backdrop-filter: blur(24px);
-	border: 1px solid var(--border);
-	border-radius: 60px;
-	padding: 7px 12px 7px 24px;
-	transition:
-		background 0.4s,
-		border-color 0.4s,
-		box-shadow 0.4s;
-	animation: navDrop 0.8s 1.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
-}
-
-@keyframes navDrop {
-	from {
-		opacity: 0;
-		transform: translateX(-50%) translateY(-20px);
-	}
-
-	to {
-		opacity: 1;
-		transform: translateX(-50%) translateY(0);
-	}
-}
-
-nav.scrolled {
-	box-shadow: 0 8px 40px rgba(0, 0, 0, 0.4);
-}
-
-.nav-logo {
-	font-weight: 800;
-	font-size: 18px;
-	letter-spacing: 0.08em;
-	color: var(--text-primary);
-	text-decoration: none;
-	margin-right: 40px;
-}
-
-.nav-logo span {
-	color: var(--green);
-}
-
-.nav-links {
-	display: flex;
-	align-items: center;
-	gap: 32px;
-	list-style: none;
-	margin-right: 32px;
-}
-
-.nav-links a {
-	font-size: 13px;
-	font-weight: 500;
-	color: var(--text-secondary);
-	text-decoration: none;
-	letter-spacing: 0.04em;
-	transition: color 0.25s;
-}
-
-.nav-links a:hover {
-	color: var(--text-primary);
-}
-
-.nav-cta {
-	background: var(--green);
-	color: #080808;
-	font-size: 13px;
-	font-weight: 700;
-	letter-spacing: 0.06em;
-	padding: 10px 22px;
-	border-radius: 50px;
-	text-decoration: none;
-	border: none;
-	cursor: none;
-	transition:
-		transform 0.2s,
-		box-shadow 0.2s;
-}
-
-.nav-cta:hover {
-	transform: scale(1.04);
-	box-shadow: 0 0 24px var(--green-glow-strong);
-} */
 
 nav {
 	position: fixed;
@@ -328,7 +239,7 @@ nav.scrolled {
 .nav-links a {
 	font-size: 13px;
 	font-weight: 500;
-	color: var(--text-secondary);
+	color: var(--text-primary);
 	text-decoration: none;
 	letter-spacing: 0.04em;
 	transition: color 0.25s;
@@ -385,8 +296,8 @@ nav.scrolled {
 	top: 100%;
 	left: 50%;
 	transform: translateX(-50%) translateY(15px);
-	width: 600px; /* Wide for grid layout */
-	background: rgba(20, 20, 20, 0.95);
+	width: 600px;
+	background: var(--bg);
 	backdrop-filter: blur(30px);
 	border: 1px solid var(--border);
 	border-radius: 24px;
@@ -425,7 +336,7 @@ nav.scrolled {
 
 .dropdown-menu li a {
 	font-size: 13px;
-	color: var(--text-secondary);
+	color: var(--text-primary);
 	padding: 8px 12px;
 	border-radius: 8px;
 	transition: all 0.2s ease;
@@ -2260,26 +2171,53 @@ section {
 /* ============================================================
        INSTAGRAM REELS SECTION
     ============================================================ */
+/* ============================================================
+           REELS SECTION
+           ============================================================ */
 #reels {
-	padding: 100px 60px;
+	padding: 80px 60px;
 	background: var(--bg-2);
 	overflow: hidden;
 }
 
+/* ── Header ──────────────────────────────────────────────── */
 .reels-header {
 	display: flex;
 	align-items: flex-end;
 	justify-content: space-between;
 	max-width: 1300px;
-	margin: 0 auto 60px;
+	margin: 0 auto 64px;
 	gap: 40px;
 }
 
+.section-tag {
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+	font-family: "Space Mono", monospace;
+	font-size: 10px;
+	font-weight: 700;
+	letter-spacing: 0.16em;
+	text-transform: uppercase;
+	color: var(--green);
+	margin-bottom: 18px;
+}
+
+.section-tag::before {
+	content: "";
+	display: inline-block;
+	width: 22px;
+	height: 1.5px;
+	background: var(--green);
+	flex-shrink: 0;
+}
+
 .reels-title {
-	font-weight: 800;
 	font-size: clamp(36px, 4vw, 60px);
+	font-weight: 800;
 	line-height: 1.05;
-	letter-spacing: -0.02em;
+	letter-spacing: -0.025em;
+	color: var(--text);
 }
 
 .reels-title em {
@@ -2288,6 +2226,7 @@ section {
 	color: var(--green);
 }
 
+/* ── Follow Button ───────────────────────────────────────── */
 .reels-follow {
 	display: inline-flex;
 	align-items: center;
@@ -2307,65 +2246,113 @@ section {
 }
 
 .reels-follow:hover {
-	transform: translateY(-3px) scale(1.04);
-	box-shadow: 0 12px 40px rgba(253, 29, 29, 0.3);
+	transform: translateY(-4px) scale(1.05);
+	box-shadow: 0 14px 44px rgba(253, 29, 29, 0.35);
 }
 
 .reels-follow svg {
 	width: 16px;
 	height: 16px;
+	flex-shrink: 0;
 }
 
-/* Slider track */
+/* ── Slider Wrapper ──────────────────────────────────────── */
 .reels-slider-wrap {
 	position: relative;
 	max-width: 1300px;
 	margin: 0 auto;
+	overflow: visible;
 }
 
+/* Fade edges */
+.reels-slider-wrap::before,
+.reels-slider-wrap::after {
+	content: "";
+	position: absolute;
+	top: 0;
+	bottom: 48px; /* stop above nav dots */
+	width: 24px;
+	z-index: 10;
+	pointer-events: none;
+}
+
+.reels-slider-wrap::before {
+	left: 0;
+	background: linear-gradient(to right, var(--bg-2), transparent);
+}
+
+.reels-slider-wrap::after {
+	right: 0;
+	background: linear-gradient(to left, var(--bg-2), transparent);
+}
+
+/* ── Track ───────────────────────────────────────────────── */
 .reels-track {
 	display: flex;
 	gap: 16px;
-	overflow: hidden !important;
-	/* hidden by default, JS controls */
+	overflow-x: scroll;
 	scroll-behavior: smooth;
+	scrollbar-width: none;
+	-ms-overflow-style: none;
+	padding: 16px 4px 24px;
+	overflow-y: visible !important;
 }
 
-/* Each reel card */
+.reels-track::-webkit-scrollbar {
+	display: none;
+}
+
+/* ── Reel Card ───────────────────────────────────────────── */
 .reel-card {
 	flex: 0 0 220px;
-	aspect-ratio: 9/16;
+	aspect-ratio: 9 / 16;
 	border-radius: 20px;
 	background: var(--bg-3);
 	border: 1px solid var(--border);
 	overflow: hidden;
 	position: relative;
-	cursor: none;
+	cursor: pointer;
 	transition:
 		transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
-		border-color 0.3s,
-		box-shadow 0.3s;
+		border-color 0.3s ease,
+		box-shadow 0.3s ease;
+}
+
+.reel-video {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	border-radius: 20px;
+	display: block;
+	background: #000;
 }
 
 .reel-card:hover {
-	transform: translateY(-10px) scale(1.02);
+	transform: translateY(-12px) scale(1.025);
 	border-color: var(--border-bright);
 	box-shadow:
-		0 24px 60px rgba(0, 0, 0, 0.4),
-		0 0 40px var(--green-glow);
+		0 28px 64px rgba(0, 0, 0, 0.55),
+		0 0 44px var(--green-glow);
 }
 
-/* iframe embed */
+/* Instagram gradient border for live embeds */
+.reel-card.has-embed {
+	border-color: transparent;
+	background:
+		linear-gradient(var(--bg-3), var(--bg-3)) padding-box,
+		var(--insta-grad) border-box;
+}
+
+/* iframe */
 .reel-card iframe {
 	position: absolute;
 	inset: 0;
 	width: 100%;
 	height: 100%;
 	border: none;
-	/* pointer-events: none; */
 }
 
-/* placeholder state (before embed URL added) */
+/* ── Placeholder (empty src) ─────────────────────────────── */
 .reel-placeholder {
 	position: absolute;
 	inset: 0;
@@ -2373,96 +2360,59 @@ section {
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	gap: 12px;
+	gap: 16px;
 	background: var(--bg-3);
 }
 
-.reel-placeholder-icon {
-	width: 52px;
-	height: 52px;
+.reel-placeholder-ring {
+	width: 58px;
+	height: 58px;
 	border-radius: 50%;
-	background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
+	background: var(--insta-grad);
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	position: relative;
 }
 
-.reel-placeholder-icon svg {
+.reel-placeholder-ring::after {
+	content: "";
+	position: absolute;
+	inset: 2.5px;
+	border-radius: 50%;
+	background: var(--bg-3);
+}
+
+.reel-placeholder-ring svg {
+	position: relative;
+	z-index: 1;
 	width: 22px;
 	height: 22px;
 	color: #fff;
 }
 
-.reel-placeholder-label {
+.reel-placeholder-num {
 	font-family: "Space Mono", monospace;
-	font-size: 10px;
-	letter-spacing: 0.1em;
+	font-size: 9px;
+	letter-spacing: 0.14em;
 	color: var(--text-muted);
+	text-align: center;
+}
+
+.reel-placeholder-label {
+	font-size: 11px;
+	font-weight: 600;
+	color: var(--text-secondary);
 	text-align: center;
 	padding: 0 16px;
 }
 
-/* overlay on hover */
-.reel-overlay {
-	position: absolute;
-	inset: 0;
-	z-index: 5;
-	background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, transparent 50%);
-	opacity: 0;
-	transition: opacity 0.3s;
-	display: flex;
-	flex-direction: column;
-	justify-content: flex-end;
-	padding: 20px;
-	display: none;
-}
-
-.reel-card:hover .reel-overlay {
-	opacity: 1;
-}
-
-.reel-play-btn {
-	width: 44px;
-	height: 44px;
-	border-radius: 50%;
-	background: var(--green);
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	margin-bottom: 10px;
-	transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.reel-card:hover .reel-play-btn {
-	transform: scale(1.15);
-}
-
-.reel-play-btn svg {
-	width: 16px;
-	height: 16px;
-	color: #080808;
-	margin-left: 2px;
-}
-
-.reel-label {
-	font-size: 11px;
-	font-weight: 600;
-	color: #fff;
-}
-
-/* Insta gradient border on active */
-.reel-card.has-embed {
-	border-color: transparent;
-	background:
-		linear-gradient(var(--bg-3), var(--bg-3)) padding-box,
-		linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045) border-box;
-}
-
-/* Nav arrows */
+/* ── Navigation ──────────────────────────────────────────── */
 .reels-nav {
 	display: flex;
+	align-items: center;
 	gap: 10px;
-	margin-top: 32px;
+	margin-top: 10px;
 	justify-content: center;
 }
 
@@ -2475,17 +2425,18 @@ section {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	cursor: none;
+	cursor: pointer;
 	transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+	flex-shrink: 0;
 }
 
-.reels-nav-btn:hover {
+.reels-nav-btn:hover:not(:disabled) {
 	background: var(--green);
 	border-color: var(--green);
-	transform: scale(1.1);
+	transform: scale(1.12);
 }
 
-.reels-nav-btn:hover svg {
+.reels-nav-btn:hover:not(:disabled) svg {
 	color: #080808;
 }
 
@@ -2496,6 +2447,12 @@ section {
 	transition: color 0.2s;
 }
 
+.reels-nav-btn:disabled {
+	opacity: 0.28;
+	cursor: default;
+}
+
+/* ── Dots ────────────────────────────────────────────────── */
 .reels-dots {
 	display: flex;
 	gap: 6px;
@@ -2506,28 +2463,58 @@ section {
 	width: 6px;
 	height: 6px;
 	border-radius: 50%;
-	background: var(--border);
-	transition: all 0.3s;
+	background: var(--border-bright);
+	cursor: pointer;
+	transition: all 0.3s ease;
 }
 
 .reels-dot.active {
-	width: 20px;
+	width: 22px;
 	border-radius: 3px;
 	background: var(--green);
 }
 
-@media (max-width: 800px) {
+/* ── Counter ─────────────────────────────────────────────── */
+.reels-count {
+	font-family: "Space Mono", monospace;
+	font-size: 10px;
+	letter-spacing: 0.12em;
+	color: var(--text-muted);
+	text-align: center;
+	margin-top: 16px;
+	min-height: 16px;
+}
+
+/* ── Responsive ──────────────────────────────────────────── */
+@media (max-width: 900px) {
 	#reels {
-		padding: 80px 24px;
+		padding: 80px 32px;
+	}
+
+	.reels-slider-wrap::before,
+	.reels-slider-wrap::after {
+		width: 32px;
+	}
+}
+
+@media (max-width: 640px) {
+	#reels {
+		padding: 72px 20px;
 	}
 
 	.reels-header {
 		flex-direction: column;
 		align-items: flex-start;
+		margin-bottom: 48px;
 	}
 
 	.reel-card {
 		flex: 0 0 170px;
+	}
+
+	.reels-slider-wrap::before,
+	.reels-slider-wrap::after {
+		display: none;
 	}
 }
 
@@ -3046,7 +3033,7 @@ section {
    REVIEWS SECTION
    ============================================================ */
 #reviews {
-	padding: 100px 60px;
+	padding: 80px 60px;
 	background: var(--bg-2);
 }
 
@@ -3345,10 +3332,10 @@ footer {
 }
 
 .footer-top {
-	max-width: 1300px;
+	max-width: 1400px;
 	margin: 0 auto 72px;
 	display: grid;
-	grid-template-columns: 1.4fr 1.8fr 1.2fr 1.4fr;
+	grid-template-columns: 1.2fr 1.5fr 1.4fr 1.4fr;
 	gap: 52px;
 }
 
@@ -3358,6 +3345,10 @@ footer {
 	font-size: 26px;
 	letter-spacing: 0.06em;
 	margin-bottom: 4px;
+
+	img {
+		width: 120px;
+	}
 }
 
 .footer-logo span {
@@ -4699,6 +4690,11 @@ footer {
 	border-top: 1px solid var(--border);
 	overflow: hidden;
 	position: relative;
+
+	h2 {
+		text-align: center !important;
+		margin-bottom: 50px;
+	}
 }
 
 /* Optional: Subtle gradient fade on edges */
@@ -4789,5 +4785,48 @@ footer {
 
 	.brands-track {
 		gap: 40px;
+	}
+}
+
+/* Floating WhatsApp Icon */
+.floating-whatsapp {
+	position: fixed;
+	left: 30px;
+	bottom: 30px;
+	width: 60px;
+	height: 60px;
+	background-color: #25d366;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	text-decoration: none;
+	box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
+	z-index: 1000;
+	transition: all 0.3s ease;
+}
+
+.floating-whatsapp:hover {
+	transform: scale(1.1);
+	box-shadow: 0 6px 20px rgba(37, 211, 102, 0.6);
+}
+
+.floating-whatsapp img {
+	width: 35px;
+	height: 35px;
+	object-fit: contain;
+}
+
+@media (max-width: 768px) {
+	.floating-whatsapp {
+		left: 20px;
+		bottom: 20px;
+		width: 50px;
+		height: 50px;
+	}
+
+	.floating-whatsapp img {
+		width: 28px;
+		height: 28px;
 	}
 }

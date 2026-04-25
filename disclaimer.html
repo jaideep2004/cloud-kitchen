@@ -1,0 +1,2307 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Disclaimer — My Cloud Kitchen</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Hubot+Sans:ital,wght@0,200..900;1,200..900&family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --green: #a8ff57;
+            --green-dim: #6bc930;
+            --green-glow: rgba(168, 255, 87, 0.18);
+            --green-glow-strong: rgba(168, 255, 87, 0.35);
+            --bg: #080808;
+            --bg-2: #0f0f0f;
+            --bg-3: #161616;
+            --surface: rgba(255, 255, 255, 0.04);
+            --surface-hover: rgba(255, 255, 255, 0.07);
+            --border: rgba(255, 255, 255, 0.08);
+            --border-bright: rgba(168, 255, 87, 0.25);
+            --text-primary: #f0f0f0;
+            --text-secondary: #888;
+            --text-muted: #444;
+            --card-bg: rgba(20, 20, 20, 0.85);
+            --shadow: 0 32px 80px rgba(0, 0, 0, 0.6);
+        }
+
+        [data-theme="light"] {
+            --bg: #f4f2ed;
+            --bg-2: #ede9e2;
+            --bg-3: #e5e0d8;
+            --surface: rgba(0, 0, 0, 0.04);
+            --surface-hover: rgba(0, 0, 0, 0.07);
+            --border: rgba(0, 0, 0, 0.08);
+            --border-bright: rgba(100, 180, 30, 0.3);
+            --text-primary: #111;
+            --text-secondary: #555;
+            --text-muted: #aaa;
+            --card-bg: rgba(240, 237, 230, 0.9);
+            --shadow: 0 32px 80px rgba(0, 0, 0, 0.12);
+            --green: #5a9e10;
+            --green-dim: #4a8a0c;
+            --green-glow: rgba(90, 158, 16, 0.12);
+            --green-glow-strong: rgba(90, 158, 16, 0.22);
+        }
+
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scrollbar-width: thin;
+            scrollbar-color: var(--green-dim) var(--bg-3);
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-3);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--green-dim);
+            border-radius: 10px;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+            transition: background 0.4s ease, color 0.4s ease;
+            overflow-x: hidden;
+        }
+
+        /* ─── AMBIENT BG ─── */
+        .ambient {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .ambient-blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.07;
+            animation: blobDrift 18s ease-in-out infinite;
+        }
+
+        .ambient-blob:nth-child(1) {
+            width: 600px;
+            height: 600px;
+            background: var(--green);
+            top: -200px;
+            right: -150px;
+            animation-delay: 0s;
+        }
+
+        .ambient-blob:nth-child(2) {
+            width: 400px;
+            height: 400px;
+            background: var(--green-dim);
+            bottom: 10%;
+            left: -100px;
+            animation-delay: -8s;
+        }
+
+        .ambient-blob:nth-child(3) {
+            width: 300px;
+            height: 300px;
+            background: var(--green);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation-delay: -4s;
+        }
+
+        @keyframes blobDrift {
+
+            0%,
+            100% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            33% {
+                transform: translate(30px, -20px) scale(1.05);
+            }
+
+            66% {
+                transform: translate(-20px, 30px) scale(0.95);
+            }
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.4;
+        }
+
+        /* ─── NAVBAR ─── */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            height: 70px;
+            background: rgba(8, 8, 8, 0.7);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-bottom: 1px solid var(--border);
+            transition: background 0.4s ease, border-color 0.4s ease;
+        }
+
+        [data-theme="light"] nav {
+            background: rgba(244, 242, 237, 0.75);
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 1.2rem;
+            color: var(--text-primary);
+            transition: color 0.3s;
+        }
+
+        .nav-logo-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--green), var(--green-dim));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            box-shadow: 0 0 16px var(--green-glow-strong);
+        }
+
+        .theme-toggle {
+            width: 40px;
+            height: 40px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            position: absolute;
+            top: 16px;
+            right: 40px;
+        }
+
+        .theme-toggle:hover {
+            background: var(--green-glow);
+            border-color: var(--border-bright);
+            transform: rotate(20deg);
+        }
+
+        /* ─── HERO ─── */
+        .page-hero {
+            position: relative;
+            z-index: 2;
+            padding: 85px 40px 80px;
+            text-align: center;
+            max-width: 860px;
+            margin: 0 auto;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 16px;
+            background: var(--green-glow);
+            border: 1px solid var(--border-bright);
+            border-radius: 50px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--green);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 28px;
+            animation: fadeSlideUp 0.6s ease both;
+        }
+
+        .hero-badge::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: var(--green);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--green);
+            animation: pulse 2s ease infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.5;
+                transform: scale(0.8);
+            }
+        }
+
+        .page-title {
+            font-family: 'Hubot Sans', sans-serif;
+            font-size: clamp(2.4rem, 5vw, 4rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            animation: fadeSlideUp 0.6s ease 0.1s both;
+        }
+
+        .page-title span {
+            background: linear-gradient(135deg, var(--green), var(--green-dim));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-subtitle {
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+            max-width: 580px;
+            margin: 0 auto 32px;
+            line-height: 1.7;
+            animation: fadeSlideUp 0.6s ease 0.2s both;
+        }
+
+        .hero-meta {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 24px;
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            animation: fadeSlideUp 0.6s ease 0.3s both;
+            flex-wrap: wrap;
+        }
+
+        .hero-meta span {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .hero-meta span strong {
+            color: var(--text-secondary);
+        }
+
+        @keyframes fadeSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(24px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ─── ALERT BANNER ─── */
+        .alert-banner {
+            position: relative;
+            z-index: 2;
+            max-width: 860px;
+            margin: 0 auto 0;
+            padding: 0 40px;
+            animation: fadeSlideUp 0.6s ease 0.4s both;
+        }
+
+        .alert-banner-inner {
+            background: rgba(255, 100, 80, 0.06);
+            border: 1px solid rgba(255, 100, 80, 0.25);
+            border-radius: 16px;
+            padding: 18px 24px;
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+        }
+
+        .alert-banner-icon {
+            font-size: 1.2rem;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .alert-banner-text {
+            font-size: 0.88rem;
+            color: rgba(255, 160, 140, 0.9);
+            line-height: 1.7;
+        }
+
+        .alert-banner-text strong {
+            color: rgba(255, 180, 160, 1);
+            display: block;
+            margin-bottom: 4px;
+            font-size: 0.92rem;
+        }
+
+        /* ─── DIVIDER ─── */
+        .divider {
+            width: 100%;
+            max-width: 860px;
+            margin: 40px auto 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border-bright), transparent);
+            position: relative;
+            z-index: 2;
+        }
+
+        /* ─── LAYOUT ─── */
+        .content-wrapper {
+            position: relative;
+            z-index: 2;
+            max-width: 1250px;
+            margin: 0 auto;
+            padding: 60px 0px 120px;
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 48px;
+            align-items: start;
+        }
+
+        /* ─── SIDEBAR ─── */
+        .sidebar {
+            position: sticky;
+            top: 90px;
+        }
+
+        .sidebar-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+            padding-left: 16px;
+        }
+
+        .sidebar-nav {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .sidebar-nav li a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 16px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            transition: all 0.25s ease;
+            border: 1px solid transparent;
+            position: relative;
+        }
+
+        .sidebar-nav li a .nav-num {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            min-width: 18px;
+        }
+
+        .sidebar-nav li a:hover,
+        .sidebar-nav li a.active {
+            background: var(--green-glow);
+            border-color: var(--border-bright);
+            color: var(--green);
+        }
+
+        .sidebar-nav li a.active .nav-num {
+            color: var(--green);
+        }
+
+        .sidebar-nav li a.active::before {
+            content: '';
+            position: absolute;
+            left: -1px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 60%;
+            background: var(--green);
+            border-radius: 0 4px 4px 0;
+        }
+
+        /* ─── QUICK SUMMARY CARD ─── */
+        .summary-card {
+            margin-top: 28px;
+            padding: 20px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+        }
+
+        .summary-card-title {
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 14px;
+        }
+
+        .summary-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.78rem;
+        }
+
+        .summary-item:last-child {
+            border-bottom: none;
+        }
+
+        .summary-item-icon {
+            font-size: 0.9rem;
+        }
+
+        .summary-item-label {
+            color: var(--text-muted);
+            flex: 1;
+        }
+
+        .summary-item-val {
+            color: var(--text-secondary);
+            font-weight: 500;
+            text-align: right;
+        }
+
+        /* ─── READING PROGRESS ─── */
+        .reading-progress-wrap {
+            margin-top: 16px;
+            padding: 16px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+        }
+
+        .reading-progress-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+        }
+
+        .reading-progress-label span:last-child {
+            color: var(--green);
+            font-weight: 600;
+        }
+
+        .reading-progress-bar {
+            height: 4px;
+            background: var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .reading-progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--green-dim), var(--green));
+            border-radius: 10px;
+            transition: width 0.15s ease;
+        }
+
+        /* ─── MAIN CONTENT ─── */
+        .main-content {
+            min-width: 0;
+        }
+
+        /* ─── CONTROLS BAR ─── */
+        .controls-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .controls-bar-left {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+        }
+
+        .controls-bar-left strong {
+            color: var(--green);
+            font-size: 0.88rem;
+        }
+
+        .toggle-all-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 50px;
+            color: var(--text-secondary);
+            font-size: 0.82rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .toggle-all-btn:hover {
+            background: var(--green-glow);
+            border-color: var(--border-bright);
+            color: var(--green);
+        }
+
+        /* ─── SECTIONS ─── */
+        .tc-section {
+            margin-bottom: 12px;
+            animation: fadeSlideUp 0.5s ease both;
+        }
+
+        .tc-section-inner {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        .tc-section-inner:hover {
+            border-color: var(--border-bright);
+            box-shadow: 0 8px 40px var(--green-glow);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 28px 32px;
+            cursor: pointer;
+            user-select: none;
+            transition: background 0.2s ease;
+        }
+
+        .section-header:hover {
+            background: var(--surface-hover);
+        }
+
+        .section-icon {
+            width: 44px;
+            height: 44px;
+            background: var(--green-glow);
+            border: 1px solid var(--border-bright);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.15rem;
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+        }
+
+        .tc-section-inner:hover .section-icon {
+            background: var(--green-glow-strong);
+            box-shadow: 0 0 20px var(--green-glow);
+        }
+
+        .section-title-group {
+            flex: 1;
+        }
+
+        .section-number {
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--green);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .section-title {
+            font-family: 'Hubot Sans', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .section-chevron {
+            width: 28px;
+            height: 28px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .section-chevron svg {
+            transition: transform 0.3s ease;
+            stroke: var(--text-muted);
+        }
+
+        .tc-section.open .section-chevron {
+            background: var(--green-glow);
+            border-color: var(--border-bright);
+        }
+
+        .tc-section.open .section-chevron svg {
+            transform: rotate(180deg);
+            stroke: var(--green);
+        }
+
+        .section-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .tc-section.open .section-body {
+            max-height: 2400px;
+        }
+
+        .section-body-inner {
+            padding: 0 32px 32px;
+            border-top: 1px solid var(--border);
+        }
+
+        .section-body-inner p {
+            color: var(--text-secondary);
+            font-size: 0.93rem;
+            line-height: 1.8;
+            margin-bottom: 16px;
+        }
+
+        .section-body-inner p:last-child {
+            margin-bottom: 0;
+        }
+
+        .section-body-inner ul,
+        .section-body-inner ol {
+            padding-left: 0;
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .section-body-inner ul li,
+        .section-body-inner ol li {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            color: var(--text-secondary);
+            font-size: 0.92rem;
+            line-height: 1.7;
+        }
+
+        .section-body-inner ul li::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: var(--green);
+            border-radius: 50%;
+            flex-shrink: 0;
+            margin-top: 8px;
+            box-shadow: 0 0 6px var(--green-glow-strong);
+        }
+
+        .section-body-inner ol {
+            counter-reset: item;
+        }
+
+        .section-body-inner ol li {
+            counter-increment: item;
+        }
+
+        .section-body-inner ol li::before {
+            content: counter(item);
+            min-width: 22px;
+            height: 22px;
+            background: var(--green-glow);
+            border: 1px solid var(--border-bright);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--green);
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        /* ─── BOX TYPES ─── */
+        .highlight-box {
+            background: var(--green-glow);
+            border: 1px solid var(--border-bright);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin: 16px 0;
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        .highlight-box p {
+            color: var(--text-primary) !important;
+            margin: 0 !important;
+            font-size: 0.88rem !important;
+        }
+
+        .warn-box {
+            background: rgba(255, 160, 50, 0.06);
+            border: 1px solid rgba(255, 160, 50, 0.2);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin: 16px 0;
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        .warn-box p {
+            color: rgba(255, 200, 100, 0.85) !important;
+            margin: 0 !important;
+            font-size: 0.88rem !important;
+        }
+
+        .info-box {
+            background: rgba(87, 170, 255, 0.06);
+            border: 1px solid rgba(87, 170, 255, 0.2);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin: 16px 0;
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        .info-box p {
+            color: rgba(140, 200, 255, 0.9) !important;
+            margin: 0 !important;
+            font-size: 0.88rem !important;
+        }
+
+        .danger-box {
+            background: rgba(255, 80, 80, 0.06);
+            border: 1px solid rgba(255, 80, 80, 0.22);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin: 16px 0;
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        .danger-box p {
+            color: rgba(255, 160, 150, 0.9) !important;
+            margin: 0 !important;
+            font-size: 0.88rem !important;
+        }
+
+        .box-icon {
+            font-size: 1rem;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .section-body-inner a {
+            color: var(--green);
+            text-decoration: none;
+            border-bottom: 1px solid var(--border-bright);
+            transition: border-color 0.2s;
+        }
+
+        .section-body-inner a:hover {
+            border-color: var(--green);
+        }
+
+        strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        /* ─── SCOPE GRID ─── */
+        .scope-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin: 16px 0;
+        }
+
+        .scope-item {
+            padding: 16px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .scope-item:hover {
+            border-color: var(--border-bright);
+            background: var(--green-glow);
+        }
+
+        .scope-item-icon {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+
+        .scope-item-title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+        }
+
+        .scope-item-desc {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* ─── RESPONSIBILITY TABLE ─── */
+        .resp-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 0.88rem;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .resp-table th {
+            background: var(--green-glow);
+            color: var(--green);
+            font-weight: 600;
+            font-size: 0.75rem;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-bright);
+        }
+
+        .resp-table td {
+            padding: 12px 16px;
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+            line-height: 1.6;
+        }
+
+        .resp-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .resp-table tr:hover td {
+            background: var(--surface);
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 3px 10px;
+            border-radius: 50px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .badge-yes {
+            background: var(--green-glow);
+            border: 1px solid var(--border-bright);
+            color: var(--green);
+        }
+
+        .badge-no {
+            background: rgba(255, 80, 80, 0.08);
+            border: 1px solid rgba(255, 80, 80, 0.2);
+            color: rgba(255, 140, 130, 0.9);
+        }
+
+        .badge-partial {
+            background: rgba(255, 160, 50, 0.08);
+            border: 1px solid rgba(255, 160, 50, 0.2);
+            color: rgba(255, 200, 100, 0.9);
+        }
+
+        /* ─── CONTACT CARD ─── */
+        .contact-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-bright);
+            border-radius: 24px;
+            padding: 48px 40px;
+            text-align: center;
+            margin-top: 40px;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        .contact-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at 50% 0%, var(--green-glow-strong), transparent 70%);
+            pointer-events: none;
+        }
+
+        .contact-card-icon {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, var(--green-glow-strong), var(--green-glow));
+            border: 1px solid var(--border-bright);
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            margin: 0 auto 24px;
+            box-shadow: 0 0 30px var(--green-glow);
+        }
+
+        .contact-card h3 {
+            font-family: 'Hubot Sans', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 12px;
+            position: relative;
+        }
+
+        .contact-card p {
+            color: var(--text-secondary);
+            font-size: 0.93rem;
+            margin-bottom: 28px;
+            max-width: 420px;
+            margin-left: auto;
+            margin-right: auto;
+            position: relative;
+        }
+
+        .contact-links {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+            position: relative;
+        }
+
+        .contact-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .contact-btn-primary {
+            background: linear-gradient(135deg, var(--green), var(--green-dim));
+            color: #080808;
+            box-shadow: 0 8px 24px var(--green-glow-strong);
+        }
+
+        .contact-btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px var(--green-glow-strong);
+        }
+
+        .contact-btn-secondary {
+            background: var(--surface);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .contact-btn-secondary:hover {
+            background: var(--surface-hover);
+            border-color: var(--border-bright);
+            transform: translateY(-2px);
+        }
+
+        /* ─── LEGAL LINKS ROW ─── */
+        .legal-links-row {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 40px;
+            padding: 28px 32px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+        }
+
+        .legal-link-card {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 20px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            flex: 1;
+            min-width: 160px;
+        }
+
+        .legal-link-card:hover {
+            border-color: var(--border-bright);
+            background: var(--green-glow);
+            transform: translateY(-2px);
+        }
+
+        .legal-link-icon {
+            font-size: 1.2rem;
+        }
+
+        .legal-link-text strong {
+            display: block;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .legal-link-text span {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+        }
+
+        /* ─── FOOTER ─── */
+        footer {
+            position: relative;
+            z-index: 2;
+            border-top: 1px solid var(--border);
+            padding: 32px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        footer p {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+        }
+
+        footer p a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        footer p a:hover {
+            color: var(--green);
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .footer-links a {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: var(--green);
+        }
+
+        /* ─── TOP PROGRESS ─── */
+        .top-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--green-dim), var(--green));
+            z-index: 200;
+            width: 0%;
+            transition: width 0.1s linear;
+            box-shadow: 0 0 10px var(--green-glow-strong);
+        }
+
+        /* ─── BACK TO TOP ─── */
+        .back-to-top {
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            width: 44px;
+            height: 44px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-bright);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 50;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(16px);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 4px 24px var(--green-glow);
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .back-to-top:hover {
+            background: var(--green-glow-strong);
+            transform: translateY(-3px);
+        }
+
+        .back-to-top svg {
+            stroke: var(--green);
+        }
+
+        /* ─── RESPONSIVE ─── */
+        @media (max-width: 900px) {
+            .content-wrapper {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                position: static;
+                display: none;
+            }
+
+            .scope-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            nav {
+                padding: 0 20px;
+            }
+
+            .page-hero {
+                padding: 130px 24px 60px;
+            }
+
+            .alert-banner {
+                padding: 0 20px;
+            }
+
+            .content-wrapper {
+                padding: 40px 20px 80px;
+            }
+
+            .section-header {
+                padding: 22px 22px;
+            }
+
+            .section-body-inner {
+                padding: 0 22px 24px;
+            }
+
+            .contact-card {
+                padding: 36px 24px;
+            }
+
+            footer {
+                padding: 24px 20px;
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .resp-table {
+                font-size: 0.78rem;
+            }
+
+            .resp-table th,
+            .resp-table td {
+                padding: 9px 10px;
+            }
+
+            .legal-links-row {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Ambient Background -->
+    <div class="ambient">
+        <div class="ambient-blob"></div>
+        <div class="ambient-blob"></div>
+        <div class="ambient-blob"></div>
+    </div>
+
+    <!-- Top Reading Progress -->
+    <div class="top-progress" id="topProgress"></div>
+
+    <!-- Theme Toggle -->
+    <button class="theme-toggle" id="themeToggle" title="Toggle theme">🌙</button>
+
+    <!-- Hero -->
+    <header class="page-hero">
+        <div class="hero-badge">Legal Document</div>
+        <h1 class="page-title">Legal<br><span>Disclaimer</span></h1>
+        <p class="page-subtitle">Important notices regarding the limitations of our liability, the nature of information
+            provided on this platform, and your responsibilities as a user.</p>
+        <div class="hero-meta">
+            <span>📅 <strong>Effective:</strong> June 1, 2025</span>
+            <span>🔄 <strong>Last Updated:</strong> June 14, 2025</span>
+            <span>⏱ <strong>Read Time:</strong> ~7 minutes</span>
+        </div>
+    </header>
+
+    <!-- Alert Banner -->
+    <div class="alert-banner">
+        <div class="alert-banner-inner">
+            <div class="alert-banner-icon">⚖️</div>
+            <div class="alert-banner-text">
+                <strong>Important Legal Notice</strong>
+                By accessing or using My Cloud Kitchen's platform and services, you acknowledge that you have read,
+                understood, and accepted the disclaimers contained in this document. These disclaimers form part of
+                the legally binding agreement between you and My Cloud Kitchen.
+            </div>
+        </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Main Layout -->
+    <div class="content-wrapper">
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <p class="sidebar-label">Quick Navigation</p>
+            <ul class="sidebar-nav" id="sidebarNav">
+                <li><a href="#s1" data-target="s1"><span class="nav-num">01</span> General Disclaimer</a></li>
+                <li><a href="#s2" data-target="s2"><span class="nav-num">02</span> Food & Nutrition Info</a></li>
+                <li><a href="#s3" data-target="s3"><span class="nav-num">03</span> Allergen Disclaimer</a></li>
+                <li><a href="#s4" data-target="s4"><span class="nav-num">04</span> Accuracy of Information</a></li>
+                <li><a href="#s5" data-target="s5"><span class="nav-num">05</span> No Professional Advice</a></li>
+                <li><a href="#s6" data-target="s6"><span class="nav-num">06</span> Delivery & Service</a></li>
+                <li><a href="#s7" data-target="s7"><span class="nav-num">07</span> Third-Party Content</a></li>
+                <li><a href="#s8" data-target="s8"><span class="nav-num">08</span> Technical Disclaimer</a></li>
+                <li><a href="#s9" data-target="s9"><span class="nav-num">09</span> Pricing Disclaimer</a></li>
+                <li><a href="#s10" data-target="s10"><span class="nav-num">10</span> Reviews & Testimonials</a></li>
+                <li><a href="#s11" data-target="s11"><span class="nav-num">11</span> Promotions & Offers</a></li>
+                <li><a href="#s12" data-target="s12"><span class="nav-num">12</span> Liability Limitations</a></li>
+                <li><a href="#s13" data-target="s13"><span class="nav-num">13</span> Indemnification</a></li>
+                <li><a href="#s14" data-target="s14"><span class="nav-num">14</span> Contact & Queries</a></li>
+            </ul>
+
+            <div class="summary-card">
+                <div class="summary-card-title">Document Info</div>
+                <div class="summary-item">
+                    <span class="summary-item-icon">📄</span>
+                    <span class="summary-item-label">Type</span>
+                    <span class="summary-item-val">Legal Disclaimer</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-item-icon">🏢</span>
+                    <span class="summary-item-label">Entity</span>
+                    <span class="summary-item-val">My Cloud Kitchen</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-item-icon">🌏</span>
+                    <span class="summary-item-label">Jurisdiction</span>
+                    <span class="summary-item-val">India</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-item-icon">📋</span>
+                    <span class="summary-item-label">Sections</span>
+                    <span class="summary-item-val">14</span>
+                </div>
+            </div>
+
+            <div class="reading-progress-wrap">
+                <div class="reading-progress-label">
+                    <span>Reading Progress</span>
+                    <span id="progressPct">0%</span>
+                </div>
+                <div class="reading-progress-bar">
+                    <div class="reading-progress-fill" id="progressFill"></div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+
+            <div class="controls-bar">
+                <p class="controls-bar-left"><strong>14 sections</strong> · Click any section to expand</p>
+                <button class="toggle-all-btn" id="toggleAllBtn">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                    Expand All
+                </button>
+            </div>
+
+            <!-- Section 1 — General Disclaimer -->
+            <div class="tc-section open" id="s1">
+                <div class="tc-section-inner">
+                    <div class="section-header" onclick="toggleSection('s1')">
+                        <div class="section-icon">📜</div>
+                        <div class="section-title-group">
+                            <div class="section-number">Section 01</div>
+                            <div class="section-title">General Disclaimer</div>
+                        </div>
+                        <div class="section-chevron">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2.5"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="section-body">
+                        <div class="section-body-inner">
+                            <p>This Disclaimer governs your use of <strong>My Cloud Kitchen</strong>'s website, located
+                                at <a href="https://my-cloud-kitchen.onrender.com/">my-cloud-kitchen.onrender.com</a>,
+                                and all related services, platforms, and communications provided by My Cloud Kitchen.
+                                By accessing or using our services, you agree to the terms set out in this document.</p>
+                            <div class="danger-box">
+                                <div class="box-icon">⚖️</div>
+                                <p><strong>This disclaimer is a legally binding document.</strong> If you do not agree
+                                    with any part of this disclaimer, you must immediately cease using our platform and
+                                    services. Continued use constitutes full acceptance of all terms herein.</p>
+                            </div>
+                            <p>The information, content, products, and services available on My Cloud Kitchen's
+                                platform are provided <strong>"as is"</strong> and <strong>"as available"</strong>
+                                without warranties of any kind, either express or implied. We do not warrant that our
+                                services will be uninterrupted, error-free, completely secure, or free of defects.</p>
+                            <p>My Cloud Kitchen operates as a food preparation and delivery service. While we make every
+                                reasonable effort to deliver quality, accurate, and timely services, we cannot guarantee
+                                absolute perfection in all aspects of our operations due to the inherent nature of food
+                                service businesses and the involvement of third-party partners and logistics providers.
+                            </p>
+                            <div class="highlight-box">
+                                <div class="box-icon">ℹ️</div>
+                                <p>This disclaimer is to be read in conjunction with our <a href="terms.html">Terms &
+                                        Conditions</a> and <a href="privacy.html">Privacy Policy</a>, all of which
+                                    together constitute the full legal agreement between you and My Cloud Kitchen.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 2 — Food & Nutrition -->
+            <div class="tc-section" id="s2">
+                <div class="tc-section-inner">
+                    <div class="section-header" onclick="toggleSection('s2')">
+                        <div class="section-icon">🥗</div>
+                        <div class="section-title-group">
+                            <div class="section-number">Section 02</div>
+                            <div class="section-title">Food & Nutrition Information</div>
+                        </div>
+                        <div class="section-chevron">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2.5"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="section-body">
+                        <div class="section-body-inner">
+                            <p>My Cloud Kitchen provides nutritional information, calorie counts, ingredient lists, and
+                                dietary classifications (such as vegan, vegetarian, gluten-free, etc.) on our platform
+                                for informational purposes only. These details are based on standard recipes and typical
+                                ingredient quantities used during preparation.</p>
+                            <p><strong>Important limitations of nutritional information:</strong></p>
+                            <ul>
+                                <li>Nutritional values are <strong>approximate estimates</strong> and may vary due to
+                                    natural variations in ingredients, seasonal changes, and supplier differences</li>
+                                <li>Actual portion sizes may differ slightly from those used to calculate nutritional
+                                    content</li>
+                                <li>Customisations, additions, or substitutions to standard menu items will alter
+                                    the nutritional profile and are not accounted for in displayed values</li>
+                                <li>Cooking methods, temperatures, and preparation times can affect final nutritional
+                                    content</li>
+                                <li>Displayed information is not verified by an independent third party and should
+                                    not be used as the sole basis for dietary decisions</li>
+                            </ul>
+                            <div class="warn-box">
+                                <div class="box-icon">⚠️</div>
+                                <p>Nutritional and dietary information on our platform is <strong>not a substitute for
+                                        professional medical or dietetic advice</strong>. If you have specific health
+                                    conditions, dietary restrictions, or medical requirements, please consult a
+                                    qualified healthcare professional before making food choices.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 3 — Allergen Disclaimer -->
+            <div class="tc-section" id="s3">
+                <div class="tc-section-inner">
+                    <div class="section-header" onclick="toggleSection('s3')">
+                        <div class="section-icon">🌾</div>
+                        <div class="section-title-group">
+                            <div class="section-number">Section 03</div>
+                            <div class="section-title">Allergen Disclaimer</div>
+                        </div>
+                        <div class="section-chevron">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2.5"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="section-body">
+                        <div class="section-body-inner">
+                            <p>My Cloud Kitchen takes food allergies and intolerances extremely seriously. We provide
+                                allergen information on product pages to the best of our ability. However, the
+                                following limitations apply to all allergen-related information:</p>
+                            <div class="danger-box">
+                                <div class="box-icon">🚨</div>
+                                <p><strong>Cross-contamination risk:</strong> Our kitchen prepares food containing all
+                                    14 major allergens recognised under food safety regulations, including nuts, dairy,
+                                    gluten, eggs, soy, fish, and shellfish. We <strong>cannot guarantee</strong> the
+                                    complete absence of any allergen in any dish, even those labelled as
+                                    "allergen-free".</p>
+                            </div>
+                            <p><strong>Allergens present in our kitchen environment include:</strong></p>
+                            <ul>
+                                <li>Tree nuts (almonds, cashews, walnuts, pistachios, etc.)</li>
+                                <li>Peanuts and peanut-based products</li>
+                                <li>Dairy products (milk, cheese, butter, cream, ghee)</li>
+                                <li>Gluten-containing grains (wheat, barley, rye)</li>
+                                <li>Eggs and egg-derived ingredients</li>
+                                <li>Fish and fish-derived sauces or stocks</li>
+                                <li>Shellfish and crustaceans</li>
+                                <li>Soy and soy-based products</li>
+                                <li>Sesame seeds and sesame oil</li>
+                                <li>Mustard and mustard-derived products</li>
+                            </ul>
+                            <p>My Cloud Kitchen shall not be held liable for any allergic reaction, health
+                                complication, or adverse event resulting from consumption of our products where the
+                                customer failed to disclose relevant allergen information prior to placing an order.
+                                Customers with life-threatening allergies are strongly advised to <strong>contact us
+                                    directly before ordering</strong> to discuss their requirements.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 4 — Accuracy of Information -->
+            <div class="tc-section" id="s4">
+                <div class="tc-section-inner">
+                    <div class="section-header" onclick="toggleSection('s4')">
+                        <div class="section-icon">🎯</div>
+                        <div class="section-title-group">
+                            <div class="section-number">Section 04</div>
+                            <div class="section-title">Accuracy of Information</div>
+                        </div>
+                        <div class="section-chevron">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2.5"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="section-body">
+                        <div class="section-body-inner">
+                            <p>While My Cloud Kitchen makes every reasonable effort to ensure that the information
+                                published on our platform is accurate, current, and complete, we cannot guarantee the
+                                absolute accuracy of all content at all times. The nature of a dynamic food service
+                                business means that details can change rapidly.</p>
+                            <p><strong>The following information may be subject to change without prior notice:</strong>
+                            </p>
+                            <div class="scope-grid">
+                                <div class="scope-item">
+                                    <div class="scope-item-icon">📋</div>
+                                    <div class="scope-item-title">Menu Items</div>
+                                    <div class="scope-item-desc">Dishes may be discontinued, modified, or temporarily
+                                        unavailable based on ingredient availability and season</div>
+                                </div>
+                                <div class="scope-item">
+                                    <div class="scope-item-icon">💰</div>
+                                    <div class="scope-item-title">Pricing</div>
+                                    <div class="scope-item-desc">Prices may fluctuate based on ingredient costs,
+                                        operational changes, or market conditions</div>
+                                </div>
+                                <div class="scope-item">
+                                    <div class="scope-item-icon">🕐</div>
+                                    <div class="scope-item-title">Operating Hours</div>
+                                    <div class="scope-item-desc">Service hours may change due to public holidays,
+                                        maintenance, or unforeseen circumstances</div>
+                                </div>
+                                <div class="scope-item">
+                                    <div class="scope-item-icon">📍</div>
+                                    <div class="scope-item-title">Delivery Zones</div>
+                                    <div class="scope-item-desc">Coverage areas may expand or contract based on
+                                        operational capacity and logistics partner availability</div>
+                                </div>
+                                <div class="scope-item">
+                                    <div class="scope-item-icon">🎁</div>
+                                    <div class="scope-item-title">Promotions</div>
+                                    <div class="scope-item-desc">Offers, discounts, and loyalty rewards are subject to
+                                        availability and may be modified or withdrawn at any time</div>
+                                </div>
+                                <div class="scope-item">
+                                    <div class="scope-item-icon">📷</div>
+                                    <div class="scope-item-title">Food Photography</div>
+                                    <div class="scope-item-desc">Product images are for illustrative purposes only
+                                        and actual items may differ in appearance and presentation</div>
+                                </div>
+                            </div>
+                            <div class="info-box">
+                                <div class="box-icon">ℹ️</div>
+                                <p>We update our platform regularly but cannot guarantee real-time accuracy across all
+                                    channels. If you notice any inaccuracies, please report them to <a
+                                        href="mailto:support@mycloudkitchen.com">support@mycloudkitchen.com</a>.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 5 — No Professional Advice -->
+            <div class="tc-section" id="s5">
+                <div class="tc-section-inner">
+                    <div class="section-header" onclick="toggleSection('s5')">
+                        <div class="section-icon">🩺</div>
+                        <div class="section-title-group">
+                            <div class="section-number">Section 05</div>
+                            <div class="section-title">No Professional Advice</div>
+                        </div>
+                        <div class="section-chevron">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2.5"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="section-body">
+                        <div class="section-body-inner">
+                            <p>Nothing published on the My Cloud Kitchen platform, including but not limited to
+                                nutritional information, dietary tags, ingredient lists, health claims, blog content,
+                                social media posts, or customer communications, constitutes professional medical,
+                                nutritional, dietary, legal, or financial advice.</p>
+                            <p><strong>Specifically, our content should not be relied upon for:</strong></p>
+                            <ul>
+                                <li>Managing or treating any medical condition, illness, or health concern</li>
+                                <li>Making decisions related to weight management or clinical dietary therapy</li>
+                                <li>Addressing food-related medical conditions such as diabetes, coeliac disease,
+                                    or phenylketonuria (PKU)</li>
+                                <li>Legal interpretation or advice of any kind</li>
+                                <li>Financial or investment decisions</li>
+                            </ul>
+                            <div class="warn-box">
+                                <div class="box-icon">⚠️</div>
+                                <p>Always seek the advice of a qualified medical professional, registered dietitian, or
+                                    other relevant professional regarding any health, dietary, or medical concerns.
+                                    Never disregard or delay seeking professional advice because of content you read
+                                    on our platform.</p>
+                            </div>
+                            <p>My Cloud Kitchen disclaims all liability arising from reliance on any content published
+                                on our platform as a substitute for professional advice from a suitably qualified
+                                expert.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 6 — Delivery & Service -->
+            <div class="tc-section" id="s6">
+                <div class="tc-section-inner">
+                    <div class="section-header" onclick="toggleSection('s6')">
+                        <div class="section-icon">🚚</div>
+                        <div class="section-title-group">
+                            <div class="section-number">Section 06</div>
+                            <div class="section-title">Delivery & Service Disclaimer</div>
+                        </div>
+                        <div class="section-chevron">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2.5"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="section-body">
+                        <div class="section-body-inner">
+                            <p>My Cloud Kitchen provides estimated delivery times as a guide only. Delivery time
+                                estimates are generated based on current kitchen load, distance, and historical data.
+                                These are estimates, not guarantees, and may vary significantly under certain
+                                conditions.</p>
+                            <table class="resp-table">
+                                <thead>
+                                    <tr>
+                                        <th>Factor</th>
+                                        <th>Our Responsibility</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Food preparation quality</td>
+                                        <td>Prepared to our kitchen standards</td>
+                                        <td><span class="badge badge-yes">Our Control</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Order accuracy</td>
+                                        <td>We strive for 100% accuracy</td>
+                                        <td><span class="badge badge-yes">Our Control</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Delivery time estimates</td>
+                                        <td>Estimates only, not guarantees</td>
+                                        <td><span class="badge badge-partial">Partial</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Traffic and road conditions</td>
+                                        <td>Beyond our control</td>
+                                        <td><span class="badge badge-no">Not Liable</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Severe weather events</td>
+                                        <td>Beyond our control</td>
+                                        <td><span class="badge badge-no">Not Liable</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Third-party delivery partner conduct</td>
+                                        <td>Partners are independently contracted</td>
+                                        <td><span class="badge badge-partial">Partial</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Incorrect address provided by customer</td>
+                                        <td>Customer's responsibility</td>
+                                        <td><span class="badge badge-no">Not Liable</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Customer unavailability at delivery</td>
+                                        <td>Customer's responsibility</td>
+                                        <td><span class="badge badge-no">Not Liable</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <p>We reserve the right to refuse or cancel delivery to any location at our sole
+                                discretion, including areas deemed unsafe for our delivery personnel or those outside
+                                our current delivery radius.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 7 — Third-Party Content -->
+            <div class="tc-section" id="s7">
+                <div class="tc-section-inner">
+                    <div class="section-header" onclick="toggleSection('s7')">
+                        <div class="section-icon">🔗</div>
+                        <div class="section-title-group">
+                            <div class="section-number">Section 07</div>
+                            <div class="section-title">Third-Party Content & Links</div>
+                        </div>
+                        <div class="section-chevron">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2.5"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="section-body">
+                        <div class="section-body-inner">
+                            <p>Our platform may contain links to external websites, embedded content from third-party
+                                services, and references to third-party brands or products. My Cloud Kitchen does not
+                                endorse, control, or take responsibility for any content, information, products, or
+                                services offered by third parties.</p>
+                            <ul>
+                                <li>Third-party websites operate under their own terms of service and privacy policies,
+                                    which we encourage you to read before engaging with them</li>
+                                <li>The inclusion of a link to a third-party website does not imply any affiliation
+                                    with, sponsorship of, or endorsement by My Cloud Kitchen</li>
+                                <li>We are not responsible for the availability, accuracy, or content of any
+                                    third-party websites</li>
+                                <li>Any transactions conducted with third parties are entirely between you and that
+                                    third party, and My Cloud Kitchen accepts no liability for such transactions</li>
+                                <li>Reviews, ratings, and content submitted by users on third-party platforms (such as
+                                    Google Reviews or social media) do not represent the views of My Cloud Kitchen</li>
+                            </ul>
+                            <div class="info-box">
+                                <div class="box-icon">ℹ️</div>
+                                <p>We use third-party services including payment gateways, mapping tools, and analytics
+                                    platforms. Each operates under its own privacy and data policies independently of
+                                    My Cloud Kitchen.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 8 — Technical Disclaimer -->
+            <div class="tc-section" id="s8">
+                <div class="tc-section-inner">
+                    <div class="section-header" onclick="toggleSection('s8')">
+                        <div class="section-icon">💻</div>
+                        <div class="section-title-group">
+                            <div class="section-number">Section 08</div>
+                            <div class="section-title">Technical Disclaimer</div>
+                        </div>
+                        <div class="section-chevron">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2.5"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="section-body">
+                        <div class="section-body-inner">
+                            <p>My Cloud Kitchen's platform is provided on a best-efforts basis. We do not warrant that
+                                access to the platform will be uninterrupted, timely, secure, or error-free at all
+                                times.</p>
+                            <p><strong>We are not liable for any disruption or loss caused by:</strong></p>
+                            <ul>
+                                <li>Scheduled or emergency maintenance of the platform or its underlying
+                                    infrastructure</li>
+                                <li>Server outages, hosting failures, or technical issues with cloud infrastructure
+                                    providers</li>
+                                <li>Cyberattacks, DDoS attacks, or other malicious technical interference</li>
+                                <li>Software bugs, browser compatibility issues, or device-specific problems</li>
+                                <li>Internet service provider outages or connectivity issues on the user's end</li>
+                                <li>Data loss resulting from failure of user devices, browsers, or local storage</li>
+                                <li>Viruses, malware, or other harmful software transmitted through third-party
+                                    links or content encountered via our platform</li>
+                            </ul>
+                            <div class="highlight-box">
+                                <div class="box-icon">🛡️</div>
+                                <p>We recommend keeping your browser, operating system, and antivirus software up to
+                                    date when accessing our platform. Always access our site via the official URL: <a
+                                        href="https://my-cloud-kitchen.onrender.com/">my-cloud-kitchen.onrender.com</a>
+                                </p>
+                            </div>
+                            <p>My Cloud Kitchen reserves the right to modify, suspend, or terminate the platform or
+                                any of its features at any time without prior notice. We will endeavour to communicate
+                                planned downtime in advance where possible.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 9 — Pricing Disclaimer -->
+            <div class="tc-section" id="s9">
+                <div class="tc-section-inner">
+                    <div class="section-header" onclick="toggleSection('s9')">
+                        <div class="section-icon">💳</div>
+                        <div class="section-title-group">
+                            <div class="section-number">Section 09</div>
+                            <div class="section-title">Pricing Disclaimer</div>
+                        </div>
+                        <div class="section-chevron">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2.5"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="section-body">
+                        <div class="section-body-inner">
+                            <p>All prices displayed on My Cloud Kitchen's platform are in <strong>Indian Rupees
+                                    (₹)</strong> and are subject to change without prior notice. While we strive to
+                                maintain accurate pricing at all times, errors may occasionally occur.</p>
+                            <ul>
+                                <li>Prices displayed on third-party aggregator platforms or delivery apps may differ
+                                    from prices on our own platform and may not always reflect our current pricing</li>
+                                <li>Delivery fees, service charges, GST, and applicable taxes are clearly displayed
+                                    at checkout but may vary by location, order value, and applicable laws</li>
+                                <li>Promotional prices and discounts are valid only during the specified promotional
+                                    period and subject to the terms of each individual offer</li>
+                                <li>In the event of a pricing error, My Cloud Kitchen reserves the right to cancel
+                                    orders placed at incorrect prices and will offer a full refund in such cases</li>
+                                <li>Prices may vary between dine-in, takeaway (where applicable), and delivery
+                                    channels due to operational cost differences</li>
+                            </ul>
+                            <div class="warn-box">
+                                <div class="box-icon">⚠️</div>
+                                <p>Payment of a stated price does not constitute a binding contract until an order
+                                    confirmation is issued by My Cloud Kitchen. We reserve the right to correct pricing
+                                    errors discovered after a transaction has been initiated.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 10 — Reviews & Testimonials -->
+            <div class="tc-section" id="s10">
+                <div class="tc-section-inner">
+                    <div class="section-header" onclick="toggleSection('s10')">
+                        <div class="section-icon">⭐</div>
+                        <div class="section-title-group">
+                            <div class="section-number">Section 10</div>
+                            <div class="section-title">Reviews & Testimonials</div>
+                        </div>
+                        <div class="section-chevron">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2.5"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="section-body">
+                        <div class="section-body-inner">
+                            <p>Customer reviews, ratings, and testimonials displayed on or linked from My Cloud
+                                Kitchen's platform represent the personal opinions and experiences of individual users.
+                                My Cloud Kitchen does not verify, endorse, or take responsibility for the accuracy
+                                or completeness of user-generated content.</p>
+                            <ul>
+                                <li>Reviews reflect individual experiences that may not be representative of all
+                                    customers' experiences</li>
+                                <li>Individual results, satisfaction levels, and taste preferences vary greatly
+                                    between customers</li>
+                                <li>My Cloud Kitchen does not pay for, incentivise, or manipulate customer reviews,
+                                    though customers may voluntarily receive loyalty points for leaving honest feedback
+                                </li>
+                                <li>We reserve the right to remove reviews that violate our community guidelines,
+                                    contain abusive language, or are determined to be fraudulent</li>
+                                <li>Testimonials featured in marketing materials are reproduced with customer
+                                    permission and represent genuine feedback, though individual results may vary</li>
+                            </ul>
+                            <div class="info-box">
+                                <div class="box-icon">ℹ️</div>
+                                <p>If you believe a review is fraudulent or violates our guidelines, please report it
+                                    to <a href="mailto:support@mycloudkitchen.com">support@mycloudkitchen.com</a> with
+                                    details and we will investigate promptly.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 11 — Promotions & Offers -->
+            <div class="tc-section" id="s11">
+                <div class="tc-section-inner">
+                    <div class="section-header" onclick="toggleSection('s11')">
+                        <div class="section-icon">🎁</div>
+                        <div class="section-title-group">
+                            <div class="section-number">Section 11</div>
+                            <div class="section-title">Promotions & Offers</div>
+                        </div>
+                        <div class="section-chevron">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2.5"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="section-body">
+                        <div class="section-body-inner">
+                            <p>All promotional offers, discount codes, referral programmes, and loyalty rewards offered
+                                by My Cloud Kitchen are subject to specific terms and conditions and are provided at
+                                our sole discretion.</p>
+                            <ol>
+                                <li><strong>Availability:</strong> Promotions are valid only while stocks last and
+                                    during the specified promotional period. We do not guarantee availability of any
+                                    promotion at any given time.</li>
+                                <li><strong>Eligibility:</strong> Promotions may be restricted to specific user
+                                    segments, geographic regions, order types, or minimum order values. Eligibility
+                                    criteria will be specified in each promotion's terms.</li>
+                                <li><strong>Non-transferable:</strong> Discount codes and promotional offers are
+                                    non-transferable and may not be sold, exchanged, or combined with other offers
+                                    unless explicitly stated.</li>
+                                <li><strong>Single use:</strong> Unless otherwise stated, promotional codes are
+                                    valid for one use per customer account. Abuse of promotional codes may result
+                                    in account suspension.</li>
+                                <li><strong>Withdrawal:</strong> My Cloud Kitchen reserves the right to withdraw,
+                                    modify, or expire any promotion at any time without prior notice and without
+                                    liability.</li>
+                                <li><strong>No cash value:</strong> Promotional credits, loyalty points, and offer
+                                    values have no cash equivalent and cannot be redeemed for cash under any
+                                    circumstances.</li>
+                            </ol>
+                            <div class="warn-box">
+                                <div class="box-icon">⚠️</div>
+                                <p>My Cloud Kitchen is not responsible for any promotional content communicated through
+                                    unauthorised channels, fake social media accounts, or unofficial third-party
+                                    websites. Always verify promotions through our official platform or communications.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 12 — Liability Limitations -->
+            <div class="tc-section" id="s12">
+                <div class="tc-section-inner">
+                    <div class="section-header" onclick="toggleSection('s12')">
+                        <div class="section-icon">⚖️</div>
+                        <div class="section-title-group">
+                            <div class="section-number">Section 12</div>
+                            <div class="section-title">Limitation of Liability</div>
+                        </div>
+                        <div class="section-chevron">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2.5"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="section-body">
+                        <div class="section-body-inner">
+                            <p>To the fullest extent permitted by applicable law, My Cloud Kitchen, its directors,
+                                employees, agents, affiliates, partners, and service providers expressly disclaim all
+                                warranties, representations, and conditions of any kind, whether express, implied,
+                                statutory, or otherwise.</p>
+                            <p><strong>My Cloud Kitchen shall not be liable for:</strong></p>
+                            <ul>
+                                <li>Any indirect, incidental, special, consequential, exemplary, or punitive damages
+                                    arising out of or in connection with your use of our services</li>
+                                <li>Loss of profits, revenue, data, goodwill, or other intangible losses</li>
+                                <li>Personal injury or property damage of any nature resulting from your access to or
+                                    use of our services</li>
+                                <li>Any unauthorised access to or use of our secure servers or personal information
+                                    stored therein</li>
+                                <li>Any health consequences, allergic reactions, or dietary outcomes resulting from
+                                    consumption of our food products where allergen information was not disclosed</li>
+                                <li>Any bugs, viruses, trojans, or other harmful code that may be transmitted through
+                                    our platform by any third party</li>
+                                <li>Any errors or omissions in content, or loss or damage of any kind incurred as
+                                    a result of reliance on content published on our platform</li>
+                            </ul>
+                            <div class="highlight-box">
+                                <div class="box-icon">📌</div>
+                                <p>Where liability cannot be excluded by law, our total aggregate liability to you for
+                                    any claim arising from use of our services shall be limited to the amount you paid
+                                    for the specific order giving rise to the claim, or <strong>₹1,000</strong>,
+                                    whichever is lower.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 13 — Indemnification -->
+            <div class="tc-section" id="s13">
+                <div class="tc-section-inner">
+                    <div class="section-header" onclick="toggleSection('s13')">
+                        <div class="section-icon">🤝</div>
+                        <div class="section-title-group">
+                            <div class="section-number">Section 13</div>
+                            <div class="section-title">Indemnification</div>
+                        </div>
+                        <div class="section-chevron">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2.5"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="section-body">
+                        <div class="section-body-inner">
+                            <p>By using My Cloud Kitchen's platform and services, you agree to defend, indemnify, and
+                                hold harmless My Cloud Kitchen and its officers, directors, employees, agents,
+                                licensors, and service providers from and against any claims, liabilities, damages,
+                                judgments, awards, losses, costs, expenses, or fees (including reasonable legal fees)
+                                arising out of or relating to:</p>
+                            <ul>
+                                <li>Your violation of these disclaimers or our Terms & Conditions</li>
+                                <li>Your use of the platform in any way not expressly authorised by My Cloud Kitchen
+                                </li>
+                                <li>Content you submit, post, or transmit through our platform</li>
+                                <li>Your provision of false, misleading, or inaccurate information (including allergen
+                                    or health information) when placing orders</li>
+                                <li>Your infringement of any third-party right, including without limitation any
+                                    intellectual property or privacy right</li>
+                                <li>Any claim that content you provide causes damage to a third party</li>
+                            </ul>
+                            <div class="info-box">
+                                <div class="box-icon">ℹ️</div>
+                                <p>This indemnification obligation survives the termination of your account and your
+                                    cessation of use of our services. My Cloud Kitchen reserves the right to assume
+                                    exclusive defence and control of any matter subject to indemnification by you.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 14 — Contact & Queries -->
+            <div class="tc-section" id="s14">
+                <div class="tc-section-inner">
+                    <div class="section-header" onclick="toggleSection('s14')">
+                        <div class="section-icon">📞</div>
+                        <div class="section-title-group">
+                            <div class="section-number">Section 14</div>
+                            <div class="section-title">Contact & Legal Queries</div>
+                        </div>
+                        <div class="section-chevron">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2.5"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="section-body">
+                        <div class="section-body-inner">
+                            <p>If you have any questions, concerns, or objections regarding this Disclaimer, or if you
+                                believe you have experienced an issue that falls within the scope of these clauses,
+                                please contact us through the following channels:</p>
+                            <ul>
+                                <li><strong>General Support:</strong> <a
+                                        href="mailto:support@mycloudkitchen.com">support@mycloudkitchen.com</a></li>
+                                <li><strong>Legal & Compliance:</strong> <a
+                                        href="mailto:legal@mycloudkitchen.com">legal@mycloudkitchen.com</a></li>
+                                <li><strong>Allergen & Food Safety:</strong> <a
+                                        href="mailto:safety@mycloudkitchen.com">safety@mycloudkitchen.com</a></li>
+                                <li><strong>Privacy Queries:</strong> <a
+                                        href="mailto:privacy@mycloudkitchen.com">privacy@mycloudkitchen.com</a></li>
+                                <li><strong>Phone:</strong> Available 9 AM – 9 PM IST, Monday to Saturday</li>
+                                <li><strong>Address:</strong> My Cloud Kitchen, India</li>
+                            </ul>
+                            <p>We aim to acknowledge all legal queries within <strong>5 business days</strong> and
+                                provide a substantive response within <strong>30 business days</strong>. For urgent
+                                food safety or health-related concerns, please contact us by phone for the fastest
+                                response.</p>
+                            <div class="highlight-box">
+                                <div class="box-icon">📋</div>
+                                <p>This Disclaimer is governed by the laws of <strong>India</strong>. Any disputes
+                                    arising in connection with this Disclaimer shall be subject to the exclusive
+                                    jurisdiction of the courts of India, in accordance with our Terms & Conditions.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Legal Related Documents -->
+            <div class="legal-links-row">
+                <a href="terms.html" class="legal-link-card">
+                    <div class="legal-link-icon">📋</div>
+                    <div class="legal-link-text">
+                        <strong>Terms & Conditions</strong>
+                        <span>Usage rules & agreements</span>
+                    </div>
+                </a>
+                <a href="privacy.html" class="legal-link-card">
+                    <div class="legal-link-icon">🔐</div>
+                    <div class="legal-link-text">
+                        <strong>Privacy Policy</strong>
+                        <span>How we handle your data</span>
+                    </div>
+                </a>
+                <a href="https://my-cloud-kitchen.onrender.com/" class="legal-link-card">
+                    <div class="legal-link-icon">🏠</div>
+                    <div class="legal-link-text">
+                        <strong>Visit Website</strong>
+                        <span>Back to My Cloud Kitchen</span>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Contact Card -->
+            <div class="contact-card">
+                <div class="contact-card-icon">⚖️</div>
+                <h3>Legal Questions?</h3>
+                <p>If something in this disclaimer is unclear or you have a specific legal concern, our team is
+                    here to help clarify and assist you.</p>
+                <div class="contact-links">
+                    <a href="mailto:legal@mycloudkitchen.com" class="contact-btn contact-btn-primary">
+                        ⚖️ Contact Legal Team
+                    </a>
+                    <a href="mailto:support@mycloudkitchen.com" class="contact-btn contact-btn-secondary">
+                        💬 General Support
+                    </a>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2025 <a href="https://my-cloud-kitchen.onrender.com/">My Cloud Kitchen</a>. All rights reserved.</p>
+        <div class="footer-links">
+            <a href="terms.html">Terms & Conditions</a>
+            <a href="privacy.html">Privacy Policy</a>
+            <a href="#">Sitemap</a>
+        </div>
+    </footer>
+
+    <!-- Back to Top -->
+    <button class="back-to-top" id="backToTop" title="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round"
+            stroke-linejoin="round">
+            <polyline points="18 15 12 9 6 15"></polyline>
+        </svg>
+    </button>
+
+    <script>
+        /* ─── THEME TOGGLE ─── */
+        const html = document.documentElement;
+        const themeBtn = document.getElementById('themeToggle');
+        let isDark = true;
+
+        themeBtn.addEventListener('click', () => {
+            isDark = !isDark;
+            html.setAttribute('data-theme', isDark ? 'dark' : 'light');
+            themeBtn.textContent = isDark ? '🌙' : '☀️';
+        });
+
+        /* ─── ACCORDION ─── */
+        function toggleSection(id) {
+            const section = document.getElementById(id);
+            const isOpen = section.classList.contains('open');
+            section.classList.toggle('open', !isOpen);
+            updateToggleAllBtn();
+        }
+
+        /* ─── TOGGLE ALL ─── */
+        const toggleAllBtn = document.getElementById('toggleAllBtn');
+        let allOpen = true;
+
+        function updateToggleAllBtn() {
+            const sections = document.querySelectorAll('.tc-section');
+            const openCount = document.querySelectorAll('.tc-section.open').length;
+            allOpen = openCount === sections.length;
+            toggleAllBtn.innerHTML = allOpen
+                ? `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg> Collapse All`
+                : `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg> Expand All`;
+        }
+
+        toggleAllBtn.addEventListener('click', () => {
+            const sections = document.querySelectorAll('.tc-section');
+            const shouldOpen = !allOpen;
+            sections.forEach(s => s.classList.toggle('open', shouldOpen));
+            allOpen = shouldOpen;
+            updateToggleAllBtn();
+        });
+
+        updateToggleAllBtn();
+
+        /* ─── SCROLL PROGRESS ─── */
+        const topProgress = document.getElementById('topProgress');
+        const progressFill = document.getElementById('progressFill');
+        const progressPct = document.getElementById('progressPct');
+        const backToTop = document.getElementById('backToTop');
+
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const pct = Math.min(100, Math.round((scrollTop / docHeight) * 100));
+
+            topProgress.style.width = pct + '%';
+            progressFill.style.width = pct + '%';
+            progressPct.textContent = pct + '%';
+
+            backToTop.classList.toggle('visible', scrollTop > 400);
+            updateActiveSidebarLink();
+        });
+
+        /* ─── SIDEBAR ACTIVE STATE ─── */
+        function updateActiveSidebarLink() {
+            const sections = document.querySelectorAll('.tc-section');
+            const links = document.querySelectorAll('.sidebar-nav a');
+            let current = '';
+
+            sections.forEach(section => {
+                const rect = section.getBoundingClientRect();
+                if (rect.top <= 120) current = section.id;
+            });
+
+            links.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('data-target') === current) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        /* ─── SMOOTH SIDEBAR SCROLL ─── */
+        document.querySelectorAll('.sidebar-nav a').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('data-target');
+                const target = document.getElementById(targetId);
+                if (target) {
+                    if (!target.classList.contains('open')) target.classList.add('open');
+                    const offset = target.getBoundingClientRect().top + window.scrollY - 90;
+                    window.scrollTo({ top: offset, behavior: 'smooth' });
+                }
+            });
+        });
+
+        /* ─── SCROLL ANIMATIONS ─── */
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, i) => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationDelay = `${i * 0.05}s`;
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.08 });
+
+        document.querySelectorAll('.tc-section').forEach(el => {
+            if (!el.classList.contains('open')) {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(20px)';
+                el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            }
+            observer.observe(el);
+        });
+    </script>
+</body>
+
+</html>
